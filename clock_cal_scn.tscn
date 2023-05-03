@@ -3,31 +3,17 @@
 [ext_resource type="Script" path="res://clock_cal.gd" id="1_wi1q7"]
 [ext_resource type="FontFile" uid="uid://ck44ko777mxdt" path="res://NanumGothicBold.ttf" id="2_yx64y"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_av0r8"]
-line_spacing = 0.0
-font = ExtResource("2_yx64y")
-font_size = 450
-font_color = Color(0, 0, 0, 1)
-shadow_size = 5
-shadow_color = Color(0.501961, 0.501961, 0.501961, 1)
-shadow_offset = Vector2(5, 5)
+[sub_resource type="Theme" id="Theme_40ysy"]
+default_font = ExtResource("2_yx64y")
+default_font_size = 450
 
-[sub_resource type="LabelSettings" id="LabelSettings_nyxsr"]
-line_spacing = 0.0
-font = ExtResource("2_yx64y")
-font_size = 130
-font_color = Color(0, 0, 0, 1)
-shadow_size = 4
-shadow_color = Color(0.498039, 0.498039, 0.498039, 1)
-shadow_offset = Vector2(4, 4)
+[sub_resource type="Theme" id="Theme_gywcf"]
+default_font = ExtResource("2_yx64y")
+default_font_size = 130
 
-[sub_resource type="LabelSettings" id="LabelSettings_umpm3"]
-font = ExtResource("2_yx64y")
-font_size = 80
-font_color = Color(0, 0, 0, 1)
-shadow_size = 3
-shadow_color = Color(0.501961, 0.501961, 0.501961, 1)
-shadow_offset = Vector2(3, 3)
+[sub_resource type="Theme" id="Theme_qaph5"]
+default_font = ExtResource("2_yx64y")
+default_font_size = 80
 
 [sub_resource type="Theme" id="Theme_7sear"]
 default_font = ExtResource("2_yx64y")
@@ -43,8 +29,8 @@ autostart = true
 offset_top = -72.0
 offset_right = 1920.0
 offset_bottom = 446.0
+theme = SubResource("Theme_40ysy")
 text = "00:00:00"
-label_settings = SubResource("LabelSettings_av0r8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -52,8 +38,8 @@ vertical_alignment = 1
 offset_top = 368.0
 offset_right = 960.0
 offset_bottom = 518.0
+theme = SubResource("Theme_gywcf")
 text = "0000-00-00 월"
-label_settings = SubResource("LabelSettings_nyxsr")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -61,13 +47,13 @@ vertical_alignment = 1
 offset_top = 485.0
 offset_right = 960.0
 offset_bottom = 1078.0
+theme = SubResource("Theme_qaph5")
 text = "26.3°
 맑음
 풍산동
 미세좋음
 초미세좋음
 2022-10-01T16:10:02"
-label_settings = SubResource("LabelSettings_umpm3")
 vertical_alignment = 2
 clip_text = true
 

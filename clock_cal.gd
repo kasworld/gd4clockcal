@@ -31,23 +31,23 @@ var weekdayColorList = [
 
 var LabelTime = Label.new()
 
-## not work 
+# work 
 func updateLabelsColor():
 
 	$LabelTime.add_theme_color_override("font_color", timeColor )
 	$LabelTime.add_theme_color_override("font_shadow_color", timeColor.lightened(0.5) )
-	$LabelTime.add_theme_color_override("shadow_offset_x",5)
-	$LabelTime.add_theme_color_override("shadow_offset_y",5)
+	$LabelTime.add_theme_constant_override("shadow_offset_x",5)
+	$LabelTime.add_theme_constant_override("shadow_offset_y",5)
 	
 	$LabelDate.add_theme_color_override("font_color", dateColor )
 	$LabelDate.add_theme_color_override("font_shadow_color", dateColor.lightened(0.5) )
-	$LabelDate.add_theme_color_override("shadow_offset_x",4)
-	$LabelDate.add_theme_color_override("shadow_offset_y",4)
+	$LabelDate.add_theme_constant_override("shadow_offset_x",4)
+	$LabelDate.add_theme_constant_override("shadow_offset_y",4)
 	
 	$LabelWeather.add_theme_color_override("font_color", weatherColor )
 	$LabelWeather.add_theme_color_override("font_shadow_color", weatherColor.lightened(0.5) )
-	$LabelWeather.add_theme_color_override("shadow_offset_x",3)
-	$LabelWeather.add_theme_color_override("shadow_offset_y",3)
+	$LabelWeather.add_theme_constant_override("shadow_offset_x",3)
+	$LabelWeather.add_theme_constant_override("shadow_offset_y",3)
 
 
 var calenderLabels = []
