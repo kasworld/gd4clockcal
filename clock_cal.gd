@@ -36,29 +36,38 @@ func updateLabelsColor():
 
 	$LabelTime.add_theme_color_override("font_color", timeColor )
 	$LabelTime.add_theme_color_override("font_shadow_color", timeColor.lightened(0.5) )
-	$LabelTime.add_theme_constant_override("shadow_offset_x",5)
-	$LabelTime.add_theme_constant_override("shadow_offset_y",5)
+	$LabelTime.add_theme_constant_override("shadow_offset_x",10)
+	$LabelTime.add_theme_constant_override("shadow_offset_y",10)
 	
 	$LabelDate.add_theme_color_override("font_color", dateColor )
 	$LabelDate.add_theme_color_override("font_shadow_color", dateColor.lightened(0.5) )
-	$LabelDate.add_theme_constant_override("shadow_offset_x",4)
-	$LabelDate.add_theme_constant_override("shadow_offset_y",4)
+	$LabelDate.add_theme_constant_override("shadow_offset_x",8)
+	$LabelDate.add_theme_constant_override("shadow_offset_y",8)
 	
 	$LabelWeather.add_theme_color_override("font_color", weatherColor )
 	$LabelWeather.add_theme_color_override("font_shadow_color", weatherColor.lightened(0.5) )
-	$LabelWeather.add_theme_constant_override("shadow_offset_x",3)
-	$LabelWeather.add_theme_constant_override("shadow_offset_y",3)
+	$LabelWeather.add_theme_constant_override("shadow_offset_x",6)
+	$LabelWeather.add_theme_constant_override("shadow_offset_y",6)
 
+# esc to exit
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ESCAPE:
+			get_tree().quit()
 
 var calenderLabels = []
 var bgImage = Image.new()
 var bgTexture = ImageTexture.new()
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func getWH()->Vector2i:
 	var width = ProjectSettings.get_setting("display/window/size/viewport_width")
 	var height =  ProjectSettings.get_setting("display/window/size/viewport_height")
-	bgImage = Image.create(width,height,true,Image.FORMAT_RGBA8)
+	return Vector2i(width,height)
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	var wh = getWH()
+	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
 	bgImage.fill(backgroundColor)
 	bgTexture = ImageTexture.create_from_image(bgImage)
 	$BackgroundSprite.texture = bgTexture
@@ -82,8 +91,8 @@ func _ready():
 		lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER  
 		lb.add_theme_color_override("font_color",  weekdayColorList[i] )
 		lb.add_theme_color_override("font_shadow_color",  weekdayColorList[i].lightened(0.5) )
-		lb.add_theme_color_override("shadow_offset_x",  2 )
-		lb.add_theme_color_override("shadow_offset_y",  2 )
+		lb.add_theme_constant_override("shadow_offset_x",  6 )
+		lb.add_theme_constant_override("shadow_offset_y",  6 )
 			
 		$GridCalendar.add_child(lb)
 		ln.append(lb)
@@ -96,9 +105,10 @@ func _ready():
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER  
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER   
-			lb.add_theme_color_override("shadow_offset_x",  2 )
-			lb.add_theme_color_override("shadow_offset_y",  2 )
 			lb.add_theme_color_override("font_color",  weekdayColorList[j] )
+			lb.add_theme_color_override("font_shadow_color",  weekdayColorList[j].lightened(0.5) )
+			lb.add_theme_constant_override("shadow_offset_x",  6 )
+			lb.add_theme_constant_override("shadow_offset_y",  6 )
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calenderLabels.append(ln)
@@ -196,4 +206,5 @@ func _on_http_request_background_image_request_completed(result: int, response_c
 				print("An error occurred while trying to display the image.")
 			else:
 				bgTexture = ImageTexture.create_from_image(bgImage)
+				bgTexture.set_size_override(getWH())
 				$BackgroundSprite.texture = bgTexture

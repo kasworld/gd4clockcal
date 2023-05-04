@@ -5,19 +5,19 @@
 
 [sub_resource type="Theme" id="Theme_40ysy"]
 default_font = ExtResource("2_yx64y")
-default_font_size = 450
+default_font_size = 900
 
 [sub_resource type="Theme" id="Theme_gywcf"]
 default_font = ExtResource("2_yx64y")
-default_font_size = 130
+default_font_size = 280
 
 [sub_resource type="Theme" id="Theme_qaph5"]
 default_font = ExtResource("2_yx64y")
-default_font_size = 80
+default_font_size = 160
 
 [sub_resource type="Theme" id="Theme_7sear"]
 default_font = ExtResource("2_yx64y")
-default_font_size = 82
+default_font_size = 170
 
 [node name="ClockCalScn" type="Node2D"]
 script = ExtResource("1_wi1q7")
@@ -26,27 +26,26 @@ script = ExtResource("1_wi1q7")
 autostart = true
 
 [node name="LabelTime" type="Label" parent="."]
-offset_top = -72.0
-offset_right = 1920.0
-offset_bottom = 446.0
+offset_top = -174.0
+offset_right = 3840.0
+offset_bottom = 864.0
 theme = SubResource("Theme_40ysy")
 text = "00:00:00"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="LabelDate" type="Label" parent="."]
-offset_top = 368.0
-offset_right = 960.0
-offset_bottom = 518.0
+offset_top = 680.0
+offset_right = 1920.0
+offset_bottom = 1030.0
 theme = SubResource("Theme_gywcf")
 text = "0000-00-00 월"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LabelWeather" type="Label" parent="."]
-offset_top = 485.0
-offset_right = 960.0
-offset_bottom = 1078.0
+offset_top = 960.0
+offset_right = 1920.0
+offset_bottom = 2160.0
 theme = SubResource("Theme_qaph5")
 text = "26.3°
 맑음
@@ -58,10 +57,10 @@ vertical_alignment = 2
 clip_text = true
 
 [node name="GridCalendar" type="GridContainer" parent="."]
-offset_left = 959.0
-offset_top = 368.0
-offset_right = 1919.0
-offset_bottom = 1080.0
+offset_left = 1920.0
+offset_top = 706.0
+offset_right = 3840.0
+offset_bottom = 2161.0
 theme = SubResource("Theme_7sear")
 columns = 7
 
