@@ -1,16 +1,18 @@
 extends Node2D
 
-var weatherURL = "http://192.168.0.10/weather.txt"
+var urlBase = "http://192.168.0.10/"
+
+var weatherFile = "weather.txt"
 var updateWeatherSecond = 60*1
 
 func updateWeather():
-	$HTTPRequestWeather.request(weatherURL)
+	$HTTPRequestWeather.request(urlBase + weatherFile)
 
-var backgroundImageURL = "http://192.168.0.10/background.png"
+var backgroundImageFile = "background.png"
 var updateBackgroundImageSecond = 60*1
 
 func updateBackgroundImage():
-	$HTTPRequestBackgroundImage.request(backgroundImageURL)
+	$HTTPRequestBackgroundImage.request(urlBase + backgroundImageFile)
 
 
 var weekdaystring = ["일","월","화","수","목","금","토"]
@@ -73,11 +75,9 @@ func _ready():
 	$BackgroundSprite.texture = bgTexture
 
 	if updateWeatherSecond > 0:
-#		$HTTPRequestWeather.request_completed.connect( self._on_http_request_weather_request_completed)
-		$HTTPRequestWeather.request(weatherURL)
+		updateWeather()
 	if updateBackgroundImageSecond > 0:
-#		$HTTPRequestBackgroundImage.request_completed.connect( self._on_http_request_background_image_request_completed)
-		$HTTPRequestBackgroundImage.request(backgroundImageURL)
+		updateBackgroundImage()
 
 	updateLabelsColor()
 	
