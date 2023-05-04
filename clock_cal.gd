@@ -31,8 +31,6 @@ var weekdayColorList = [
 	Color(0x0000ffff),  # saturday
 ]
 
-var LabelTime = Label.new()
-
 # work 
 func updateLabelsColor():
 
@@ -183,9 +181,6 @@ const toFindDate = "Last-Modified: "
 
 var lastWeatherModified 
 
-var lastBackgroundImageModified 
-
-
 func _on_http_request_weather_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result == HTTPRequest.RESULT_SUCCESS:
 #		print(headers)
@@ -195,6 +190,8 @@ func _on_http_request_weather_request_completed(result: int, response_code: int,
 			var text = body.get_string_from_utf8()
 			$LabelWeather.text = text
 
+
+var lastBackgroundImageModified 
 
 func _on_http_request_background_image_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result == HTTPRequest.RESULT_SUCCESS:
