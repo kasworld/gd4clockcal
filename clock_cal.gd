@@ -16,7 +16,7 @@ func updateBackgroundImage():
 
 
 var weekdaystring = ["일","월","화","수","목","금","토"]
-var backgroundColor = Color(0xffffffff)
+var backgroundColor = Color(0x808080ff)
 var timeColor = Color(0x000000ff)
 var dateColor = Color(0x000000ff)
 var weatherColor = Color(0x000000ff)
@@ -205,3 +205,15 @@ func _on_http_request_background_image_request_completed(result: int, response_c
 				bgTexture = ImageTexture.create_from_image(bgImage)
 				bgTexture.set_size_override(getWH())
 				$BackgroundSprite.texture = bgTexture
+
+
+func _on_button_ok_pressed() -> void:
+	$PanelContainer.hide()
+	var url = $PanelContainer/LineEdit.text
+	urlBase = url
+	updateWeather()
+	updateBackgroundImage()
+
+
+func _on_button_cancel_pressed() -> void:
+	$PanelContainer.hide()
