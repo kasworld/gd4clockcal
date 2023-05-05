@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://crwqu61bd5osl"]
+[gd_scene load_steps=9 format=3 uid="uid://crwqu61bd5osl"]
 
 [ext_resource type="Script" path="res://clock_cal.gd" id="1_wi1q7"]
 [ext_resource type="FontFile" uid="uid://ck44ko777mxdt" path="res://NanumGothicBold.ttf" id="2_yx64y"]
+[ext_resource type="Texture2D" uid="uid://dxe61smpvqaqf" path="res://icon.png" id="3_p67cb"]
 
 [sub_resource type="Theme" id="Theme_40ysy"]
 default_font = ExtResource("2_yx64y")
@@ -76,7 +77,8 @@ columns = 7
 z_index = -1
 centered = false
 
-[node name="PanelContainer" type="VBoxContainer" parent="."]
+[node name="PanelOption" type="VBoxContainer" parent="."]
+visible = false
 offset_left = 1000.0
 offset_top = 1000.0
 offset_right = 3092.0
@@ -84,11 +86,11 @@ offset_bottom = 1372.0
 theme = SubResource("Theme_l3y4a")
 theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="PanelContainer"]
+[node name="Label" type="Label" parent="PanelOption"]
 layout_mode = 2
 text = "Base URL for weather, background image file"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer"]
+[node name="LineEdit" type="LineEdit" parent="PanelOption"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../HBoxContainer/ButtonOK")
 focus_neighbor_bottom = NodePath("../HBoxContainer/ButtonOK")
@@ -96,12 +98,12 @@ focus_next = NodePath("../HBoxContainer/ButtonOK")
 focus_previous = NodePath("../HBoxContainer/ButtonOK")
 text = "http://192.168.0.10/"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelOption"]
 layout_mode = 2
 theme_override_constants/separation = 100
 alignment = 1
 
-[node name="ButtonOK" type="Button" parent="PanelContainer/HBoxContainer"]
+[node name="ButtonOK" type="Button" parent="PanelOption/HBoxContainer"]
 layout_mode = 2
 focus_neighbor_left = NodePath("../ButtonCancel")
 focus_neighbor_top = NodePath("../../LineEdit")
@@ -111,7 +113,7 @@ focus_next = NodePath("../ButtonCancel")
 focus_previous = NodePath("../ButtonCancel")
 text = "OK"
 
-[node name="ButtonCancel" type="Button" parent="PanelContainer/HBoxContainer"]
+[node name="ButtonCancel" type="Button" parent="PanelOption/HBoxContainer"]
 layout_mode = 2
 focus_neighbor_left = NodePath("../ButtonOK")
 focus_neighbor_top = NodePath("../../LineEdit")
@@ -121,8 +123,14 @@ focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 text = "Cancel"
 
+[node name="ButtonOption" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+icon = ExtResource("3_p67cb")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="request_completed" from="HTTPRequestWeather" to="." method="_on_http_request_weather_request_completed"]
 [connection signal="request_completed" from="HTTPRequestBackgroundImage" to="." method="_on_http_request_background_image_request_completed"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]
+[connection signal="pressed" from="PanelOption/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
+[connection signal="pressed" from="PanelOption/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]
+[connection signal="pressed" from="ButtonOption" to="." method="_on_button_option_pressed"]

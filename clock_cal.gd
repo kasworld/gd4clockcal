@@ -208,12 +208,21 @@ func _on_http_request_background_image_request_completed(result: int, response_c
 
 
 func _on_button_ok_pressed() -> void:
-	$PanelContainer.hide()
-	var url = $PanelContainer/LineEdit.text
+	$PanelOption.hide()
+	var url = $PanelOption/LineEdit.text
 	urlBase = url
 	updateWeather()
 	updateBackgroundImage()
 
 
 func _on_button_cancel_pressed() -> void:
-	$PanelContainer.hide()
+	$PanelOption.hide()
+
+
+
+
+func _on_button_option_pressed() -> void:
+	if $PanelOption.visible :
+		$PanelOption.hide()
+	else:
+		$PanelOption.show()
