@@ -3,4 +3,5 @@
 addons/godot-git-plugin/
 *.exe
 *.apk
+*.apk.idsig
 *.pck
