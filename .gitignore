@@ -5,3 +5,5 @@ addons/godot-git-plugin/
 *.apk
 *.apk.idsig
 *.pck
+weather.txt
+testdata.html
