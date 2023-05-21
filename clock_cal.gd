@@ -1,5 +1,8 @@
 extends Node2D
 
+# Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
+const toFindDate = "Last-Modified: "
+
 var urlBase = "http://192.168.0.10/"
 
 var weatherFile = "weather.txt"
@@ -8,7 +11,11 @@ var oldWeatherUpdate = 0.0 # unix time
 var lastWeatherModified # from http header
 
 func updateWeather():
-	$HTTPRequestWeather.request(urlBase + weatherFile)
+	if updateWeatherSecond > 0:
+		var timeNowUnix = Time.get_unix_time_from_system()
+		if oldWeatherUpdate + updateWeatherSecond < timeNowUnix:
+			oldWeatherUpdate = timeNowUnix
+			$HTTPRequestWeather.request(urlBase + weatherFile)
 
 func _on_http_request_weather_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result == HTTPRequest.RESULT_SUCCESS:
@@ -19,12 +26,16 @@ func _on_http_request_weather_request_completed(result: int, response_code: int,
 			$LabelWeather.text = text
 
 var dayinfoFile = "dayinfo.txt"
-var updateDayInfoSecond = 2*1
+var updateDayInfoSecond = 60*1
 var oldDayInfoUpdate = 0.0 # unix time 
 var lastDayInfoModified # from http header
 
 func updateDayInfo():
-	$HTTPRequestDayInfo.request(urlBase + dayinfoFile)
+	if updateDayInfoSecond > 0:
+		var timeNowUnix = Time.get_unix_time_from_system()
+		if oldDayInfoUpdate + updateDayInfoSecond < timeNowUnix:
+			oldDayInfoUpdate = timeNowUnix
+			$HTTPRequestDayInfo.request(urlBase + dayinfoFile)
 
 func _on_http_request_day_info_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result == HTTPRequest.RESULT_SUCCESS:
@@ -41,7 +52,11 @@ var oldBackgroundImageUpdate = 0.0 # unix time
 var lastBackgroundImageModified # from http header
 
 func updateBackgroundImage():
-	$HTTPRequestBackgroundImage.request(urlBase + backgroundImageFile)
+	if updateBackgroundImageSecond > 0:
+		var timeNowUnix = Time.get_unix_time_from_system()
+		if oldBackgroundImageUpdate + updateBackgroundImageSecond < timeNowUnix:
+			oldBackgroundImageUpdate = timeNowUnix
+			$HTTPRequestBackgroundImage.request(urlBase + backgroundImageFile)
 
 func _on_http_request_background_image_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result == HTTPRequest.RESULT_SUCCESS:
@@ -121,12 +136,9 @@ func _ready():
 	bgTexture = ImageTexture.create_from_image(bgImage)
 	$BackgroundSprite.texture = bgTexture
 
-	if updateWeatherSecond > 0:
-		updateWeather()
-	if updateDayInfoSecond > 0:
-		updateDayInfo()
-	if updateBackgroundImageSecond > 0:
-		updateBackgroundImage()
+	updateWeather()
+	updateDayInfo()
+	updateBackgroundImage()
 
 	updateLabelsColor()
 	
@@ -188,20 +200,10 @@ func _on_timer_timeout():
 	# update every 1 second
 	$LabelTime.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
 
-	# every updateWeatherSecond, update weather
-	if oldBackgroundImageUpdate + updateBackgroundImageSecond < timeNowUnix:
-		oldBackgroundImageUpdate = timeNowUnix
-		updateBackgroundImage()
-
-	if oldWeatherUpdate + updateWeatherSecond < timeNowUnix:
-		oldWeatherUpdate = timeNowUnix
-		updateWeather()
-
-	if oldDayInfoUpdate + updateDayInfoSecond < timeNowUnix:
-		oldDayInfoUpdate = timeNowUnix
-		updateDayInfo()
+	updateBackgroundImage()
+	updateWeather()
+	updateDayInfo()
 		
-
 	# date changed, update datelabel, calendar
 	if oldDateUpdate["day"] != timeNowDict["day"]:
 		oldDateUpdate = timeNowDict
@@ -237,9 +239,6 @@ func keyValueFromHeader(key: String ,headers: PackedStringArray ):
 		if i.left(keyLen) == key:
 			return i.right(keyLen)
 	return ""
-
-# Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
-const toFindDate = "Last-Modified: "
 
 
 func _on_button_ok_pressed() -> void:
