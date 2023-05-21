@@ -37,14 +37,48 @@ func updateDayInfo():
 			oldDayInfoUpdate = timeNowUnix
 			$HTTPRequestDayInfo.request(urlBase + dayinfoFile)
 
+var dayinfoDict = {}
+
 func _on_http_request_day_info_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	if result == HTTPRequest.RESULT_SUCCESS:
-#		print(headers)
 		var thisModified = keyValueFromHeader(toFindDate,headers)
 		if lastDayInfoModified != thisModified:
 			lastDayInfoModified = thisModified
 			var text = body.get_string_from_utf8()
-			$LabelDayInfo.text = text
+			dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
+			dayinfoDict2LabelDayInfo()
+
+
+func makeDayInfoDict(text):
+	var rtndict = {}
+	for s in text :
+		var sss = s.strip_edges().split(" ", false,1)
+		var key = sss[0]
+		var value = sss[1]
+		if rtndict.get(key) == null :
+			rtndict[key] = [value]
+		else :
+			rtndict[key].append( value)
+	return rtndict
+
+func addLabelDayInfoByKey(key):
+	if dayinfoDict.get(key) == null:
+		return 
+	for v in dayinfoDict[key]:
+		$LabelDayInfo.text += v +"\n"
+
+func dayinfoDict2LabelDayInfo():
+	$LabelDayInfo.text = ""
+	var timeNowDict = Time.get_datetime_dict_from_system()
+
+	var daykey = "%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]]
+	addLabelDayInfoByKey(daykey)
+
+	daykey = "%02d-%02d" % [ timeNowDict["month"] ,timeNowDict["day"]]
+	addLabelDayInfoByKey(daykey)
+
+	daykey = "%02d" % [timeNowDict["day"]]
+	addLabelDayInfoByKey(daykey)
 
 var backgroundImageFile = "background.png"
 var updateBackgroundImageSecond = 60*1
@@ -195,7 +229,6 @@ func _on_timer_timeout():
 	switchWeatherDayInfo()
 	
 	var timeNowDict = Time.get_datetime_dict_from_system()
-	var timeNowUnix = Time.get_unix_time_from_system()
 
 	# update every 1 second
 	$LabelTime.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
@@ -212,6 +245,7 @@ func _on_timer_timeout():
 			weekdaystring[ timeNowDict["weekday"]]  
 			]
 		updateCalendar()
+		dayinfoDict2LabelDayInfo() 
 
 func updateCalendar():	
 	var tz = Time.get_time_zone_from_system()
