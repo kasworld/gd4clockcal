@@ -4,15 +4,57 @@ var urlBase = "http://192.168.0.10/"
 
 var weatherFile = "weather.txt"
 var updateWeatherSecond = 60*1
+var oldWeatherUpdate = 0.0 # unix time 
+var lastWeatherModified # from http header
 
 func updateWeather():
 	$HTTPRequestWeather.request(urlBase + weatherFile)
 
+func _on_http_request_weather_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result == HTTPRequest.RESULT_SUCCESS:
+		var thisModified = keyValueFromHeader(toFindDate,headers)
+		if lastWeatherModified != thisModified:
+			lastWeatherModified = thisModified
+			var text = body.get_string_from_utf8()
+			$LabelWeather.text = text
+
+var dayinfoFile = "dayinfo.txt"
+var updateDayInfoSecond = 2*1
+var oldDayInfoUpdate = 0.0 # unix time 
+var lastDayInfoModified # from http header
+
+func updateDayInfo():
+	$HTTPRequestDayInfo.request(urlBase + dayinfoFile)
+
+func _on_http_request_day_info_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result == HTTPRequest.RESULT_SUCCESS:
+#		print(headers)
+		var thisModified = keyValueFromHeader(toFindDate,headers)
+		if lastDayInfoModified != thisModified:
+			lastDayInfoModified = thisModified
+			var text = body.get_string_from_utf8()
+			$LabelDayInfo.text = text
+
 var backgroundImageFile = "background.png"
 var updateBackgroundImageSecond = 60*1
+var oldBackgroundImageUpdate = 0.0 # unix time 
+var lastBackgroundImageModified # from http header
 
 func updateBackgroundImage():
 	$HTTPRequestBackgroundImage.request(urlBase + backgroundImageFile)
+
+func _on_http_request_background_image_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result == HTTPRequest.RESULT_SUCCESS:
+		var thisModified = keyValueFromHeader(toFindDate,headers)
+		if lastBackgroundImageModified != thisModified:
+			lastBackgroundImageModified = thisModified
+			var image_error = bgImage.load_png_from_buffer(body)
+			if image_error != OK:
+				print("An error occurred while trying to display the image.")
+			else:
+				bgTexture = ImageTexture.create_from_image(bgImage)
+				bgTexture.set_size_override(getWH())
+				$BackgroundSprite.texture = bgTexture
 
 
 var weekdaystring = ["일","월","화","수","목","금","토"]
@@ -20,6 +62,7 @@ var backgroundColor = Color(0x808080ff)
 var timeColor = Color(0x000000ff)
 var dateColor = Color(0x000000ff)
 var weatherColor = Color(0x000000ff)
+var dayinfoColor = Color(0x000000ff)
 var todayColor = Color(0x00ff00ff)
 var weekdayColorList = [
 	Color(0xff0000ff),  # sunday
@@ -49,6 +92,12 @@ func updateLabelsColor():
 	$LabelWeather.add_theme_constant_override("shadow_offset_x",6)
 	$LabelWeather.add_theme_constant_override("shadow_offset_y",6)
 
+	$LabelDayInfo.add_theme_color_override("font_color", dayinfoColor )
+	$LabelDayInfo.add_theme_color_override("font_shadow_color", dayinfoColor.lightened(0.5) )
+	$LabelDayInfo.add_theme_constant_override("shadow_offset_x",6)
+	$LabelDayInfo.add_theme_constant_override("shadow_offset_y",6)
+
+
 # esc to exit
 func _input(event):
 	if event is InputEventKey and event.pressed:
@@ -74,6 +123,8 @@ func _ready():
 
 	if updateWeatherSecond > 0:
 		updateWeather()
+	if updateDayInfoSecond > 0:
+		updateDayInfo()
 	if updateBackgroundImageSecond > 0:
 		updateBackgroundImage()
 
@@ -116,12 +167,20 @@ func _ready():
 func _process(delta):
 	pass
 
-var oldWeatherUpdate = 0.0 # unix time 
-var oldBackgroundImageUpdate = 0.0 # unix time 
 var oldDateUpdate = {"day":0} # datetime dict
+
+func switchWeatherDayInfo() :
+	if $LabelWeather.visible and $LabelDayInfo.text != "" :
+		$LabelWeather.visible = false
+		$LabelDayInfo.visible = true
+	else :
+		$LabelWeather.visible = true
+		$LabelDayInfo.visible = false
 
 func _on_timer_timeout():
 	updateLabelsColor()
+	
+	switchWeatherDayInfo()
 	
 	var timeNowDict = Time.get_datetime_dict_from_system()
 	var timeNowUnix = Time.get_unix_time_from_system()
@@ -138,6 +197,11 @@ func _on_timer_timeout():
 		oldWeatherUpdate = timeNowUnix
 		updateWeather()
 
+	if oldDayInfoUpdate + updateDayInfoSecond < timeNowUnix:
+		oldDayInfoUpdate = timeNowUnix
+		updateDayInfo()
+		
+
 	# date changed, update datelabel, calendar
 	if oldDateUpdate["day"] != timeNowDict["day"]:
 		oldDateUpdate = timeNowDict
@@ -146,7 +210,6 @@ func _on_timer_timeout():
 			weekdaystring[ timeNowDict["weekday"]]  
 			]
 		updateCalendar()
-
 
 func updateCalendar():	
 	var tz = Time.get_time_zone_from_system()
@@ -168,7 +231,6 @@ func updateCalendar():
 			curLabel.add_theme_color_override("font_shadow_color",  co.lightened(0.5) )
 			dayIndex += 24*60*60
 
-
 func keyValueFromHeader(key: String ,headers: PackedStringArray ):
 	var keyLen = len(key)
 	for i in headers:
@@ -179,50 +241,22 @@ func keyValueFromHeader(key: String ,headers: PackedStringArray ):
 # Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
 const toFindDate = "Last-Modified: "
 
-var lastWeatherModified 
-
-func _on_http_request_weather_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS:
-#		print(headers)
-		var thisModified = keyValueFromHeader(toFindDate,headers)
-		if lastWeatherModified != thisModified:
-			lastWeatherModified = thisModified
-			var text = body.get_string_from_utf8()
-			$LabelWeather.text = text
-
-
-var lastBackgroundImageModified 
-
-func _on_http_request_background_image_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS:
-		var thisModified = keyValueFromHeader(toFindDate,headers)
-		if lastBackgroundImageModified != thisModified:
-			lastBackgroundImageModified = thisModified
-			var image_error = bgImage.load_png_from_buffer(body)
-			if image_error != OK:
-				print("An error occurred while trying to display the image.")
-			else:
-				bgTexture = ImageTexture.create_from_image(bgImage)
-				bgTexture.set_size_override(getWH())
-				$BackgroundSprite.texture = bgTexture
-
 
 func _on_button_ok_pressed() -> void:
 	$PanelOption.hide()
 	var url = $PanelOption/LineEdit.text
 	urlBase = url
 	updateWeather()
+	updateDayInfo()
 	updateBackgroundImage()
-
 
 func _on_button_cancel_pressed() -> void:
 	$PanelOption.hide()
-
-
-
 
 func _on_button_option_pressed() -> void:
 	if $PanelOption.visible :
 		$PanelOption.hide()
 	else:
 		$PanelOption.show()
+
+

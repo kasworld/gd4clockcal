@@ -61,6 +61,15 @@ text = "26.3°
 vertical_alignment = 2
 clip_text = true
 
+[node name="LabelDayInfo" type="Label" parent="."]
+visible = false
+offset_top = 960.0
+offset_right = 1920.0
+offset_bottom = 2160.0
+theme = SubResource("Theme_qaph5")
+vertical_alignment = 2
+clip_text = true
+
 [node name="GridCalendar" type="GridContainer" parent="."]
 offset_left = 1920.0
 offset_top = 706.0
@@ -70,6 +79,8 @@ theme = SubResource("Theme_7sear")
 columns = 7
 
 [node name="HTTPRequestWeather" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequestDayInfo" type="HTTPRequest" parent="."]
 
 [node name="HTTPRequestBackgroundImage" type="HTTPRequest" parent="."]
 
@@ -130,6 +141,7 @@ icon = ExtResource("3_p67cb")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="request_completed" from="HTTPRequestWeather" to="." method="_on_http_request_weather_request_completed"]
+[connection signal="request_completed" from="HTTPRequestDayInfo" to="." method="_on_http_request_day_info_request_completed"]
 [connection signal="request_completed" from="HTTPRequestBackgroundImage" to="." method="_on_http_request_background_image_request_completed"]
 [connection signal="pressed" from="PanelOption/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
 [connection signal="pressed" from="PanelOption/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]
