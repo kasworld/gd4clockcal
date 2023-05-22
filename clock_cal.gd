@@ -1,6 +1,8 @@
 extends Node2D
 
-# Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
+var weekdaystring = ["일","월","화","수","목","금","토"]
+
+# for http header Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
 const toFindDate = "Last-Modified: "
 
 var urlBase = "http://192.168.0.10/"
@@ -18,7 +20,7 @@ func updateWeather():
 			$HTTPRequestWeather.request(urlBase + weatherFile)
 
 func _on_http_request_weather_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS:
+	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
 		var thisModified = keyValueFromHeader(toFindDate,headers)
 		if lastWeatherModified != thisModified:
 			lastWeatherModified = thisModified
@@ -40,7 +42,7 @@ func updateDayInfo():
 var dayinfoDict = {}
 
 func _on_http_request_day_info_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS:
+	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
 		var thisModified = keyValueFromHeader(toFindDate,headers)
 		if lastDayInfoModified != thisModified:
 			lastDayInfoModified = thisModified
@@ -71,13 +73,20 @@ func dayinfoDict2LabelDayInfo():
 	$LabelDayInfo.text = ""
 	var timeNowDict = Time.get_datetime_dict_from_system()
 
+	# today's info
 	var daykey = "%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]]
 	addLabelDayInfoByKey(daykey)
 
-	daykey = "%02d-%02d" % [ timeNowDict["month"] ,timeNowDict["day"]]
+	# year repeat day info
+	daykey = "%02d-%02d" % [timeNowDict["month"], timeNowDict["day"]]
 	addLabelDayInfoByKey(daykey)
 
+	# month repeat day info
 	daykey = "%02d" % [timeNowDict["day"]]
+	addLabelDayInfoByKey(daykey)
+
+	# week repeat day info
+	daykey = "%s" % weekdaystring[timeNowDict["weekday"]]
 	addLabelDayInfoByKey(daykey)
 
 var backgroundImageFile = "background.png"
@@ -93,7 +102,7 @@ func updateBackgroundImage():
 			$HTTPRequestBackgroundImage.request(urlBase + backgroundImageFile)
 
 func _on_http_request_background_image_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS:
+	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
 		var thisModified = keyValueFromHeader(toFindDate,headers)
 		if lastBackgroundImageModified != thisModified:
 			lastBackgroundImageModified = thisModified
@@ -106,7 +115,6 @@ func _on_http_request_background_image_request_completed(result: int, response_c
 				$BackgroundSprite.texture = bgTexture
 
 
-var weekdaystring = ["일","월","화","수","목","금","토"]
 var backgroundColor = Color(0x808080ff)
 var timeColor = Color(0x000000ff)
 var dateColor = Color(0x000000ff)
@@ -216,7 +224,17 @@ func _process(delta):
 var oldDateUpdate = {"day":0} # datetime dict
 
 func switchWeatherDayInfo() :
-	if $LabelWeather.visible and $LabelDayInfo.text != "" :
+	if $LabelDayInfo.text == "":
+		$LabelWeather.visible = true
+		$LabelDayInfo.visible = false
+		return 
+
+	if $LabelWeather.text == "":
+		$LabelWeather.visible = false
+		$LabelDayInfo.visible = true
+		return 
+		
+	if $LabelWeather.visible :
 		$LabelWeather.visible = false
 		$LabelDayInfo.visible = true
 	else :

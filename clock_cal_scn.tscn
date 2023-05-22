@@ -48,26 +48,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LabelWeather" type="Label" parent="."]
-offset_top = 960.0
+visible = false
+offset_top = 1018.0
 offset_right = 1920.0
 offset_bottom = 2160.0
 theme = SubResource("Theme_qaph5")
-text = "26.3°
-맑음
-풍산동
-미세좋음
-초미세좋음
-2022-10-01T16:10:02"
-vertical_alignment = 2
 clip_text = true
 
 [node name="LabelDayInfo" type="Label" parent="."]
 visible = false
-offset_top = 960.0
+offset_top = 1018.0
 offset_right = 1920.0
 offset_bottom = 2160.0
 theme = SubResource("Theme_qaph5")
-vertical_alignment = 2
 clip_text = true
 
 [node name="GridCalendar" type="GridContainer" parent="."]

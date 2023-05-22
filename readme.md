@@ -12,6 +12,11 @@ scheduler등을 사용해서 weather.txt를 업데이트하고 (getweather.py참
 
 일일 일정을 dayinfo.txt 로 만들어 (예제 dayinfo.txt를 참고)
 
+    yyyy-mm-dd 그날의 일정  
+    mm-dd 년반복 일정 
+    dd 월반복 일정 
+    요일이름 주반복 일정 : var weekdaystring = ["일","월","화","수","목","금","토"]
+
 웹서버로 서비스 할 수 있게 하면 됩니다.
 
 gdclockcal 보다 전체적으로 무거워져서 (android에서) 최초 실행이 오래걸립니다.
