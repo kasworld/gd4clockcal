@@ -73,9 +73,7 @@ func dayinfoDict2LabelDayInfo():
 	$LabelDayInfo.text = ""
 	var timeNowDict = Time.get_datetime_dict_from_system()
 
-	# today's info
-	var daykey = "%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]]
-	addLabelDayInfoByKey(daykey)
+	var daykey :String
 
 	# year repeat day info
 	daykey = "%02d-%02d" % [timeNowDict["month"], timeNowDict["day"]]
@@ -88,6 +86,11 @@ func dayinfoDict2LabelDayInfo():
 	# week repeat day info
 	daykey = "%s" % weekdaystring[timeNowDict["weekday"]]
 	addLabelDayInfoByKey(daykey)
+
+	# today's info
+	daykey = "%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]]
+	addLabelDayInfoByKey(daykey)
+
 
 var backgroundImageFile = "background.png"
 var updateBackgroundImageSecond = 60*1
@@ -217,10 +220,6 @@ func _ready():
 		calenderLabels.append(ln)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 var oldDateUpdate = {"day":0} # datetime dict
 
 func switchWeatherDayInfo() :
@@ -291,7 +290,6 @@ func keyValueFromHeader(key: String ,headers: PackedStringArray ):
 		if i.left(keyLen) == key:
 			return i.right(keyLen)
 	return ""
-
 
 func _on_button_ok_pressed() -> void:
 	$PanelOption.hide()
