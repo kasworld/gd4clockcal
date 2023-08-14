@@ -69,12 +69,6 @@ var bgimage_request = MyHTTPRequest.new(
 			$BackgroundSprite.texture = bgTexture
 )
 
-var backgroundColor = Color.DIM_GRAY
-var timeColor = Color.BLACK
-var dateColor = Color.BLACK
-var weatherColor = Color.BLACK
-var dayinfoColor = Color.BLACK
-var todayColor = Color.GREEN
 var weekdayColorList = [
 	Color.RED,  # sunday
 	Color.BLACK,  # monday
@@ -91,25 +85,19 @@ func setfontshadow(o, fontcolor,offset):
 	o.add_theme_constant_override("shadow_offset_x",offset)
 	o.add_theme_constant_override("shadow_offset_y",offset)
 
-func updateLabelsColor():
-	setfontshadow($LabelTime, timeColor, 10)
-	setfontshadow($LabelDate, dateColor, 8)
-	setfontshadow($LabelWeather, weatherColor, 6)
-	setfontshadow($LabelDayInfo, dayinfoColor, 6)
-
 # esc to exit
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
 
-var calenderLabels = []
+var calendar_labels = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
-	bgImage.fill(backgroundColor)
+	bgImage.fill(Color.DIM_GRAY)
 	bgTexture = ImageTexture.create_from_image(bgImage)
 	$BackgroundSprite.texture = bgTexture
 
@@ -121,7 +109,10 @@ func _ready():
 	dayinfo_request.update()
 	bgimage_request.update()
 
-	updateLabelsColor()
+	setfontshadow($LabelTime, Color.BLACK, 10)
+	setfontshadow($LabelDate, Color.BLACK, 8)
+	setfontshadow($LabelWeather, Color.BLACK, 6)
+	setfontshadow($LabelDayInfo, Color.BLACK, 6)
 
 	# prepare calendar
 	for _i in range(7): # week title + 6 week
@@ -135,7 +126,7 @@ func _ready():
 			setfontshadow(lb, weekdayColorList[j], 6)
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
-		calenderLabels.append(ln)
+		calendar_labels.append(ln)
 
 func switchWeatherDayInfo() :
 	if $LabelDayInfo.text == "":
@@ -157,8 +148,6 @@ func switchWeatherDayInfo() :
 
 var oldDateUpdate = {"day":0} # datetime dict
 func _on_timer_timeout():
-	updateLabelsColor()
-
 	switchWeatherDayInfo()
 
 	var timeNowDict = Time.get_datetime_dict_from_system()
@@ -189,13 +178,13 @@ func updateCalendar():
 	for week in range(6):
 		for wd in range(7):
 			var dayIndexDict = Time.get_date_dict_from_unix_time(dayIndex)
-			var curLabel = calenderLabels[week+1][wd]
+			var curLabel = calendar_labels[week+1][wd]
 			curLabel.text = "%d" % dayIndexDict["day"]
 			var co = weekdayColorList[wd]
 			if dayIndexDict["month"] != todayDict["month"]:
 				co = co.lightened(0.5)
 			elif dayIndexDict["day"] == todayDict["day"]:
-				co = todayColor
+				co = Color.GREEN
 			curLabel.add_theme_color_override("font_color",  co )
 			curLabel.add_theme_color_override("font_shadow_color",  co.lightened(0.5) )
 			dayIndex += 24*60*60
