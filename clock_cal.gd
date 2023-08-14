@@ -124,22 +124,11 @@ func _ready():
 	updateLabelsColor()
 
 	# prepare calendar
-	var ln = []
-	for i in range(len(weekdaystring)):
-		var lb = Label.new()
-		lb.text = weekdaystring[i]
-		lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
-		lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-		setfontshadow(lb, weekdayColorList[i], 6 )
-		$GridCalendar.add_child(lb)
-		ln.append(lb)
-	calenderLabels.append(ln)
-	for _i in range(6):
-		ln = []
-		for j in range(7):
+	for _i in range(7): # week title + 6 week
+		var ln = []
+		for j in weekdaystring.size():
 			var lb = Label.new()
-			lb.text = "%d" % j
+			lb.text = weekdaystring[j]
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
