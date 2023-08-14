@@ -2,54 +2,9 @@ extends Node2D
 
 var weekdaystring = ["일","월","화","수","목","금","토"]
 
-# for http header Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
-const toFindDate = "Last-Modified: "
-
-var urlBase = "http://192.168.0.10/"
-
-var weatherFile = "weather.txt"
-var updateWeatherSecond = 60*1
-var oldWeatherUpdate = 0.0 # unix time
-var lastWeatherModified # from http header
-
-func updateWeather():
-	if updateWeatherSecond > 0:
-		var timeNowUnix = Time.get_unix_time_from_system()
-		if oldWeatherUpdate + updateWeatherSecond < timeNowUnix:
-			oldWeatherUpdate = timeNowUnix
-			$HTTPRequestWeather.request(urlBase + weatherFile)
-
-func _on_http_request_weather_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
-		var thisModified = keyValueFromHeader(toFindDate,headers)
-		if lastWeatherModified != thisModified:
-			lastWeatherModified = thisModified
-			var text = body.get_string_from_utf8()
-			$LabelWeather.text = text
-
-var dayinfoFile = "dayinfo.txt"
-var updateDayInfoSecond = 60*1
-var oldDayInfoUpdate = 0.0 # unix time
-var lastDayInfoModified # from http header
-
-func updateDayInfo():
-	if updateDayInfoSecond > 0:
-		var timeNowUnix = Time.get_unix_time_from_system()
-		if oldDayInfoUpdate + updateDayInfoSecond < timeNowUnix:
-			oldDayInfoUpdate = timeNowUnix
-			$HTTPRequestDayInfo.request(urlBase + dayinfoFile)
-
+var weather_request :MyHTTPRequest
+var dayinfo_request :MyHTTPRequest
 var dayinfoDict = {}
-
-func _on_http_request_day_info_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
-		var thisModified = keyValueFromHeader(toFindDate,headers)
-		if lastDayInfoModified != thisModified:
-			lastDayInfoModified = thisModified
-			var text = body.get_string_from_utf8()
-			dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
-			dayinfoDict2LabelDayInfo()
-
 
 func makeDayInfoDict(text):
 	var rtndict = {}
@@ -92,31 +47,7 @@ func dayinfoDict2LabelDayInfo():
 	addLabelDayInfoByKey(daykey)
 
 
-var backgroundImageFile = "background.png"
-var updateBackgroundImageSecond = 60*1
-var oldBackgroundImageUpdate = 0.0 # unix time
-var lastBackgroundImageModified # from http header
-
-func updateBackgroundImage():
-	if updateBackgroundImageSecond > 0:
-		var timeNowUnix = Time.get_unix_time_from_system()
-		if oldBackgroundImageUpdate + updateBackgroundImageSecond < timeNowUnix:
-			oldBackgroundImageUpdate = timeNowUnix
-			$HTTPRequestBackgroundImage.request(urlBase + backgroundImageFile)
-
-func _on_http_request_background_image_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
-		var thisModified = keyValueFromHeader(toFindDate,headers)
-		if lastBackgroundImageModified != thisModified:
-			lastBackgroundImageModified = thisModified
-			var image_error = bgImage.load_png_from_buffer(body)
-			if image_error != OK:
-				print("An error occurred while trying to display the image.")
-			else:
-				bgTexture = ImageTexture.create_from_image(bgImage)
-				bgTexture.set_size_override(getWH())
-				$BackgroundSprite.texture = bgTexture
-
+var bgimage_request :MyHTTPRequest
 
 var backgroundColor = Color(0x808080ff)
 var timeColor = Color(0x000000ff)
@@ -181,9 +112,43 @@ func _ready():
 	bgTexture = ImageTexture.create_from_image(bgImage)
 	$BackgroundSprite.texture = bgTexture
 
-	updateWeather()
-	updateDayInfo()
-	updateBackgroundImage()
+	weather_request = MyHTTPRequest.new(
+		"http://192.168.0.10/","weather.txt",
+		60,
+		func(body):
+			var text = body.get_string_from_utf8()
+			$LabelWeather.text = text
+	)
+
+	dayinfo_request = MyHTTPRequest.new(
+		"http://192.168.0.10/","dayinfo.txt",
+		60,
+		func(body):
+			var text = body.get_string_from_utf8()
+			dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
+			dayinfoDict2LabelDayInfo()
+	)
+
+	bgimage_request = MyHTTPRequest.new(
+		"http://192.168.0.10/","background.png",
+		60,
+		func(body):
+			var image_error = bgImage.load_png_from_buffer(body)
+			if image_error != OK:
+				print("An error occurred while trying to display the image.")
+			else:
+				bgTexture = ImageTexture.create_from_image(bgImage)
+				bgTexture.set_size_override(getWH())
+				$BackgroundSprite.texture = bgTexture
+	)
+
+	add_child(weather_request)
+	add_child(dayinfo_request)
+	add_child(bgimage_request)
+
+	weather_request.update()
+	dayinfo_request.update()
+	bgimage_request.update()
 
 	updateLabelsColor()
 
@@ -250,9 +215,9 @@ func _on_timer_timeout():
 	# update every 1 second
 	$LabelTime.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
 
-	updateBackgroundImage()
-	updateWeather()
-	updateDayInfo()
+	weather_request.update()
+	dayinfo_request.update()
+	bgimage_request.update()
 
 	# date changed, update datelabel, calendar
 	if oldDateUpdate["day"] != timeNowDict["day"]:
@@ -294,10 +259,13 @@ func keyValueFromHeader(key: String ,headers: PackedStringArray ):
 func _on_button_ok_pressed() -> void:
 	$PanelOption.hide()
 	var url = $PanelOption/LineEdit.text
-	urlBase = url
-	updateWeather()
-	updateDayInfo()
-	updateBackgroundImage()
+	weather_request.base_url = url
+	dayinfo_request.base_url = url
+	bgimage_request.base_url = url
+
+	weather_request.update()
+	dayinfo_request.update()
+	bgimage_request.update()
 
 func _on_button_cancel_pressed() -> void:
 	$PanelOption.hide()
