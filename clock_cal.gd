@@ -248,13 +248,6 @@ func updateCalendar():
 			curLabel.add_theme_color_override("font_shadow_color",  co.lightened(0.5) )
 			dayIndex += 24*60*60
 
-func keyValueFromHeader(key: String ,headers: PackedStringArray ):
-	var keyLen = len(key)
-	for i in headers:
-		if i.left(keyLen) == key:
-			return i.right(keyLen)
-	return ""
-
 func _on_button_ok_pressed() -> void:
 	$PanelOption.hide()
 	var url = $PanelOption/LineEdit.text
