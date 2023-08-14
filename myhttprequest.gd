@@ -1,6 +1,5 @@
 class_name MyHTTPRequest extends Node
 
-
 # for http header Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
 const to_find_data = "Last-Modified: "
 

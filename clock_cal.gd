@@ -2,9 +2,23 @@ extends Node2D
 
 var weekdaystring = ["일","월","화","수","목","금","토"]
 
-var weather_request :MyHTTPRequest
-var dayinfo_request :MyHTTPRequest
+var weather_request = MyHTTPRequest.new(
+	"http://192.168.0.10/","weather.txt",
+	60,
+	func(body):
+		var text = body.get_string_from_utf8()
+		$LabelWeather.text = text
+)
+
 var dayinfoDict = {}
+var dayinfo_request = MyHTTPRequest.new(
+	"http://192.168.0.10/","dayinfo.txt",
+	60,
+	func(body):
+		var text = body.get_string_from_utf8()
+		dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
+		updateDayInfoLabel( get_daystringlist(dayinfoDict) )
+)
 
 func makeDayInfoDict(text)->Dictionary:
 	var rtndict = {}
@@ -23,70 +37,65 @@ func updateDayInfoLabel( slist : Array[String]):
 
 func get_daystringlist(dayinfo_dict :Dictionary)->Array[String]:
 	var rtn :Array[String] = []
-	var timeNowDict = Time.get_datetime_dict_from_system()
-
 	var addkey = func(key):
 		if dayinfo_dict.get(key) == null:
 			return
 		for v in dayinfo_dict[key]:
 			rtn.append(v)
 
+	var timeNowDict = Time.get_datetime_dict_from_system()
 	# year repeat day info
 	addkey.call("%02d-%02d" % [timeNowDict["month"], timeNowDict["day"]] )
-
 	# month repeat day info
 	addkey.call("%02d" % [timeNowDict["day"]] )
-
 	# week repeat day info
 	addkey.call("%s" % weekdaystring[timeNowDict["weekday"]] )
-
 	# today's info
 	addkey.call("%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]] )
-
 	return rtn
 
+var bgImage = Image.new()
+var bgTexture = ImageTexture.new()
+var bgimage_request = MyHTTPRequest.new(
+	"http://192.168.0.10/","background.png",
+	60,
+	func(body):
+		var image_error = bgImage.load_png_from_buffer(body)
+		if image_error != OK:
+			print("An error occurred while trying to display the image.")
+		else:
+			bgTexture = ImageTexture.create_from_image(bgImage)
+			bgTexture.set_size_override(get_viewport_rect().size)
+			$BackgroundSprite.texture = bgTexture
+)
 
-var bgimage_request :MyHTTPRequest
-
-var backgroundColor = Color(0x808080ff)
-var timeColor = Color(0x000000ff)
-var dateColor = Color(0x000000ff)
-var weatherColor = Color(0x000000ff)
-var dayinfoColor = Color(0x000000ff)
-var todayColor = Color(0x00ff00ff)
+var backgroundColor = Color.DIM_GRAY
+var timeColor = Color.BLACK
+var dateColor = Color.BLACK
+var weatherColor = Color.BLACK
+var dayinfoColor = Color.BLACK
+var todayColor = Color.GREEN
 var weekdayColorList = [
-	Color(0xff0000ff),  # sunday
-	Color(0x000000ff),  # monday
-	Color(0x000000ff),
-	Color(0x000000ff),
-	Color(0x000000ff),
-	Color(0x000000ff),
-	Color(0x0000ffff),  # saturday
+	Color.RED,  # sunday
+	Color.BLACK,  # monday
+	Color.BLACK,
+	Color.BLACK,
+	Color.BLACK,
+	Color.BLACK,
+	Color.BLUE,  # saturday
 ]
 
-# work
+func setfontshadow(o, fontcolor,offset):
+	o.add_theme_color_override("font_color", fontcolor )
+	o.add_theme_color_override("font_shadow_color", fontcolor.lightened(0.5) )
+	o.add_theme_constant_override("shadow_offset_x",offset)
+	o.add_theme_constant_override("shadow_offset_y",offset)
+
 func updateLabelsColor():
-
-	$LabelTime.add_theme_color_override("font_color", timeColor )
-	$LabelTime.add_theme_color_override("font_shadow_color", timeColor.lightened(0.5) )
-	$LabelTime.add_theme_constant_override("shadow_offset_x",10)
-	$LabelTime.add_theme_constant_override("shadow_offset_y",10)
-
-	$LabelDate.add_theme_color_override("font_color", dateColor )
-	$LabelDate.add_theme_color_override("font_shadow_color", dateColor.lightened(0.5) )
-	$LabelDate.add_theme_constant_override("shadow_offset_x",8)
-	$LabelDate.add_theme_constant_override("shadow_offset_y",8)
-
-	$LabelWeather.add_theme_color_override("font_color", weatherColor )
-	$LabelWeather.add_theme_color_override("font_shadow_color", weatherColor.lightened(0.5) )
-	$LabelWeather.add_theme_constant_override("shadow_offset_x",6)
-	$LabelWeather.add_theme_constant_override("shadow_offset_y",6)
-
-	$LabelDayInfo.add_theme_color_override("font_color", dayinfoColor )
-	$LabelDayInfo.add_theme_color_override("font_shadow_color", dayinfoColor.lightened(0.5) )
-	$LabelDayInfo.add_theme_constant_override("shadow_offset_x",6)
-	$LabelDayInfo.add_theme_constant_override("shadow_offset_y",6)
-
+	setfontshadow($LabelTime, timeColor, 10)
+	setfontshadow($LabelDate, dateColor, 8)
+	setfontshadow($LabelWeather, weatherColor, 6)
+	setfontshadow($LabelDayInfo, dayinfoColor, 6)
 
 # esc to exit
 func _input(event):
@@ -95,51 +104,14 @@ func _input(event):
 			get_tree().quit()
 
 var calenderLabels = []
-var bgImage = Image.new()
-var bgTexture = ImageTexture.new()
-
-func getWH()->Vector2i:
-	var width = ProjectSettings.get_setting("display/window/size/viewport_width")
-	var height =  ProjectSettings.get_setting("display/window/size/viewport_height")
-	return Vector2i(width,height)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var wh = getWH()
+	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
 	bgImage.fill(backgroundColor)
 	bgTexture = ImageTexture.create_from_image(bgImage)
 	$BackgroundSprite.texture = bgTexture
-
-	weather_request = MyHTTPRequest.new(
-		"http://192.168.0.10/","weather.txt",
-		60,
-		func(body):
-			var text = body.get_string_from_utf8()
-			$LabelWeather.text = text
-	)
-
-	dayinfo_request = MyHTTPRequest.new(
-		"http://192.168.0.10/","dayinfo.txt",
-		60,
-		func(body):
-			var text = body.get_string_from_utf8()
-			dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
-			updateDayInfoLabel( get_daystringlist(dayinfoDict) )
-	)
-
-	bgimage_request = MyHTTPRequest.new(
-		"http://192.168.0.10/","background.png",
-		60,
-		func(body):
-			var image_error = bgImage.load_png_from_buffer(body)
-			if image_error != OK:
-				print("An error occurred while trying to display the image.")
-			else:
-				bgTexture = ImageTexture.create_from_image(bgImage)
-				bgTexture.set_size_override(getWH())
-				$BackgroundSprite.texture = bgTexture
-	)
 
 	add_child(weather_request)
 	add_child(dayinfo_request)
@@ -159,11 +131,7 @@ func _ready():
 		lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 		lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-		lb.add_theme_color_override("font_color",  weekdayColorList[i] )
-		lb.add_theme_color_override("font_shadow_color",  weekdayColorList[i].lightened(0.5) )
-		lb.add_theme_constant_override("shadow_offset_x",  6 )
-		lb.add_theme_constant_override("shadow_offset_y",  6 )
-
+		setfontshadow(lb, weekdayColorList[i], 6 )
 		$GridCalendar.add_child(lb)
 		ln.append(lb)
 	calenderLabels.append(ln)
@@ -175,16 +143,10 @@ func _ready():
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			lb.add_theme_color_override("font_color",  weekdayColorList[j] )
-			lb.add_theme_color_override("font_shadow_color",  weekdayColorList[j].lightened(0.5) )
-			lb.add_theme_constant_override("shadow_offset_x",  6 )
-			lb.add_theme_constant_override("shadow_offset_y",  6 )
+			setfontshadow(lb, weekdayColorList[j], 6)
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
 		calenderLabels.append(ln)
-
-
-var oldDateUpdate = {"day":0} # datetime dict
 
 func switchWeatherDayInfo() :
 	if $LabelDayInfo.text == "":
@@ -204,6 +166,7 @@ func switchWeatherDayInfo() :
 		$LabelWeather.visible = true
 		$LabelDayInfo.visible = false
 
+var oldDateUpdate = {"day":0} # datetime dict
 func _on_timer_timeout():
 	updateLabelsColor()
 
