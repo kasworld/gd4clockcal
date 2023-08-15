@@ -8,6 +8,8 @@ var weather_request = MyHTTPRequest.new(
 	func(body):
 		var text = body.get_string_from_utf8()
 		$LabelWeather.text = text
+,
+	func(): pass
 )
 
 var dayinfoDict = {}
@@ -18,6 +20,8 @@ var dayinfo_request = MyHTTPRequest.new(
 		var text = body.get_string_from_utf8()
 		dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
 		updateDayInfoLabel( get_daystringlist(dayinfoDict) )
+,
+	func(): pass
 )
 
 func makeDayInfoDict(text)->Dictionary:
@@ -67,6 +71,8 @@ var bgimage_request = MyHTTPRequest.new(
 			bgTexture = ImageTexture.create_from_image(bgImage)
 			bgTexture.set_size_override(get_viewport_rect().size)
 			$BackgroundSprite.texture = bgTexture
+,
+	func(): pass
 )
 
 var weekdayColorList = [

@@ -6,17 +6,19 @@ const to_find_data = "Last-Modified: "
 var base_url :String
 var filename :String
 var process_body :Callable
+var fail_to_get :Callable
 var update_second :float
 
 var last_request = 0.0 # unix time
 var last_modified # from http header
 var http_request :HTTPRequest
 
-func _init(url:String, file :String, updatesec :float, bodyfn :Callable) -> void:
+func _init(url:String, file :String, updatesec :float, bodyfn :Callable,failfn :Callable) -> void:
 	base_url = url
 	filename = file
 	update_second = updatesec
 	process_body = bodyfn
+	fail_to_get = failfn
 	http_request =  HTTPRequest.new()
 	add_child(http_request)
 	http_request.request_completed.connect(self._http_request_completed)
@@ -34,6 +36,9 @@ func _http_request_completed(result: int, response_code: int, headers: PackedStr
 		if last_modified != thisModified:
 			last_modified = thisModified
 			process_body.call(body)
+	else :
+		fail_to_get.call()
+
 
 func key_value_from_header(key: String ,headers: PackedStringArray ):
 	var keyLen = len(key)
