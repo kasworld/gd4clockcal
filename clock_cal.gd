@@ -111,10 +111,6 @@ func _ready():
 	add_child(dayinfo_request)
 	add_child(bgimage_request)
 
-	weather_request.update()
-	dayinfo_request.update()
-	bgimage_request.update()
-
 	setfontshadow($LabelTime, Color.BLACK, 10)
 	setfontshadow($LabelDate, Color.BLACK, 8)
 	setfontshadow($LabelWeather, Color.BLACK, 6)
@@ -160,10 +156,6 @@ func _on_timer_timeout():
 
 	# update every 1 second
 	$LabelTime.text = "%02d:%02d:%02d" % [timeNowDict["hour"] , timeNowDict["minute"] ,timeNowDict["second"]  ]
-
-	weather_request.update()
-	dayinfo_request.update()
-	bgimage_request.update()
 
 	# date changed, update datelabel, calendar
 	if oldDateUpdate["day"] != timeNowDict["day"]:

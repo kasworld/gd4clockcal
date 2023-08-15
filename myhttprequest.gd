@@ -7,30 +7,34 @@ var base_url :String
 var filename :String
 var process_body :Callable
 var fail_to_get :Callable
-var update_second :float
+var repeat_second :float
 
-var last_request = 0.0 # unix time
 var last_modified # from http header
 var http_request :HTTPRequest
+var timer :Timer
 
-func _init(url:String, file :String, updatesec :float, bodyfn :Callable,failfn :Callable) -> void:
+func _init(url:String, file :String, repeatsec :float, bodyfn :Callable,failfn :Callable) -> void:
 	base_url = url
 	filename = file
-	update_second = updatesec
+	repeat_second = repeatsec
 	process_body = bodyfn
 	fail_to_get = failfn
 	http_request =  HTTPRequest.new()
+	timer = Timer.new()
+	timer.one_shot = true
+
+func _ready() -> void:
 	add_child(http_request)
 	http_request.request_completed.connect(self._http_request_completed)
+	add_child(timer)
+	timer.timeout.connect(update)
+	update()
 
 func update():
-	if update_second > 0:
-		var timeNowUnix = Time.get_unix_time_from_system()
-		if last_request + update_second < timeNowUnix:
-			last_request = timeNowUnix
-			http_request.request(base_url + filename)
+	http_request.request(base_url + filename)
 
 func _http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
+	timer.start(repeat_second)
 	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
 		var thisModified = key_value_from_header(to_find_data,headers)
 		if last_modified != thisModified:
