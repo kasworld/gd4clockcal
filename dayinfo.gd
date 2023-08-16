@@ -1,6 +1,5 @@
 class_name DayInfo
 
-
 const weekdaystring = ["일","월","화","수","목","금","토"]
 
 var data_dict :Dictionary

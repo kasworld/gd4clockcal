@@ -23,10 +23,8 @@ func dayinfo_fail():
 var today_str = ""
 func todayinfo_success(body):
 	today_str = body.get_string_from_utf8()
-	print_debug(today_str)
 	updateDayInfoLabel()
 func todayinfo_fail():
-	print_debug("fail")
 	pass
 
 func updateDayInfoLabel( ):
@@ -46,7 +44,7 @@ func bgimage_fail():
 	pass
 
 const weekdaystring = ["일","월","화","수","목","금","토"]
-var weekdayColorList = [
+const weekdayColorList = [
 	Color.RED,  # sunday
 	Color.BLACK,  # monday
 	Color.BLACK,
