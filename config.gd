@@ -5,7 +5,7 @@ extends Object
 var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4clockcal_data.json"
 
 var config = {
-	"version" : "gd4clockcal 2.0.2",
+	"version" : "gd4clockcal 2.0.3",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"background_url" : "http://192.168.0.10/background.png",

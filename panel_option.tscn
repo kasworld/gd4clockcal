@@ -20,9 +20,10 @@ layout_mode = 2
 layout_mode = 2
 columns = 2
 
-[node name="VersionLabel" type="Label" parent="VBoxContainer/GridContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
+text = "Edit URLs"
 
 [node name="ConfigLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -66,10 +67,9 @@ focus_neighbor_bottom = NodePath("../HBoxContainer/ButtonOK")
 focus_next = NodePath("../HBoxContainer/ButtonOK")
 focus_previous = NodePath("../HBoxContainer/ButtonOK")
 
-[node name="Label" type="Label" parent="VBoxContainer/GridContainer"]
+[node name="VersionLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
-text = "Edit URLs"
+size_flags_horizontal = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
