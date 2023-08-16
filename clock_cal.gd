@@ -1,6 +1,5 @@
 extends Node2D
 
-
 var weather_request :MyHTTPRequest
 func weather_success(body):
 	var text = body.get_string_from_utf8()
@@ -12,17 +11,24 @@ var dayinfo_request :MyHTTPRequest
 var day_info = DayInfo.new()
 func dayinfo_success(body):
 	day_info.make(body.get_string_from_utf8())
-	updateDayInfoLabel( day_info.get_daystringlist() )
+	updateDayInfoLabel()
 func dayinfo_fail():
 	pass
-func updateDayInfoLabel( slist : Array[String]):
-	$LabelDayInfo.text =  "\n".join(slist)
 
 var todayinfo_request :MyHTTPRequest
+var today_str = ""
 func todayinfo_success(body):
-	$LabelDayInfo.text = body.get_string_from_utf8()
+	today_str = body.get_string_from_utf8()
+	print_debug(today_str)
+	updateDayInfoLabel()
 func todayinfo_fail():
+	print_debug("fail")
 	pass
+
+func updateDayInfoLabel( ):
+	var dayinfo = day_info.get_daystringlist()
+	$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
+
 
 var bgimage_request :MyHTTPRequest
 var bgImage :Image
@@ -104,6 +110,7 @@ func _ready():
 
 	add_child(weather_request)
 	add_child(dayinfo_request)
+	add_child(todayinfo_request)
 	add_child(bgimage_request)
 
 	setfontshadow($LabelTime, Color.BLACK, 10)
@@ -148,7 +155,7 @@ func _on_timer_timeout():
 			weekdaystring[ timeNowDict["weekday"]]
 			]
 		updateCalendar()
-		updateDayInfoLabel( day_info.get_daystringlist() )
+		updateDayInfoLabel()
 
 func updateCalendar():
 	var tz = Time.get_time_zone_from_system()
