@@ -1,13 +1,18 @@
 extends Node2D
 
-var weather_request :MyHTTPRequest
+var request_dict = {
+	"weather_url" : null,
+	"dayinfo_url" : null,
+	"todayinfo_url" : null,
+	"background_url" : null,
+}
+
 func weather_success(body):
 	var text = body.get_string_from_utf8()
 	$LabelWeather.text = text
 func weather_fail():
 	pass
 
-var dayinfo_request :MyHTTPRequest
 var day_info = DayInfo.new()
 func dayinfo_success(body):
 	day_info.make(body.get_string_from_utf8())
@@ -15,7 +20,6 @@ func dayinfo_success(body):
 func dayinfo_fail():
 	pass
 
-var todayinfo_request :MyHTTPRequest
 var today_str = ""
 func todayinfo_success(body):
 	today_str = body.get_string_from_utf8()
@@ -29,8 +33,6 @@ func updateDayInfoLabel( ):
 	var dayinfo = day_info.get_daystringlist()
 	$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
 
-
-var bgimage_request :MyHTTPRequest
 var bgImage :Image
 func bgimage_success(body):
 	var image_error = bgImage.load_png_from_buffer(body)
@@ -80,38 +82,36 @@ func init_calendar_labels():
 func _ready():
 	$PanelOption.config_changed.connect(config_changed)
 
-	weather_request = MyHTTPRequest.new(
+	request_dict["weather_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["weather_url"],
 		60,
 		weather_success,
 		weather_fail,
 	)
-	dayinfo_request = MyHTTPRequest.new(
+	request_dict["dayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["dayinfo_url"],
 		60,
 		dayinfo_success,
 		dayinfo_fail,
 	)
-	todayinfo_request = MyHTTPRequest.new(
+	request_dict["todayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["todayinfo_url"],
 		60,
 		todayinfo_success,
 		todayinfo_fail,
 	)
-	bgimage_request = MyHTTPRequest.new(
+	request_dict["background_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["background_url"],
 		60,
 		bgimage_success,
 		bgimage_fail,
 	)
 
+	for k in request_dict:
+		add_child(request_dict[k])
+
 	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
-
-	add_child(weather_request)
-	add_child(dayinfo_request)
-	add_child(todayinfo_request)
-	add_child(bgimage_request)
 
 	setfontshadow($LabelTime, Color.BLACK, 10)
 	setfontshadow($LabelDate, Color.BLACK, 8)
@@ -184,14 +184,9 @@ func _on_button_option_pressed() -> void:
 		$PanelOption.show()
 
 func config_changed():
-	weather_request.url_to_get = $PanelOption.cfg.config["weather_url"]
-	dayinfo_request.url_to_get = $PanelOption.cfg.config["dayinfo_url"]
-	todayinfo_request.url_to_get = $PanelOption.cfg.config["todayinfo_url"]
-	bgimage_request.url_to_get = $PanelOption.cfg.config["background_url"]
-	weather_request.force_update()
-	dayinfo_request.force_update()
-	todayinfo_request.force_update()
-	bgimage_request.force_update()
+	for k in request_dict:
+		request_dict[k].url_to_get = $PanelOption.cfg.config[k]
+		request_dict[k].force_update()
 
 func _on_auto_hide_option_panel_timeout() -> void:
 	$PanelOption.visible = false
