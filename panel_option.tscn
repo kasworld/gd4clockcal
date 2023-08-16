@@ -1,10 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://btysv8q6rp8ku"]
+[gd_scene load_steps=3 format=3 uid="uid://btysv8q6rp8ku"]
 
-[ext_resource type="FontFile" uid="uid://ck44ko777mxdt" path="res://NanumGothicBold.ttf" id="1_4nxyp"]
 [ext_resource type="Script" path="res://panel_option.gd" id="2_fkx3e"]
 
-[sub_resource type="Theme" id="Theme_l3y4a"]
-default_font = ExtResource("1_4nxyp")
+[sub_resource type="Theme" id="Theme_sy0ln"]
 default_font_size = 100
 
 [node name="PanelOption" type="VBoxContainer"]
@@ -12,7 +10,7 @@ offset_right = 957.0
 offset_bottom = 626.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = SubResource("Theme_l3y4a")
+theme = SubResource("Theme_sy0ln")
 script = ExtResource("2_fkx3e")
 
 [node name="Label" type="Label" parent="."]

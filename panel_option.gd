@@ -19,10 +19,6 @@ func _ready() -> void:
 	$GridContainer/BackgroundLineEdit.text = cfg.config["background_url"]
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_button_ok_pressed() -> void:
 	hide()
 	cfg.config["weather_url"] = $GridContainer/WeatherLineEdit.text

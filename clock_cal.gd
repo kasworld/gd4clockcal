@@ -122,8 +122,6 @@ func _ready():
 
 	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
-#	bgImage.fill(Color.GRAY)
-#	$BackgroundSprite.texture = ImageTexture.create_from_image(bgImage)
 
 	add_child(weather_request)
 	add_child(dayinfo_request)
@@ -212,10 +210,9 @@ func _on_button_option_pressed() -> void:
 		$PanelOption.show()
 
 func config_changed():
-#	weather_request.base_url = url
-#	dayinfo_request.base_url = url
-#	bgimage_request.base_url = url
-#
+	weather_request.url_to_get = $PanelOption.cfg.config["weather_url"]
+	dayinfo_request.url_to_get = $PanelOption.cfg.config["dayinfo_url"]
+	bgimage_request.url_to_get = $PanelOption.cfg.config["background_url"]
 	weather_request.force_update()
 	dayinfo_request.force_update()
 	bgimage_request.force_update()
