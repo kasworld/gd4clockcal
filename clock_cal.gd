@@ -2,27 +2,26 @@ extends Node2D
 
 var weekdaystring = ["일","월","화","수","목","금","토"]
 
-var weather_request = MyHTTPRequest.new(
-	"http://192.168.0.10/","weather.txt",
-	60,
-	func(body):
-		var text = body.get_string_from_utf8()
-		$LabelWeather.text = text
-,
-	func(): pass
-)
+func weather_success(body):
+	var text = body.get_string_from_utf8()
+	$LabelWeather.text = text
+
+func weather_fail():
+	pass
+
+var weather_request :MyHTTPRequest
 
 var dayinfoDict = {}
-var dayinfo_request = MyHTTPRequest.new(
-	"http://192.168.0.10/","dayinfo.txt",
-	60,
-	func(body):
-		var text = body.get_string_from_utf8()
-		dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
-		updateDayInfoLabel( get_daystringlist(dayinfoDict) )
-,
-	func(): pass
-)
+
+func dayinfo_success(body):
+	var text = body.get_string_from_utf8()
+	dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
+	updateDayInfoLabel( get_daystringlist(dayinfoDict) )
+
+func dayinfo_fail():
+	pass
+
+var dayinfo_request :MyHTTPRequest
 
 func makeDayInfoDict(text)->Dictionary:
 	var rtndict = {}
@@ -59,20 +58,20 @@ func get_daystringlist(dayinfo_dict :Dictionary)->Array[String]:
 	return rtn
 
 var bgImage :Image
-var bgimage_request = MyHTTPRequest.new(
-	"http://192.168.0.10/","background.png",
-	60,
-	func(body):
-		var image_error = bgImage.load_png_from_buffer(body)
-		if image_error != OK:
-			print("An error occurred while trying to display the image.")
-		else:
-			var bgTexture = ImageTexture.create_from_image(bgImage)
-			bgTexture.set_size_override(get_viewport_rect().size)
-			$BackgroundSprite.texture = bgTexture
-,
-	func(): pass
-)
+
+func bgimage_success(body):
+	var image_error = bgImage.load_png_from_buffer(body)
+	if image_error != OK:
+		print("An error occurred while trying to display the image.")
+	else:
+		var bgTexture = ImageTexture.create_from_image(bgImage)
+		bgTexture.set_size_override(get_viewport_rect().size)
+		$BackgroundSprite.texture = bgTexture
+
+func bgimage_fail():
+	pass
+
+var bgimage_request :MyHTTPRequest
 
 var weekdayColorList = [
 	Color.RED,  # sunday
@@ -107,6 +106,26 @@ func _ready():
 	else:
 		msg = cfg.Load()
 	print_debug(msg, cfg.config)
+
+	weather_request = MyHTTPRequest.new(
+		"http://192.168.0.10/","weather.txt",
+		60,
+		weather_success,
+		weather_fail,
+	)
+	dayinfo_request = MyHTTPRequest.new(
+		"http://192.168.0.10/","dayinfo.txt",
+		60,
+		dayinfo_success,
+		dayinfo_fail,
+	)
+	bgimage_request = MyHTTPRequest.new(
+		"http://192.168.0.10/","background.png",
+		60,
+		bgimage_success,
+		bgimage_fail,
+	)
+
 
 	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
