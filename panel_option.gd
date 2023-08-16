@@ -13,7 +13,7 @@ func _ready() -> void:
 	else:
 		msg = cfg.Load()
 #	print_debug(msg, cfg.config)
-
+	$VBoxContainer/GridContainer/ConfigLabel.text = cfg.file_name
 	$VBoxContainer/GridContainer/WeatherLineEdit.text = cfg.config["weather_url"]
 	$VBoxContainer/GridContainer/DayInfoLineEdit.text = cfg.config["dayinfo_url"]
 	$VBoxContainer/GridContainer/BackgroundLineEdit.text = cfg.config["background_url"]
