@@ -216,3 +216,7 @@ func config_changed():
 	weather_request.force_update()
 	dayinfo_request.force_update()
 	bgimage_request.force_update()
+
+
+func _on_auto_hide_option_panel_timeout() -> void:
+	$PanelOption.visible = false
