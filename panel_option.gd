@@ -4,6 +4,13 @@ var cfg :Config
 
 signal config_changed()
 
+var lineedit_dict = {
+	"weather_url" : null,
+	"dayinfo_url" : null,
+	"todayinfo_url" : null,
+	"background_url" : null,
+}
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var cfg_default = Config.new()
@@ -20,15 +27,25 @@ func _ready() -> void:
 	if cfg.config["version"] != cfg_default.config["version"]:
 		reset_config()
 
+	# make label, lineedit
+	for k in lineedit_dict:
+		var lb = Label.new()
+		lb.text = k
+		$VBoxContainer/GridContainer.add_child(lb)
+		var le = LineEdit.new()
+		le.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		le.text = cfg.config[k]
+		lineedit_dict[k]= le
+		$VBoxContainer/GridContainer.add_child(le)
+
 #	print_debug(msg, cfg.config)
 	config_to_control()
 
 func config_to_control():
 	$VBoxContainer/ConfigLabel.text = cfg.file_name
 	$VBoxContainer/VersionLabel.text = cfg.config["version"]
-	$VBoxContainer/GridContainer/WeatherLineEdit.text = cfg.config["weather_url"]
-	$VBoxContainer/GridContainer/DayInfoLineEdit.text = cfg.config["dayinfo_url"]
-	$VBoxContainer/GridContainer/BackgroundLineEdit.text = cfg.config["background_url"]
+	for k in lineedit_dict:
+		lineedit_dict[k].text = cfg.config[k]
 
 func reset_config():
 	cfg = Config.new()
@@ -37,9 +54,8 @@ func reset_config():
 
 func _on_button_ok_pressed() -> void:
 	hide()
-	cfg.config["weather_url"] = $VBoxContainer/GridContainer/WeatherLineEdit.text
-	cfg.config["dayinfo_url"] = $VBoxContainer/GridContainer/DayInfoLineEdit.text
-	cfg.config["background_url"] = $VBoxContainer/GridContainer/BackgroundLineEdit.text
+	for k in lineedit_dict:
+		cfg.config[k] = lineedit_dict[k].text
 	cfg.Save()
 
 	config_changed.emit()

@@ -29,44 +29,6 @@ text = "Edit URLs"
 layout_mode = 2
 columns = 2
 
-[node name="WeatherLabel" type="Label" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "weather"
-
-[node name="WeatherLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../../HBoxContainer/ButtonOK")
-focus_neighbor_bottom = NodePath("../../HBoxContainer/ButtonOK")
-focus_next = NodePath("../../HBoxContainer/ButtonOK")
-focus_previous = NodePath("../../HBoxContainer/ButtonOK")
-
-[node name="DayInfoLabel" type="Label" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "dayinfo"
-
-[node name="DayInfoLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-focus_neighbor_top = NodePath("../../HBoxContainer/ButtonOK")
-focus_neighbor_bottom = NodePath("../../HBoxContainer/ButtonOK")
-focus_next = NodePath("../../HBoxContainer/ButtonOK")
-focus_previous = NodePath("../../HBoxContainer/ButtonOK")
-
-[node name="BackgroundLabel" type="Label" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "background"
-
-[node name="BackgroundLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-focus_neighbor_top = NodePath("../../HBoxContainer/ButtonOK")
-focus_neighbor_bottom = NodePath("../../HBoxContainer/ButtonOK")
-focus_next = NodePath("../../HBoxContainer/ButtonOK")
-focus_previous = NodePath("../../HBoxContainer/ButtonOK")
-
 [node name="ConfigLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -79,9 +41,7 @@ size_flags_horizontal = 4
 layout_mode = 2
 size_flags_horizontal = 0
 focus_neighbor_left = NodePath("../ButtonCancel")
-focus_neighbor_top = NodePath("../../GridContainer/WeatherLineEdit")
 focus_neighbor_right = NodePath("../ButtonCancel")
-focus_neighbor_bottom = NodePath("../../GridContainer/WeatherLineEdit")
 focus_next = NodePath("../ButtonCancel")
 focus_previous = NodePath("../ButtonCancel")
 text = "Save and Close"
@@ -94,9 +54,7 @@ text = "Reset to Default"
 layout_mode = 2
 size_flags_horizontal = 0
 focus_neighbor_left = NodePath("../ButtonOK")
-focus_neighbor_top = NodePath("../../GridContainer/WeatherLineEdit")
 focus_neighbor_right = NodePath("../ButtonOK")
-focus_neighbor_bottom = NodePath("../../GridContainer/WeatherLineEdit")
 focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 text = "Cancel"
