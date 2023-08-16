@@ -1,6 +1,8 @@
 extends Node2D
 
-var weekdaystring = ["일","월","화","수","목","금","토"]
+const weekdaystring = ["일","월","화","수","목","금","토"]
+
+var weather_request :MyHTTPRequest
 
 func weather_success(body):
 	var text = body.get_string_from_utf8()
@@ -9,54 +11,22 @@ func weather_success(body):
 func weather_fail():
 	pass
 
-var weather_request :MyHTTPRequest
 
-var dayinfoDict = {}
+var dayinfo_request :MyHTTPRequest
+var day_info = DayInfo.new()
 
 func dayinfo_success(body):
-	var text = body.get_string_from_utf8()
-	dayinfoDict = makeDayInfoDict(text.strip_edges().split("\n", false,0))
-	updateDayInfoLabel( get_daystringlist(dayinfoDict) )
+	day_info.make(body.get_string_from_utf8())
+	updateDayInfoLabel( day_info.get_daystringlist() )
 
 func dayinfo_fail():
 	pass
 
-var dayinfo_request :MyHTTPRequest
-
-func makeDayInfoDict(text)->Dictionary:
-	var rtndict = {}
-	for s in text :
-		var sss = s.strip_edges().split(" ", false,1)
-		var key = sss[0]
-		var value = sss[1]
-		if rtndict.get(key) == null :
-			rtndict[key] = [value]
-		else :
-			rtndict[key].append( value)
-	return rtndict
-
 func updateDayInfoLabel( slist : Array[String]):
 	$LabelDayInfo.text =  "\n".join(slist)
 
-func get_daystringlist(dayinfo_dict :Dictionary)->Array[String]:
-	var rtn :Array[String] = []
-	var addkey = func(key):
-		if dayinfo_dict.get(key) == null:
-			return
-		for v in dayinfo_dict[key]:
-			rtn.append(v)
 
-	var timeNowDict = Time.get_datetime_dict_from_system()
-	# year repeat day info
-	addkey.call("%02d-%02d" % [timeNowDict["month"], timeNowDict["day"]] )
-	# month repeat day info
-	addkey.call("%02d" % [timeNowDict["day"]] )
-	# week repeat day info
-	addkey.call("%s" % weekdaystring[timeNowDict["weekday"]] )
-	# today's info
-	addkey.call("%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]] )
-	return rtn
-
+var bgimage_request :MyHTTPRequest
 var bgImage :Image
 
 func bgimage_success(body):
@@ -71,7 +41,6 @@ func bgimage_success(body):
 func bgimage_fail():
 	pass
 
-var bgimage_request :MyHTTPRequest
 
 var weekdayColorList = [
 	Color.RED,  # sunday
@@ -181,7 +150,7 @@ func _on_timer_timeout():
 			weekdaystring[ timeNowDict["weekday"]]
 			]
 		updateCalendar()
-		updateDayInfoLabel( get_daystringlist(dayinfoDict) )
+		updateDayInfoLabel( day_info.get_daystringlist() )
 
 func updateCalendar():
 	var tz = Time.get_time_zone_from_system()

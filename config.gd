@@ -2,12 +2,13 @@ class_name Config
 
 extends Object
 
-var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4clockcal_data.json"
+var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4clockcal_config.json"
 
 var config = {
-	"version" : "gd4clockcal 2.0.3",
+	"version" : "gd4clockcal 2.1.0",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
+	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
 	"background_url" : "http://192.168.0.10/background.png",
 }
 
