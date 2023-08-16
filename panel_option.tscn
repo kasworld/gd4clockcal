@@ -23,7 +23,6 @@ columns = 2
 [node name="VersionLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "gd4clockcal v2.0.1"
 
 [node name="ConfigLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -84,7 +83,11 @@ focus_neighbor_right = NodePath("../ButtonCancel")
 focus_neighbor_bottom = NodePath("../../WeatherLineEdit")
 focus_next = NodePath("../ButtonCancel")
 focus_previous = NodePath("../ButtonCancel")
-text = "OK"
+text = "Save and Close"
+
+[node name="ButtonReset" type="Button" parent="VBoxContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+text = "Reset to Default"
 
 [node name="ButtonCancel" type="Button" parent="VBoxContainer/GridContainer/HBoxContainer"]
 layout_mode = 2
@@ -98,4 +101,5 @@ focus_previous = NodePath("../ButtonOK")
 text = "Cancel"
 
 [connection signal="pressed" from="VBoxContainer/GridContainer/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
+[connection signal="pressed" from="VBoxContainer/GridContainer/HBoxContainer/ButtonReset" to="." method="_on_button_reset_pressed"]
 [connection signal="pressed" from="VBoxContainer/GridContainer/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]
