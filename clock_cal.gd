@@ -1,34 +1,31 @@
 extends Node2D
 
-const weekdaystring = ["일","월","화","수","목","금","토"]
 
 var weather_request :MyHTTPRequest
-
 func weather_success(body):
 	var text = body.get_string_from_utf8()
 	$LabelWeather.text = text
-
 func weather_fail():
 	pass
 
-
 var dayinfo_request :MyHTTPRequest
 var day_info = DayInfo.new()
-
 func dayinfo_success(body):
 	day_info.make(body.get_string_from_utf8())
 	updateDayInfoLabel( day_info.get_daystringlist() )
-
 func dayinfo_fail():
 	pass
-
 func updateDayInfoLabel( slist : Array[String]):
 	$LabelDayInfo.text =  "\n".join(slist)
 
+var todayinfo_request :MyHTTPRequest
+func todayinfo_success(body):
+	$LabelDayInfo.text = body.get_string_from_utf8()
+func todayinfo_fail():
+	pass
 
 var bgimage_request :MyHTTPRequest
 var bgImage :Image
-
 func bgimage_success(body):
 	var image_error = bgImage.load_png_from_buffer(body)
 	if image_error != OK:
@@ -37,11 +34,10 @@ func bgimage_success(body):
 		var bgTexture = ImageTexture.create_from_image(bgImage)
 		bgTexture.set_size_override(get_viewport_rect().size)
 		$BackgroundSprite.texture = bgTexture
-
 func bgimage_fail():
 	pass
 
-
+const weekdaystring = ["일","월","화","수","목","금","토"]
 var weekdayColorList = [
 	Color.RED,  # sunday
 	Color.BLACK,  # monday
@@ -58,13 +54,21 @@ func setfontshadow(o, fontcolor,offset):
 	o.add_theme_constant_override("shadow_offset_x",offset)
 	o.add_theme_constant_override("shadow_offset_y",offset)
 
-# esc to exit
-func _input(event):
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_ESCAPE:
-			get_tree().quit()
-
 var calendar_labels = []
+func init_calendar_labels():
+	# prepare calendar
+	for _i in range(7): # week title + 6 week
+		var ln = []
+		for j in weekdaystring.size():
+			var lb = Label.new()
+			lb.text = weekdaystring[j]
+			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
+			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
+			setfontshadow(lb, weekdayColorList[j], 6)
+			$GridCalendar.add_child(lb)
+			ln.append(lb)
+		calendar_labels.append(ln)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -81,6 +85,12 @@ func _ready():
 		60,
 		dayinfo_success,
 		dayinfo_fail,
+	)
+	todayinfo_request = MyHTTPRequest.new(
+		$PanelOption.cfg.config["todayinfo_url"],
+		60,
+		todayinfo_success,
+		todayinfo_fail,
 	)
 	bgimage_request = MyHTTPRequest.new(
 		$PanelOption.cfg.config["background_url"],
@@ -101,19 +111,7 @@ func _ready():
 	setfontshadow($LabelWeather, Color.BLACK, 6)
 	setfontshadow($LabelDayInfo, Color.BLACK, 6)
 
-	# prepare calendar
-	for _i in range(7): # week title + 6 week
-		var ln = []
-		for j in weekdaystring.size():
-			var lb = Label.new()
-			lb.text = weekdaystring[j]
-			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
-			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			setfontshadow(lb, weekdayColorList[j], 6)
-			$GridCalendar.add_child(lb)
-			ln.append(lb)
-		calendar_labels.append(ln)
+	init_calendar_labels()
 
 func switchWeatherDayInfo() :
 	if $LabelDayInfo.text == "":
@@ -181,11 +179,18 @@ func _on_button_option_pressed() -> void:
 func config_changed():
 	weather_request.url_to_get = $PanelOption.cfg.config["weather_url"]
 	dayinfo_request.url_to_get = $PanelOption.cfg.config["dayinfo_url"]
+	todayinfo_request.url_to_get = $PanelOption.cfg.config["todayinfo_url"]
 	bgimage_request.url_to_get = $PanelOption.cfg.config["background_url"]
 	weather_request.force_update()
 	dayinfo_request.force_update()
+	todayinfo_request.force_update()
 	bgimage_request.force_update()
-
 
 func _on_auto_hide_option_panel_timeout() -> void:
 	$PanelOption.visible = false
+
+# esc to exit
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ESCAPE:
+			get_tree().quit()

@@ -24,8 +24,8 @@ func _ready() -> void:
 	config_to_control()
 
 func config_to_control():
-	$VBoxContainer/GridContainer/ConfigLabel.text = cfg.file_name
-	$VBoxContainer/GridContainer/VersionLabel.text = cfg.config["version"]
+	$VBoxContainer/ConfigLabel.text = cfg.file_name
+	$VBoxContainer/VersionLabel.text = cfg.config["version"]
 	$VBoxContainer/GridContainer/WeatherLineEdit.text = cfg.config["weather_url"]
 	$VBoxContainer/GridContainer/DayInfoLineEdit.text = cfg.config["dayinfo_url"]
 	$VBoxContainer/GridContainer/BackgroundLineEdit.text = cfg.config["background_url"]

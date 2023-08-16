@@ -16,18 +16,18 @@ script = ExtResource("2_fkx3e")
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
+[node name="VersionLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Edit URLs"
+
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
 columns = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Edit URLs"
-
-[node name="ConfigLabel" type="Label" parent="VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
 
 [node name="WeatherLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -36,10 +36,10 @@ text = "weather"
 
 [node name="WeatherLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
-focus_neighbor_top = NodePath("../HBoxContainer/ButtonOK")
-focus_neighbor_bottom = NodePath("../HBoxContainer/ButtonOK")
-focus_next = NodePath("../HBoxContainer/ButtonOK")
-focus_previous = NodePath("../HBoxContainer/ButtonOK")
+focus_neighbor_top = NodePath("../../HBoxContainer/ButtonOK")
+focus_neighbor_bottom = NodePath("../../HBoxContainer/ButtonOK")
+focus_next = NodePath("../../HBoxContainer/ButtonOK")
+focus_previous = NodePath("../../HBoxContainer/ButtonOK")
 
 [node name="DayInfoLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -49,10 +49,10 @@ text = "dayinfo"
 [node name="DayInfoLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-focus_neighbor_top = NodePath("../HBoxContainer/ButtonOK")
-focus_neighbor_bottom = NodePath("../HBoxContainer/ButtonOK")
-focus_next = NodePath("../HBoxContainer/ButtonOK")
-focus_previous = NodePath("../HBoxContainer/ButtonOK")
+focus_neighbor_top = NodePath("../../HBoxContainer/ButtonOK")
+focus_neighbor_bottom = NodePath("../../HBoxContainer/ButtonOK")
+focus_next = NodePath("../../HBoxContainer/ButtonOK")
+focus_previous = NodePath("../../HBoxContainer/ButtonOK")
 
 [node name="BackgroundLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -62,44 +62,45 @@ text = "background"
 [node name="BackgroundLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-focus_neighbor_top = NodePath("../HBoxContainer/ButtonOK")
-focus_neighbor_bottom = NodePath("../HBoxContainer/ButtonOK")
-focus_next = NodePath("../HBoxContainer/ButtonOK")
-focus_previous = NodePath("../HBoxContainer/ButtonOK")
+focus_neighbor_top = NodePath("../../HBoxContainer/ButtonOK")
+focus_neighbor_bottom = NodePath("../../HBoxContainer/ButtonOK")
+focus_next = NodePath("../../HBoxContainer/ButtonOK")
+focus_previous = NodePath("../../HBoxContainer/ButtonOK")
 
-[node name="VersionLabel" type="Label" parent="VBoxContainer/GridContainer"]
+[node name="ConfigLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/GridContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 
-[node name="ButtonOK" type="Button" parent="VBoxContainer/GridContainer/HBoxContainer"]
+[node name="ButtonOK" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 focus_neighbor_left = NodePath("../ButtonCancel")
-focus_neighbor_top = NodePath("../../WeatherLineEdit")
+focus_neighbor_top = NodePath("../../GridContainer/WeatherLineEdit")
 focus_neighbor_right = NodePath("../ButtonCancel")
-focus_neighbor_bottom = NodePath("../../WeatherLineEdit")
+focus_neighbor_bottom = NodePath("../../GridContainer/WeatherLineEdit")
 focus_next = NodePath("../ButtonCancel")
 focus_previous = NodePath("../ButtonCancel")
 text = "Save and Close"
 
-[node name="ButtonReset" type="Button" parent="VBoxContainer/GridContainer/HBoxContainer"]
+[node name="ButtonReset" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Reset to Default"
 
-[node name="ButtonCancel" type="Button" parent="VBoxContainer/GridContainer/HBoxContainer"]
+[node name="ButtonCancel" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 focus_neighbor_left = NodePath("../ButtonOK")
-focus_neighbor_top = NodePath("../../WeatherLineEdit")
+focus_neighbor_top = NodePath("../../GridContainer/WeatherLineEdit")
 focus_neighbor_right = NodePath("../ButtonOK")
-focus_neighbor_bottom = NodePath("../../WeatherLineEdit")
+focus_neighbor_bottom = NodePath("../../GridContainer/WeatherLineEdit")
 focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 text = "Cancel"
 
-[connection signal="pressed" from="VBoxContainer/GridContainer/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
-[connection signal="pressed" from="VBoxContainer/GridContainer/HBoxContainer/ButtonReset" to="." method="_on_button_reset_pressed"]
-[connection signal="pressed" from="VBoxContainer/GridContainer/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonReset" to="." method="_on_button_reset_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]

@@ -73,9 +73,9 @@ z_index = -1
 centered = false
 
 [node name="PanelOption" parent="." instance=ExtResource("3_5m56c")]
-offset_top = 1045.0
+offset_top = 700.0
 offset_right = 3840.0
-offset_bottom = 1671.0
+offset_bottom = 1718.0
 
 [node name="ButtonOption" type="Button" parent="."]
 offset_right = 8.0
