@@ -5,7 +5,7 @@
 [sub_resource type="Theme" id="Theme_sy0ln"]
 default_font_size = 100
 
-[node name="PanelOption" type="VBoxContainer"]
+[node name="PanelOption" type="PanelContainer"]
 offset_right = 957.0
 offset_bottom = 626.0
 size_flags_horizontal = 3
@@ -13,33 +13,36 @@ size_flags_vertical = 3
 theme = SubResource("Theme_sy0ln")
 script = ExtResource("2_fkx3e")
 
-[node name="Label" type="Label" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Edit URLs"
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="WeatherLabel" type="Label" parent="GridContainer"]
+[node name="WeatherLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "weather"
 
-[node name="WeatherLineEdit" type="LineEdit" parent="GridContainer"]
+[node name="WeatherLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../ButtonOK")
 focus_neighbor_bottom = NodePath("../ButtonOK")
 focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 
-[node name="DayInfoLabel" type="Label" parent="GridContainer"]
+[node name="DayInfoLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "dayinfo"
 
-[node name="DayInfoLineEdit" type="LineEdit" parent="GridContainer"]
+[node name="DayInfoLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_top = NodePath("../ButtonOK")
@@ -47,12 +50,12 @@ focus_neighbor_bottom = NodePath("../ButtonOK")
 focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 
-[node name="BackgroundLabel" type="Label" parent="GridContainer"]
+[node name="BackgroundLabel" type="Label" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
 text = "background"
 
-[node name="BackgroundLineEdit" type="LineEdit" parent="GridContainer"]
+[node name="BackgroundLineEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_top = NodePath("../ButtonOK")
@@ -60,7 +63,7 @@ focus_neighbor_bottom = NodePath("../ButtonOK")
 focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 
-[node name="ButtonOK" type="Button" parent="GridContainer"]
+[node name="ButtonOK" type="Button" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 focus_neighbor_left = NodePath("../ButtonCancel")
@@ -71,7 +74,7 @@ focus_next = NodePath("../ButtonCancel")
 focus_previous = NodePath("../ButtonCancel")
 text = "OK"
 
-[node name="ButtonCancel" type="Button" parent="GridContainer"]
+[node name="ButtonCancel" type="Button" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 focus_neighbor_left = NodePath("../ButtonOK")
@@ -82,5 +85,5 @@ focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 text = "Cancel"
 
-[connection signal="pressed" from="GridContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
-[connection signal="pressed" from="GridContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]
+[connection signal="pressed" from="VBoxContainer/GridContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
+[connection signal="pressed" from="VBoxContainer/GridContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]

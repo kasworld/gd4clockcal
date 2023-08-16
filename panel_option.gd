@@ -1,4 +1,4 @@
-class_name OptionPanel extends VBoxContainer
+extends PanelContainer
 
 var cfg :Config
 
@@ -14,16 +14,16 @@ func _ready() -> void:
 		msg = cfg.Load()
 #	print_debug(msg, cfg.config)
 
-	$GridContainer/WeatherLineEdit.text = cfg.config["weather_url"]
-	$GridContainer/DayInfoLineEdit.text = cfg.config["dayinfo_url"]
-	$GridContainer/BackgroundLineEdit.text = cfg.config["background_url"]
+	$VBoxContainer/GridContainer/WeatherLineEdit.text = cfg.config["weather_url"]
+	$VBoxContainer/GridContainer/DayInfoLineEdit.text = cfg.config["dayinfo_url"]
+	$VBoxContainer/GridContainer/BackgroundLineEdit.text = cfg.config["background_url"]
 
 
 func _on_button_ok_pressed() -> void:
 	hide()
-	cfg.config["weather_url"] = $GridContainer/WeatherLineEdit.text
-	cfg.config["dayinfo_url"] = $GridContainer/DayInfoLineEdit.text
-	cfg.config["background_url"] = $GridContainer/BackgroundLineEdit.text
+	cfg.config["weather_url"] = $VBoxContainer/GridContainer/WeatherLineEdit.text
+	cfg.config["dayinfo_url"] = $VBoxContainer/GridContainer/DayInfoLineEdit.text
+	cfg.config["background_url"] = $VBoxContainer/GridContainer/BackgroundLineEdit.text
 
 	config_changed.emit()
 
