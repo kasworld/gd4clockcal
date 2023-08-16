@@ -58,8 +58,7 @@ func get_daystringlist(dayinfo_dict :Dictionary)->Array[String]:
 	addkey.call("%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]] )
 	return rtn
 
-var bgImage = Image.new()
-var bgTexture = ImageTexture.new()
+var bgImage :Image
 var bgimage_request = MyHTTPRequest.new(
 	"http://192.168.0.10/","background.png",
 	60,
@@ -68,7 +67,7 @@ var bgimage_request = MyHTTPRequest.new(
 		if image_error != OK:
 			print("An error occurred while trying to display the image.")
 		else:
-			bgTexture = ImageTexture.create_from_image(bgImage)
+			var bgTexture = ImageTexture.create_from_image(bgImage)
 			bgTexture.set_size_override(get_viewport_rect().size)
 			$BackgroundSprite.texture = bgTexture
 ,
@@ -103,9 +102,8 @@ var calendar_labels = []
 func _ready():
 	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
-	bgImage.fill(Color.DIM_GRAY)
-	bgTexture = ImageTexture.create_from_image(bgImage)
-	$BackgroundSprite.texture = bgTexture
+#	bgImage.fill(Color.GRAY)
+#	$BackgroundSprite.texture = ImageTexture.create_from_image(bgImage)
 
 	add_child(weather_request)
 	add_child(dayinfo_request)
