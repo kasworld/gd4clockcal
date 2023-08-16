@@ -131,12 +131,8 @@ func switchWeatherDayInfo() :
 		$LabelDayInfo.visible = true
 		return
 
-	if $LabelWeather.visible :
-		$LabelWeather.visible = false
-		$LabelDayInfo.visible = true
-	else :
-		$LabelWeather.visible = true
-		$LabelDayInfo.visible = false
+	$LabelWeather.visible = not $LabelWeather.visible
+	$LabelDayInfo.visible = not $LabelWeather.visible
 
 var oldDateUpdate = {"day":0} # datetime dict
 func _on_timer_timeout():
@@ -189,7 +185,7 @@ func config_changed():
 		request_dict[k].force_update()
 
 func _on_auto_hide_option_panel_timeout() -> void:
-	$PanelOption.visible = false
+	$PanelOption.hide()
 
 # esc to exit
 func _input(event):
