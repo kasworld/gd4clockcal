@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://clock_cal.gd" id="1_wi1q7"]
 [ext_resource type="FontFile" uid="uid://ck44ko777mxdt" path="res://NanumGothicBold.ttf" id="2_yx64y"]
+[ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option.tscn" id="3_5m56c"]
 [ext_resource type="Texture2D" uid="uid://dxe61smpvqaqf" path="res://icon.png" id="3_p67cb"]
 
 [sub_resource type="Theme" id="Theme_40ysy"]
@@ -19,10 +20,6 @@ default_font_size = 160
 [sub_resource type="Theme" id="Theme_7sear"]
 default_font = ExtResource("2_yx64y")
 default_font_size = 170
-
-[sub_resource type="Theme" id="Theme_l3y4a"]
-default_font = ExtResource("2_yx64y")
-default_font_size = 100
 
 [node name="ClockCalScn" type="Node2D"]
 script = ExtResource("1_wi1q7")
@@ -75,51 +72,11 @@ columns = 7
 z_index = -1
 centered = false
 
-[node name="PanelOption" type="VBoxContainer" parent="."]
+[node name="PanelOption" parent="." instance=ExtResource("3_5m56c")]
 visible = false
-offset_left = 1000.0
-offset_top = 1000.0
-offset_right = 3092.0
-offset_bottom = 1372.0
-theme = SubResource("Theme_l3y4a")
-theme_override_constants/separation = 20
-
-[node name="Label" type="Label" parent="PanelOption"]
-layout_mode = 2
-text = "Base URL for weather, background image file"
-
-[node name="LineEdit" type="LineEdit" parent="PanelOption"]
-layout_mode = 2
-focus_neighbor_top = NodePath("../HBoxContainer/ButtonOK")
-focus_neighbor_bottom = NodePath("../HBoxContainer/ButtonOK")
-focus_next = NodePath("../HBoxContainer/ButtonOK")
-focus_previous = NodePath("../HBoxContainer/ButtonOK")
-text = "http://192.168.0.10/"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelOption"]
-layout_mode = 2
-theme_override_constants/separation = 100
-alignment = 1
-
-[node name="ButtonOK" type="Button" parent="PanelOption/HBoxContainer"]
-layout_mode = 2
-focus_neighbor_left = NodePath("../ButtonCancel")
-focus_neighbor_top = NodePath("../../LineEdit")
-focus_neighbor_right = NodePath("../ButtonCancel")
-focus_neighbor_bottom = NodePath("../../LineEdit")
-focus_next = NodePath("../ButtonCancel")
-focus_previous = NodePath("../ButtonCancel")
-text = "OK"
-
-[node name="ButtonCancel" type="Button" parent="PanelOption/HBoxContainer"]
-layout_mode = 2
-focus_neighbor_left = NodePath("../ButtonOK")
-focus_neighbor_top = NodePath("../../LineEdit")
-focus_neighbor_right = NodePath("../ButtonOK")
-focus_neighbor_bottom = NodePath("../../LineEdit")
-focus_next = NodePath("../ButtonOK")
-focus_previous = NodePath("../ButtonOK")
-text = "Cancel"
+offset_top = 1045.0
+offset_right = 3840.0
+offset_bottom = 1671.0
 
 [node name="ButtonOption" type="Button" parent="."]
 offset_right = 8.0
@@ -127,6 +84,4 @@ offset_bottom = 8.0
 icon = ExtResource("3_p67cb")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="pressed" from="PanelOption/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
-[connection signal="pressed" from="PanelOption/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]
 [connection signal="pressed" from="ButtonOption" to="." method="_on_button_option_pressed"]

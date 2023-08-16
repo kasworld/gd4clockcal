@@ -3,8 +3,7 @@ class_name MyHTTPRequest extends Node
 # for http header Last-Modified: Wed, 19 Oct 2022 03:10:02 GMT
 const to_find_data = "Last-Modified: "
 
-var base_url :String
-var filename :String
+var url_to_get :String
 var process_body :Callable
 var fail_to_get :Callable
 var repeat_second :float
@@ -13,9 +12,8 @@ var last_modified # from http header
 var http_request :HTTPRequest
 var timer :Timer
 
-func _init(url:String, file :String, repeatsec :float, bodyfn :Callable,failfn :Callable) -> void:
-	base_url = url
-	filename = file
+func _init(fileurl:String, repeatsec :float, bodyfn :Callable,failfn :Callable) -> void:
+	url_to_get = fileurl
 	repeat_second = repeatsec
 	process_body = bodyfn
 	fail_to_get = failfn
@@ -31,7 +29,7 @@ func _ready() -> void:
 	update()
 
 func update():
-	http_request.request(base_url + filename)
+	http_request.request(url_to_get)
 
 # reload on next request, ignore modify date check
 func force_update():
@@ -47,7 +45,6 @@ func _http_request_completed(result: int, response_code: int, headers: PackedStr
 			process_body.call(body)
 	else :
 		fail_to_get.call()
-
 
 func key_value_from_header(key: String ,headers: PackedStringArray )->String:
 	var keyLen = len(key)

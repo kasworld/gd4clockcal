@@ -99,33 +99,26 @@ var calendar_labels = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var cfg = Config.new()
-	var msg = ""
-	if !cfg.FileExist():
-		msg = cfg.Save()
-	else:
-		msg = cfg.Load()
-	print_debug(msg, cfg.config)
+	$PanelOption.config_changed.connect(config_changed)
 
 	weather_request = MyHTTPRequest.new(
-		"http://192.168.0.10/","weather.txt",
+		$PanelOption.cfg.config["weather_url"],
 		60,
 		weather_success,
 		weather_fail,
 	)
 	dayinfo_request = MyHTTPRequest.new(
-		"http://192.168.0.10/","dayinfo.txt",
+		$PanelOption.cfg.config["dayinfo_url"],
 		60,
 		dayinfo_success,
 		dayinfo_fail,
 	)
 	bgimage_request = MyHTTPRequest.new(
-		"http://192.168.0.10/","background.png",
+		$PanelOption.cfg.config["background_url"],
 		60,
 		bgimage_success,
 		bgimage_fail,
 	)
-
 
 	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
@@ -212,24 +205,17 @@ func updateCalendar():
 			curLabel.add_theme_color_override("font_shadow_color",  co.lightened(0.5) )
 			dayIndex += 24*60*60
 
-func _on_button_ok_pressed() -> void:
-	$PanelOption.hide()
-	var url = $PanelOption/LineEdit.text
-	weather_request.base_url = url
-	dayinfo_request.base_url = url
-	bgimage_request.base_url = url
-
-	weather_request.force_update()
-	dayinfo_request.force_update()
-	bgimage_request.force_update()
-
-func _on_button_cancel_pressed() -> void:
-	$PanelOption.hide()
-
 func _on_button_option_pressed() -> void:
 	if $PanelOption.visible :
 		$PanelOption.hide()
 	else:
 		$PanelOption.show()
 
-
+func config_changed():
+#	weather_request.base_url = url
+#	dayinfo_request.base_url = url
+#	bgimage_request.base_url = url
+#
+	weather_request.force_update()
+	dayinfo_request.force_update()
+	bgimage_request.force_update()
