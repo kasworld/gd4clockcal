@@ -33,6 +33,11 @@ func _ready() -> void:
 func update():
 	http_request.request(base_url + filename)
 
+# reload on next request, ignore modify date check
+func force_update():
+	last_modified = ""
+	update()
+
 func _http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	timer.start(repeat_second)
 	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
@@ -44,7 +49,7 @@ func _http_request_completed(result: int, response_code: int, headers: PackedStr
 		fail_to_get.call()
 
 
-func key_value_from_header(key: String ,headers: PackedStringArray ):
+func key_value_from_header(key: String ,headers: PackedStringArray )->String:
 	var keyLen = len(key)
 	for i in headers:
 		if i.left(keyLen) == key:

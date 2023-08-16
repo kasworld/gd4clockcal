@@ -100,6 +100,14 @@ var calendar_labels = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var cfg = Config.new()
+	var msg = ""
+	if !cfg.FileExist():
+		msg = cfg.Save()
+	else:
+		msg = cfg.Load()
+	print_debug(msg, cfg.config)
+
 	var wh = get_viewport_rect().size
 	bgImage = Image.create(wh.x,wh.y,true,Image.FORMAT_RGBA8)
 #	bgImage.fill(Color.GRAY)
@@ -192,9 +200,9 @@ func _on_button_ok_pressed() -> void:
 	dayinfo_request.base_url = url
 	bgimage_request.base_url = url
 
-	weather_request.update()
-	dayinfo_request.update()
-	bgimage_request.update()
+	weather_request.force_update()
+	dayinfo_request.force_update()
+	bgimage_request.force_update()
 
 func _on_button_cancel_pressed() -> void:
 	$PanelOption.hide()
