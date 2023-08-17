@@ -17,6 +17,9 @@ password = sys.argv[2]
 
 def get_todayinfo():
     result = []
+
+    today = datetime.today().date()
+
     with caldav.DAVClient(
         url=caldav_url,
         username=username,
@@ -33,14 +36,20 @@ def get_todayinfo():
         for c in calendars:
             if c.name == calendar_name:
                 events_fetched = c.search(
-                    start=datetime.today() + timedelta(hours=11, seconds=1),
-                    end=datetime.today(),# + timedelta(hours=23,minutes=59,seconds=59),
+                    start=today ,
+                    end=today + timedelta(days=1),
                     event=True,
                     expand=True,
                 )
                 for e in events_fetched:
+                    st = e.icalendar_component.get("dtstart").dt
+                    ed = e.get_dtend()
+                    sum = e.icalendar_component["SUMMARY"]
+                    print(st,ed,sum,today+timedelta(days=1), today)
+                    if st >= today+timedelta(days=1) or ed <= today :
+                        continue
                     result.append(e.icalendar_component["SUMMARY"])
-                    print(e.data)
+
 
                     # for i in e.icalendar_component:
                     #     print(i, e.icalendar_component[i])
