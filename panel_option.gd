@@ -41,7 +41,7 @@ func _ready() -> void:
 	config_to_control()
 
 func config_to_control():
-	$VBoxContainer/ConfigLabel.text = cfg.file_name
+	$VBoxContainer/ConfigLabel.text = cfg.file_full_path()
 	$VBoxContainer/VersionLabel.text = cfg.config["version"]
 	for k in lineedit_dict:
 		lineedit_dict[k].text = cfg.config[k]

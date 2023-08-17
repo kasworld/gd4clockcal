@@ -1,6 +1,6 @@
 class_name Config
 
-var file_name = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/gd4clockcal_config.json"
+var file_name = "gd4clockcal_config.json"
 
 var config = {
 	"version" : "gd4clockcal 2.1.0",
@@ -10,19 +10,22 @@ var config = {
 	"background_url" : "http://192.168.0.10/background.png",
 }
 
+func file_full_path():
+	return OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/" + file_name
+
 func file_exist():
-	return FileAccess.file_exists(file_name)
+	return FileAccess.file_exists(file_full_path())
 
 func save_json()-> String:
-	var fileobj = FileAccess.open(file_name, FileAccess.WRITE)
+	var fileobj = FileAccess.open( file_full_path(), FileAccess.WRITE)
 	var json_string = JSON.stringify(config)
 	fileobj.store_line(json_string)
-	return "%s save" % [file_name]
+	return "%s save" % [file_full_path()]
 
 var load_error :String
 func new_by_load()->Config:
 	var rtn = Config.new()
-	var fileobj = FileAccess.open(file_name, FileAccess.READ)
+	var fileobj = FileAccess.open(file_full_path(), FileAccess.READ)
 	var json_string = fileobj.get_as_text()
 	var json = JSON.new()
 	var error = json.parse(json_string)
