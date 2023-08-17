@@ -19,6 +19,7 @@ def get_todayinfo():
     result = []
 
     today = datetime.today().date()
+    tomorrow = today + timedelta(days=1)
 
     with caldav.DAVClient(
         url=caldav_url,
@@ -37,7 +38,7 @@ def get_todayinfo():
             if c.name == calendar_name:
                 events_fetched = c.search(
                     start=today ,
-                    end=today + timedelta(days=1),
+                    end=tomorrow,
                     event=True,
                     expand=True,
                 )
@@ -45,8 +46,8 @@ def get_todayinfo():
                     st = e.icalendar_component.get("dtstart").dt
                     ed = e.get_dtend()
                     sum = e.icalendar_component["SUMMARY"]
-                    print(st,ed,sum,today+timedelta(days=1), today)
-                    if st >= today+timedelta(days=1) or ed <= today :
+                    # print(st,ed,sum,tomorrow, today)
+                    if st >= tomorrow or ed <= today :
                         continue
                     result.append(e.icalendar_component["SUMMARY"])
 
