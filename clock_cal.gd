@@ -22,7 +22,7 @@ func dayinfo_fail():
 
 var today_str = ""
 func todayinfo_success(body):
-	today_str = body.get_string_from_utf8()
+	today_str = body.get_string_from_utf8().strip_edges()
 	updateDayInfoLabel()
 func todayinfo_fail():
 	pass
@@ -30,7 +30,10 @@ func todayinfo_fail():
 func updateDayInfoLabel( ):
 	var dayinfo = day_info.get_daystringlist()
 	if len(dayinfo) > 0 :
-		$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
+		if today_str != "":
+			$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
+		else :
+			$LabelDayInfo.text = "\n".join(dayinfo)
 	else:
 		$LabelDayInfo.text = today_str
 
