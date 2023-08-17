@@ -56,10 +56,10 @@ def get_todayinfo():
                     #     print(i, e.icalendar_component[i])
     return result
 
-updateDateTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+# updateDateTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 result = get_todayinfo()
 with open('todayinfo.txt', 'wt', encoding="utf-8") as f:
     for d in result:
         f.write(d)
         f.write("\n")
-    f.write(updateDateTime)
+    # f.write(updateDateTime)

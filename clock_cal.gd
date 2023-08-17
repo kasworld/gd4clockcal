@@ -29,7 +29,10 @@ func todayinfo_fail():
 
 func updateDayInfoLabel( ):
 	var dayinfo = day_info.get_daystringlist()
-	$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
+	if len(dayinfo) > 0 :
+		$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
+	else:
+		$LabelDayInfo.text = today_str
 
 var bgImage :Image
 func bgimage_success(body):
