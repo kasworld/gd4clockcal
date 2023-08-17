@@ -13,19 +13,18 @@ var lineedit_dict = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var cfg_default = Config.new()
 	cfg = Config.new()
 	var msg = ""
-	if !cfg.FileExist():
-		msg = cfg.Save()
+	if !cfg.file_exist():
+		msg = cfg.save_json()
 	else:
-		msg = cfg.Load()
-		for k in cfg_default.config:
-			if cfg.config.get(k) == null :
-				reset_config()
-				break
-	if cfg.config["version"] != cfg_default.config["version"]:
-		reset_config()
+		var new_config = cfg.new_by_load()
+		if new_config.load_error != "":
+			cfg.save_json()
+		elif new_config.config["version"] != cfg.config["version"]:
+			cfg.save_json()
+		else :
+			cfg = new_config
 
 	# make label, lineedit
 	for k in lineedit_dict:
@@ -49,7 +48,7 @@ func config_to_control():
 
 func reset_config():
 	cfg = Config.new()
-	cfg.Save()
+	cfg.save_json()
 	config_to_control()
 
 func _on_button_ok_pressed() -> void:
