@@ -20,8 +20,7 @@ func _ready() -> void:
 	else:
 		var new_config = cfg.new_by_load()
 		if new_config.load_error != "":
-			cfg.save_json()
-		elif new_config.config["version"] != cfg.config["version"]:
+			print_debug(new_config.load_error)
 			cfg.save_json()
 		else :
 			cfg = new_config

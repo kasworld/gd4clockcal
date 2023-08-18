@@ -35,6 +35,8 @@ func new_by_load()->Config:
 			if rtn.config.get(k) == null :
 				load_error = "field not found %s" % [ k ]
 				break
+		if load_error == "" and rtn.config["version"] != config["version"]:
+			load_error = "version not match %s %s" % [rtn.config["version"] , config["version"]]
 	else:
 		load_error = "JSON Parse Error: %s in %s at line %s" % [ json.get_error_message(),  json_string,  json.get_error_line()]
 	return rtn
