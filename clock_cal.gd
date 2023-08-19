@@ -1,12 +1,5 @@
 extends Node2D
 
-var request_dict = {
-	"weather_url" : null,
-	"dayinfo_url" : null,
-	"todayinfo_url" : null,
-	"background_url" : null,
-}
-
 func weather_success(body):
 	var text = body.get_string_from_utf8()
 	$LabelWeather.text = text
@@ -82,6 +75,7 @@ func init_calendar_labels():
 			ln.append(lb)
 		calendar_labels.append(ln)
 
+var request_dict = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$PanelOption.config_changed.connect(config_changed)
@@ -123,6 +117,11 @@ func _ready():
 	setfontshadow($LabelDayInfo, Color.BLACK, 6)
 
 	init_calendar_labels()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_RESUMED:
+		for k in request_dict:
+			request_dict[k].update()
 
 func switchWeatherDayInfo() :
 	if $LabelDayInfo.text == "":

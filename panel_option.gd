@@ -4,12 +4,7 @@ var cfg :Config
 
 signal config_changed()
 
-var lineedit_dict = {
-	"weather_url" : null,
-	"dayinfo_url" : null,
-	"todayinfo_url" : null,
-	"background_url" : null,
-}
+var lineedit_dict = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -26,7 +21,7 @@ func _ready() -> void:
 			cfg = new_config
 
 	# make label, lineedit
-	for k in lineedit_dict:
+	for k in cfg.editable_keys:
 		var lb = Label.new()
 		lb.text = k
 		$VBoxContainer/GridContainer.add_child(lb)
@@ -41,8 +36,8 @@ func _ready() -> void:
 
 func config_to_control():
 	$VBoxContainer/ConfigLabel.text = cfg.file_full_path()
-	$VBoxContainer/VersionLabel.text = cfg.config["version"]
-	for k in lineedit_dict:
+	$VBoxContainer/VersionLabel.text = cfg.config[cfg.version_key]
+	for k in cfg.editable_keys:
 		lineedit_dict[k].text = cfg.config[k]
 
 func reset_config():
@@ -52,7 +47,7 @@ func reset_config():
 
 func _on_button_ok_pressed() -> void:
 	hide()
-	for k in lineedit_dict:
+	for k in cfg.editable_keys:
 		cfg.config[k] = lineedit_dict[k].text
 	cfg.Save()
 

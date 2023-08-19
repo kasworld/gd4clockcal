@@ -1,9 +1,16 @@
 class_name Config
 
 var file_name = "gd4clockcal_config.json"
+var version_key = "version"
+var editable_keys = [
+	"weather_url",
+	"dayinfo_url",
+	"todayinfo_url",
+	"background_url",
+	]
 
 var config = {
-	"version" : "gd4clockcal 2.1.0",
+	version_key : "gd4clockcal 2.1.0",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
@@ -35,8 +42,8 @@ func new_by_load()->Config:
 			if rtn.config.get(k) == null :
 				load_error = "field not found %s" % [ k ]
 				break
-		if load_error == "" and rtn.config["version"] != config["version"]:
-			load_error = "version not match %s %s" % [rtn.config["version"] , config["version"]]
+		if load_error == "" and rtn.config[version_key] != config[version_key]:
+			load_error = "version not match %s %s" % [rtn.config[version_key] , config[version_key]]
 	else:
 		load_error = "JSON Parse Error: %s in %s at line %s" % [ json.get_error_message(),  json_string,  json.get_error_line()]
 	return rtn
