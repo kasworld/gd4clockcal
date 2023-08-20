@@ -4,11 +4,14 @@ const weekdaystring = ["일","월","화","수","목","금","토"]
 
 var data_dict :Dictionary
 
-func make(text):
+func make(text:String):
 	data_dict = {}
-	text = text.strip_edges().split("\n", false,0)
-	for s in text :
+	var lines = text.strip_edges().split("\n", false,0)
+	for s in lines :
 		var sss = s.strip_edges().split(" ", false,1)
+		if sss.size() != 2:
+			print_debug(sss)
+			continue
 		var key = sss[0]
 		var value = sss[1]
 		if data_dict.get(key) == null :
