@@ -18,8 +18,9 @@ password = sys.argv[2]
 def get_todayinfo():
     result = []
 
-    today = datetime.today().date()
+    today = date.today()
     tomorrow = today + timedelta(days=1)
+    print(today, tomorrow)
 
     with caldav.DAVClient(
         url=caldav_url,
@@ -46,8 +47,8 @@ def get_todayinfo():
                     st = e.icalendar_component.get("dtstart").dt
                     ed = e.get_dtend()
                     sum = e.icalendar_component["SUMMARY"]
-                    # print(st,ed,sum,tomorrow, today)
-                    if st >= tomorrow or ed <= today :
+                    print(st,ed,sum,tomorrow, today)
+                    if type(st) == date and type(ed) == date and (st >= tomorrow or ed <= today) :
                         continue
                     result.append(e.icalendar_component["SUMMARY"])
 
