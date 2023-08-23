@@ -1,23 +1,62 @@
 class_name DayInfo
 
+""" dayinfo.txt format
+2023-05-21 이날의일정
+05-21 매년의 일정
+21 매달의 일정
+일 매주 일요일 주반복
+2023-08-20/2 2일 반복
+"""
+
 const weekdaystring = ["일","월","화","수","목","금","토"]
 
 var data_dict :Dictionary
+"""
+{
+	"2023-05-21" : [ "이날의일정" ],
+	"05-21" :  [ "매년의 일정" ],
+	"21" :  [ "매달의 일정" ],
+	"일" : [ "매주 일요일 주반복" ],
+}
+"""
+
+var day_repeat_list :Array
+"""
+[
+	["2023-08-20", 2 , "2일 반복" ],
+]
+"""
+# return true if added
+func add_repeat_data(k :String, v :String)->bool:
+	var klist = k.split("/", false,1)
+	if klist.size() != 2:
+		return false
+	var repeat_day = klist[1]
+	if repeat_day.is_valid_int() == false:
+		print_debug("unknown repeat data", k,v)
+		return false
+	day_repeat_list.append( [ klist[0], repeat_day.to_int(), v ] )
+	return true
 
 func make(text:String):
 	data_dict = {}
+	day_repeat_list = []
 	var lines = text.strip_edges().split("\n", false,0)
 	for s in lines :
-		var sss = s.strip_edges().split(" ", false,1)
-		if sss.size() != 2:
-			print_debug(sss)
+		var slist = s.strip_edges().split(" ", false,1)
+		if slist.size() != 2:
+			print_debug(slist)
 			continue
-		var key = sss[0]
-		var value = sss[1]
+		var key = slist[0]
+		var value = slist[1]
+		if add_repeat_data(key,value):
+			continue # repeat data
+		# process non repeat data
 		if data_dict.get(key) == null :
 			data_dict[key] = [value]
 		else :
 			data_dict[key].append( value)
+#	print_debug(day_repeat_list)
 
 func get_daystringlist()->Array[String]:
 	var rtn :Array[String] = []
@@ -35,5 +74,17 @@ func get_daystringlist()->Array[String]:
 	# week repeat day info
 	addkey.call("%s" % weekdaystring[timeNowDict["weekday"]] )
 	# today's info
-	addkey.call("%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]] )
+	var todaystr = "%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]]
+	addkey.call(todaystr)
+	for v in day_repeat_list:
+		var diffday = calc_day_diff(v[0], todaystr)
+		if diffday % v[1] == 0:
+			rtn.append(v[2])
 	return rtn
+
+
+# string must YYYY-MM-DD no time zone
+func calc_day_diff(from :String, to :String)->int:
+	var from_tick = Time.get_unix_time_from_datetime_string (from)
+	var to_tick = Time.get_unix_time_from_datetime_string (to)
+	return (to_tick-from_tick)/(24*60*60)
