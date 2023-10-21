@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://crwqu61bd5osl"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_wi1q7"]
+[ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option.tscn" id="3_5m56c"]
+[ext_resource type="Texture2D" uid="uid://dxe61smpvqaqf" path="res://icon.png" id="3_p67cb"]
+[ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar/calendar.tscn" id="5_1ivmc"]
+[ext_resource type="PackedScene" uid="uid://b50xiuiysska8" path="res://date_label/date_label.tscn" id="6_hvw5p"]
+[ext_resource type="PackedScene" uid="uid://cwmx6m8hhfxdx" path="res://time_label/time_label.tscn" id="7_bkgb5"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_wi1q7")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="LabelWeather" type="Label" parent="."]
+visible = false
+offset_top = 1018.0
+offset_right = 1920.0
+offset_bottom = 2160.0
+clip_text = true
+
+[node name="LabelDayInfo" type="Label" parent="."]
+visible = false
+offset_top = 1018.0
+offset_right = 1920.0
+offset_bottom = 2160.0
+clip_text = true
+
+[node name="BackgroundSprite" type="Sprite2D" parent="."]
+z_index = -1
+centered = false
+
+[node name="PanelOption" parent="." instance=ExtResource("3_5m56c")]
+offset_top = 700.0
+offset_right = 3840.0
+offset_bottom = 1718.0
+
+[node name="ButtonOption" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+icon = ExtResource("3_p67cb")
+
+[node name="AutoHideOptionPanel" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="Calendar" parent="." instance=ExtResource("5_1ivmc")]
+
+[node name="DateLabel" parent="." instance=ExtResource("6_hvw5p")]
+
+[node name="TimeLabel" parent="." instance=ExtResource("7_bkgb5")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="ButtonOption" to="." method="_on_button_option_pressed"]
+[connection signal="timeout" from="AutoHideOptionPanel" to="." method="_on_auto_hide_option_panel_timeout"]

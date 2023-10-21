@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://66uu15vflcpu"]
+
+[ext_resource type="Script" path="res://analog_clock/analog_clock.gd" id="1_bs3fy"]
+
+[node name="AnalogClock" type="Node2D"]
+script = ExtResource("1_bs3fy")
