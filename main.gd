@@ -11,15 +11,6 @@ func _ready():
 
 	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
-	fi = Global.weatherinfolabel_color
-	$LabelWeather.label_settings = Global.make_label_setting(vp_size.y/16, fi[0], fi[1])
-	$LabelWeather.position = Vector2(0, vp_size.y*0.47 )
-	$LabelWeather.size = Vector2(vp_size.x/2, vp_size.y*0.55 )
-
-	fi = Global.dayinfolabel_color
-	$LabelDayInfo.label_settings = Global.make_label_setting(vp_size.y/16, fi[0], fi[1])
-	$LabelDayInfo.position = Vector2(0, vp_size.y*0.47 )
-	$LabelDayInfo.size = Vector2(vp_size.x/2, vp_size.y*0.55 )
 
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
 	$Calendar.position = Vector2(vp_size.x/2, vp_size.y*0.35 )
@@ -32,37 +23,22 @@ func _ready():
 	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, fi[0], fi[1])
 	$TimeLabel.position = Vector2(0, -vp_size.y*0.05 )
 
+	fi = Global.infolabel_color
+	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.55, fi[0], fi[1] )
+	$InfoLabel.position = Vector2(0, vp_size.y*0.47 )
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
 		for k in request_dict:
 			request_dict[k].update()
 
-func switchWeatherDayInfo() :
-	if $LabelDayInfo.text == "":
-		$LabelWeather.visible = true
-		$LabelDayInfo.visible = false
-		return
-
-	if $LabelWeather.text == "":
-		$LabelWeather.visible = false
-		$LabelDayInfo.visible = true
-		return
-
-	$LabelWeather.visible = not $LabelWeather.visible
-	$LabelDayInfo.visible = not $LabelWeather.visible
-
 var old_time_dict = {"day":0} # datetime dict
 func _on_timer_timeout():
-	switchWeatherDayInfo()
+	$InfoLabel.switch_info_label()
 	var time_now_dict = Time.get_datetime_dict_from_system()
-	# date changed, update datelabel, calendar
 	if old_time_dict["day"] != time_now_dict["day"]:
 		old_time_dict = time_now_dict
-		updateDayInfoLabel()
-
-#	if old_time_dict["minute"] != time_now_dict["minute"]:
-#		old_time_dict = time_now_dict
-#		invert_font_color()
+		$InfoLabel.update_info_label()
 
 func _on_button_option_pressed() -> void:
 	$PanelOption.visible = not $PanelOption.visible
@@ -85,22 +61,21 @@ func invert_font_color()->void:
 	$Calendar.invert_font_color()
 	$DateLabel.invert_font_color()
 	$TimeLabel.invert_font_color()
-	Global.invert_label_color($LabelWeather)
-	Global.invert_label_color($LabelDayInfo)
+	$InfoLabel.invert_font_color()
 
 var request_dict = {}
 func init_request_dict():
 	request_dict["weather_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["weather_url"],
-		60,	weather_success, weather_fail,
+		60,	$InfoLabel.weather_success, $InfoLabel.weather_fail,
 	)
 	request_dict["dayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["dayinfo_url"],
-		60, dayinfo_success, dayinfo_fail,
+		60, $InfoLabel.dayinfo_success, $InfoLabel.dayinfo_fail,
 	)
 	request_dict["todayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["todayinfo_url"],
-		60, todayinfo_success, todayinfo_fail,
+		60, $InfoLabel.todayinfo_success, $InfoLabel.todayinfo_fail,
 	)
 	request_dict["background_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["background_url"],
@@ -108,36 +83,6 @@ func init_request_dict():
 	)
 	for k in request_dict:
 		add_child(request_dict[k])
-
-func weather_success(body):
-	var text = body.get_string_from_utf8()
-	$LabelWeather.text = text
-func weather_fail():
-	pass
-
-var day_info = DayInfo.new()
-func dayinfo_success(body):
-	day_info.make(body.get_string_from_utf8())
-	updateDayInfoLabel()
-func dayinfo_fail():
-	pass
-
-var today_str = ""
-func todayinfo_success(body):
-	today_str = body.get_string_from_utf8().strip_edges()
-	updateDayInfoLabel()
-func todayinfo_fail():
-	pass
-
-func updateDayInfoLabel( ):
-	var dayinfo = day_info.get_daystringlist()
-	if len(dayinfo) > 0 :
-		if today_str != "":
-			$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
-		else :
-			$LabelDayInfo.text = "\n".join(dayinfo)
-	else:
-		$LabelDayInfo.text = today_str
 
 var bgImage :Image
 func bgimage_success(body):

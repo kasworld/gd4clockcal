@@ -17,8 +17,7 @@ var timelabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 var datelabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 var todayColor = Color.GREEN
 
-var dayinfolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
-var weatherinfolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
+var infolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 var paneloption_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 
 

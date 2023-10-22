@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0lh1apt682gt"]
+
+[ext_resource type="Script" path="res://info_label/info_label.gd" id="1_2nrgr"]
+
+[node name="InfoLabel" type="Node2D"]
+script = ExtResource("1_2nrgr")
+
+[node name="LabelWeather" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelDay" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0

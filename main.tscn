@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://crwqu61bd5osl"]
+[gd_scene load_steps=8 format=3 uid="uid://crwqu61bd5osl"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_wi1q7"]
+[ext_resource type="PackedScene" uid="uid://b0lh1apt682gt" path="res://info_label/info_label.tscn" id="2_d7wlb"]
 [ext_resource type="PackedScene" uid="uid://btysv8q6rp8ku" path="res://panel_option/panel_option.tscn" id="3_5m56c"]
 [ext_resource type="Texture2D" uid="uid://dxe61smpvqaqf" path="res://icon.png" id="3_p67cb"]
 [ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar/calendar.tscn" id="5_1ivmc"]
@@ -13,17 +14,7 @@ script = ExtResource("1_wi1q7")
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
-[node name="LabelWeather" type="Label" parent="."]
-visible = false
-offset_right = 1.0
-offset_bottom = 23.0
-clip_text = true
-
-[node name="LabelDayInfo" type="Label" parent="."]
-visible = false
-offset_right = 1.0
-offset_bottom = 23.0
-clip_text = true
+[node name="InfoLabel" parent="." instance=ExtResource("2_d7wlb")]
 
 [node name="BackgroundSprite" type="Sprite2D" parent="."]
 z_index = -1
