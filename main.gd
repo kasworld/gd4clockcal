@@ -77,7 +77,6 @@ func _ready():
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
-
 	var vp_size = get_viewport_rect().size
 	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
