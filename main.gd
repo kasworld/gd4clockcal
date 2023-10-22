@@ -11,6 +11,9 @@ func _ready():
 
 	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
+	fi = Global.timelabel_color
+	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, fi[0], fi[1])
+	$TimeLabel.position = Vector2(0, -vp_size.y*0.05 )
 
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
 	$Calendar.position = Vector2(vp_size.x/2, vp_size.y*0.35 )
@@ -18,10 +21,6 @@ func _ready():
 	fi = Global.datelabel_color
 	$DateLabel.init( 0, 0, vp_size.x/2, vp_size.y/7.5, fi[0], fi[1])
 	$DateLabel.position = Vector2(0, vp_size.y*0.35 )
-
-	fi = Global.timelabel_color
-	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, fi[0], fi[1])
-	$TimeLabel.position = Vector2(0, -vp_size.y*0.05 )
 
 	fi = Global.infolabel_color
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.55, fi[0], fi[1] )

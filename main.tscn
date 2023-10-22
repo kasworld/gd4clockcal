@@ -14,8 +14,6 @@ script = ExtResource("1_wi1q7")
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
-[node name="InfoLabel" parent="." instance=ExtResource("2_d7wlb")]
-
 [node name="BackgroundSprite" type="Sprite2D" parent="."]
 z_index = -1
 centered = false
@@ -25,11 +23,13 @@ wait_time = 3.0
 one_shot = true
 autostart = true
 
+[node name="TimeLabel" parent="." instance=ExtResource("7_bkgb5")]
+
 [node name="Calendar" parent="." instance=ExtResource("5_1ivmc")]
 
 [node name="DateLabel" parent="." instance=ExtResource("6_hvw5p")]
 
-[node name="TimeLabel" parent="." instance=ExtResource("7_bkgb5")]
+[node name="InfoLabel" parent="." instance=ExtResource("2_d7wlb")]
 
 [node name="PanelOption" parent="." instance=ExtResource("3_5m56c")]
 
