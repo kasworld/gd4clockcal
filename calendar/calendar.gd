@@ -9,6 +9,11 @@ func init(x :float,y :float, w :float,h :float):
 	init_calendar_labels(h/10)
 	update_calendar()
 
+func invert_font_color()->void:
+	for l in calendar_labels:
+		for lb in l:
+			Global.invert_label_color(lb)
+
 var calendar_labels = []
 func init_calendar_labels(font_size :float):
 	# prepare calendar
@@ -42,8 +47,7 @@ func update_calendar():
 				co = Global.weekdayColorInfo[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = Global.todayColor
-			curLabel.label_settings.font_color = co
-			curLabel.label_settings.shadow_color = co.lightened(0.5)
+			Global.set_label_color(curLabel, co, co.lightened(0.5))
 			dayIndex += 24*60*60
 
 var old_time_dict = {"day":0} # datetime dict

@@ -15,7 +15,7 @@ var weekdayColorInfo = [
 ]
 var timelabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 var datelabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
-var todayColor = Color.GOLD
+var todayColor = Color.GREEN
 
 var dayinfolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 var weatherinfolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
@@ -47,17 +47,21 @@ var HandDict = {
 }
 
 # common functions
+func invert_label_color(lb :Label)->void:
+	lb.label_settings.font_color = lb.label_settings.font_color.inverted()
+	lb.label_settings.shadow_color = lb.label_settings.shadow_color.inverted()
+
+func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
+	lb.label_settings.font_color = co1
+	lb.label_settings.shadow_color = co2
 
 func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSettings:
 	var label_settings = LabelSettings.new()
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
 	label_settings.shadow_color = co2
-	var offset = font_size /40
-	if offset < 3 :
-		offset = 3
-	if offset > 10 :
-		offset = 10
+	var offset = log( font_size) / log(2)
+	offset = clampf(offset, 3, 10)
 	label_settings.shadow_offset = Vector2(offset,offset)
 	return label_settings
 

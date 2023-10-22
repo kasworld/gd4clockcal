@@ -41,8 +41,6 @@ autostart = true
 [node name="TimeLabel" parent="." instance=ExtResource("7_bkgb5")]
 
 [node name="PanelOption" parent="." instance=ExtResource("3_5m56c")]
-offset_right = 943.0
-offset_bottom = 306.0
 
 [node name="ButtonOption" type="Button" parent="."]
 offset_right = 72.0

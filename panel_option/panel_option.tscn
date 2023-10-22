@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://panel_option/panel_option.gd" id="2_fkx3e"]
 
 [sub_resource type="SystemFont" id="SystemFont_ftanm"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_hvyh5"]
 default_font = SubResource("SystemFont_ftanm")
