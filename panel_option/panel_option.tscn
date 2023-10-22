@@ -1,16 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://btysv8q6rp8ku"]
+[gd_scene load_steps=4 format=3 uid="uid://btysv8q6rp8ku"]
 
 [ext_resource type="Script" path="res://panel_option/panel_option.gd" id="2_fkx3e"]
 
-[sub_resource type="Theme" id="Theme_sy0ln"]
-default_font_size = 100
+[sub_resource type="SystemFont" id="SystemFont_ftanm"]
+
+[sub_resource type="Theme" id="Theme_hvyh5"]
+default_font = SubResource("SystemFont_ftanm")
+default_font_size = 50
 
 [node name="PanelOption" type="PanelContainer"]
-offset_right = 957.0
-offset_bottom = 626.0
+offset_right = 943.0
+offset_bottom = 306.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = SubResource("Theme_sy0ln")
+theme = SubResource("Theme_hvyh5")
 script = ExtResource("2_fkx3e")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]

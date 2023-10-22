@@ -6,8 +6,14 @@ signal config_changed()
 
 var lineedit_dict = {}
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
+	$".".size.x = w
+	$".".size.y = h
+	$".".position.x = x
+	$".".position.y = y
+
+	$".".theme.default_font_size = h / 12
+
 	cfg = Config.new()
 	var msg = ""
 	if !cfg.file_exist():

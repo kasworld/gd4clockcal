@@ -74,13 +74,17 @@ func init_request_dict():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
+	var vp_size = get_viewport_rect().size
+
+	var fi = Global.paneloption_color
+	$PanelOption.init(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2, fi[0], fi[1])
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
-	var vp_size = get_viewport_rect().size
 	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
-	var fi = Global.weatherinfolabel_color
+	fi = Global.weatherinfolabel_color
 	$LabelWeather.label_settings = Global.make_label_setting(vp_size.y/16, fi[0], fi[1])
 	$LabelWeather.position = Vector2(0, vp_size.y*0.47 )
 	$LabelWeather.size = Vector2(vp_size.x/2, vp_size.y*0.55 )

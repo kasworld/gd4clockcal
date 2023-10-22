@@ -19,6 +19,7 @@ var todayColor = Color.GOLD
 
 var dayinfolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 var weatherinfolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
+var paneloption_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 
 
 # for analog clock
