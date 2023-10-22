@@ -1,5 +1,7 @@
 extends Node2D
 
+var calendar_labels = []
+
 func init(x :float,y :float, w :float,h :float):
 	$GridCalendar.size.x = w
 	$GridCalendar.size.y = h
@@ -14,7 +16,6 @@ func invert_font_color()->void:
 		for lb in l:
 			Global.invert_label_color(lb)
 
-var calendar_labels = []
 func init_calendar_labels(font_size :float):
 	# prepare calendar
 	for _i in range(7): # week title + 6 week

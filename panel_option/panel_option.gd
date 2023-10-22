@@ -1,18 +1,16 @@
 extends PanelContainer
 
-var cfg :Config
-
 signal config_changed()
 
+var cfg :Config
 var lineedit_dict = {}
 
 func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
-	$".".size.x = w
-	$".".size.y = h
-	$".".position.x = x
-	$".".position.y = y
-
-	$".".theme.default_font_size = h / 12
+	size.x = w
+	size.y = h
+	position.x = x
+	position.y = y
+	theme.default_font_size = h / 12
 
 	cfg = Config.new()
 	var msg = ""
@@ -37,7 +35,6 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 		lineedit_dict[k]= le
 		$VBoxContainer/GridContainer.add_child(le)
 
-#	print_debug(msg, cfg.config)
 	config_to_control()
 
 func config_to_control():

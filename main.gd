@@ -1,80 +1,7 @@
 extends Node2D
 
-func weather_success(body):
-	var text = body.get_string_from_utf8()
-	$LabelWeather.text = text
-func weather_fail():
-	pass
-
-var day_info = DayInfo.new()
-func dayinfo_success(body):
-	day_info.make(body.get_string_from_utf8())
-	updateDayInfoLabel()
-func dayinfo_fail():
-	pass
-
-var today_str = ""
-func todayinfo_success(body):
-	today_str = body.get_string_from_utf8().strip_edges()
-	updateDayInfoLabel()
-func todayinfo_fail():
-	pass
-
-func updateDayInfoLabel( ):
-	var dayinfo = day_info.get_daystringlist()
-	if len(dayinfo) > 0 :
-		if today_str != "":
-			$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
-		else :
-			$LabelDayInfo.text = "\n".join(dayinfo)
-	else:
-		$LabelDayInfo.text = today_str
-
-var bgImage :Image
-func bgimage_success(body):
-	var image_error = bgImage.load_png_from_buffer(body)
-	if image_error != OK:
-		print("An error occurred while trying to display the image.")
-	else:
-		var bgTexture = ImageTexture.create_from_image(bgImage)
-		bgTexture.set_size_override(get_viewport_rect().size)
-		$BackgroundSprite.texture = bgTexture
-func bgimage_fail():
-	pass
-
-var request_dict = {}
-func init_request_dict():
-	request_dict["weather_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["weather_url"],
-		60,
-		weather_success,
-		weather_fail,
-	)
-	request_dict["dayinfo_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["dayinfo_url"],
-		60,
-		dayinfo_success,
-		dayinfo_fail,
-	)
-	request_dict["todayinfo_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["todayinfo_url"],
-		60,
-		todayinfo_success,
-		todayinfo_fail,
-	)
-	request_dict["background_url"] = MyHTTPRequest.new(
-		$PanelOption.cfg.config["background_url"],
-		60,
-		bgimage_success,
-		bgimage_fail,
-	)
-
-	for k in request_dict:
-		add_child(request_dict[k])
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
 	var vp_size = get_viewport_rect().size
 
 	var fi = Global.paneloption_color
@@ -124,20 +51,21 @@ func switchWeatherDayInfo() :
 	$LabelWeather.visible = not $LabelWeather.visible
 	$LabelDayInfo.visible = not $LabelWeather.visible
 
-var oldDateUpdate = {"day":0} # datetime dict
+var old_time_dict = {"day":0} # datetime dict
 func _on_timer_timeout():
 	switchWeatherDayInfo()
-	var timeNowDict = Time.get_datetime_dict_from_system()
+	var time_now_dict = Time.get_datetime_dict_from_system()
 	# date changed, update datelabel, calendar
-	if oldDateUpdate["day"] != timeNowDict["day"]:
-		oldDateUpdate = timeNowDict
+	if old_time_dict["day"] != time_now_dict["day"]:
+		old_time_dict = time_now_dict
 		updateDayInfoLabel()
 
+#	if old_time_dict["minute"] != time_now_dict["minute"]:
+#		old_time_dict = time_now_dict
+#		invert_font_color()
+
 func _on_button_option_pressed() -> void:
-	if $PanelOption.visible :
-		$PanelOption.hide()
-	else:
-		$PanelOption.show()
+	$PanelOption.visible = not $PanelOption.visible
 
 func config_changed():
 	for k in request_dict:
@@ -152,3 +80,74 @@ func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
+
+func invert_font_color()->void:
+	$Calendar.invert_font_color()
+	$DateLabel.invert_font_color()
+	$TimeLabel.invert_font_color()
+	Global.invert_label_color($LabelWeather)
+	Global.invert_label_color($LabelDayInfo)
+
+var request_dict = {}
+func init_request_dict():
+	request_dict["weather_url"] = MyHTTPRequest.new(
+		$PanelOption.cfg.config["weather_url"],
+		60,	weather_success, weather_fail,
+	)
+	request_dict["dayinfo_url"] = MyHTTPRequest.new(
+		$PanelOption.cfg.config["dayinfo_url"],
+		60, dayinfo_success, dayinfo_fail,
+	)
+	request_dict["todayinfo_url"] = MyHTTPRequest.new(
+		$PanelOption.cfg.config["todayinfo_url"],
+		60, todayinfo_success, todayinfo_fail,
+	)
+	request_dict["background_url"] = MyHTTPRequest.new(
+		$PanelOption.cfg.config["background_url"],
+		60, bgimage_success, bgimage_fail,
+	)
+	for k in request_dict:
+		add_child(request_dict[k])
+
+func weather_success(body):
+	var text = body.get_string_from_utf8()
+	$LabelWeather.text = text
+func weather_fail():
+	pass
+
+var day_info = DayInfo.new()
+func dayinfo_success(body):
+	day_info.make(body.get_string_from_utf8())
+	updateDayInfoLabel()
+func dayinfo_fail():
+	pass
+
+var today_str = ""
+func todayinfo_success(body):
+	today_str = body.get_string_from_utf8().strip_edges()
+	updateDayInfoLabel()
+func todayinfo_fail():
+	pass
+
+func updateDayInfoLabel( ):
+	var dayinfo = day_info.get_daystringlist()
+	if len(dayinfo) > 0 :
+		if today_str != "":
+			$LabelDayInfo.text = "\n".join(dayinfo) +"\n"+ today_str
+		else :
+			$LabelDayInfo.text = "\n".join(dayinfo)
+	else:
+		$LabelDayInfo.text = today_str
+
+var bgImage :Image
+func bgimage_success(body):
+	var image_error = bgImage.load_png_from_buffer(body)
+	if image_error != OK:
+		print("An error occurred while trying to display the image.")
+	else:
+		var bgTexture = ImageTexture.create_from_image(bgImage)
+		bgTexture.set_size_override(get_viewport_rect().size)
+		$BackgroundSprite.texture = bgTexture
+func bgimage_fail():
+	pass
+
