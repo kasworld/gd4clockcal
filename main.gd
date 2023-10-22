@@ -1,8 +1,9 @@
 extends Node2D
 
+var vp_size :Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var vp_size = get_viewport_rect().size
+	vp_size = get_viewport_rect().size
 
 	var fi = Global.paneloption_color
 	$PanelOption.init(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2, fi[0], fi[1])
@@ -25,6 +26,20 @@ func _ready():
 	fi = Global.infolabel_color
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.55, fi[0], fi[1] )
 	$InfoLabel.position = Vector2(0, vp_size.y*0.47 )
+
+func _process(delta: float) -> void:
+	pass
+
+#	var ms = Time.get_unix_time_from_system()
+#	var y = (sin(ms)*0.4 +0.25) *vp_size.y
+#	$TimeLabel.position.y = y
+#
+#	var x = (sin(ms)*0.4 +0.25) *vp_size.x
+#	$Calendar.position.x = x
+#
+#	var x2 = (cos(ms)*0.4 +0.25) *vp_size.x
+#	$DateLabel.position.x = x2
+#	$InfoLabel.position.x = x2
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
