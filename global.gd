@@ -54,8 +54,10 @@ func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSetting
 	label_settings.font_size = font_size
 	label_settings.shadow_color = co2
 	var offset = font_size /40
-	if offset < 1 :
-		offset = 1
+	if offset < 3 :
+		offset = 3
+	if offset > 10 :
+		offset = 10
 	label_settings.shadow_offset = Vector2(offset,offset)
 	return label_settings
 
