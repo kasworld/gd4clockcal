@@ -15,16 +15,14 @@ autostart = true
 
 [node name="LabelWeather" type="Label" parent="."]
 visible = false
-offset_top = 1018.0
-offset_right = 1920.0
-offset_bottom = 2160.0
+offset_right = 1.0
+offset_bottom = 23.0
 clip_text = true
 
 [node name="LabelDayInfo" type="Label" parent="."]
 visible = false
-offset_top = 1018.0
-offset_right = 1920.0
-offset_bottom = 2160.0
+offset_right = 1.0
+offset_bottom = 23.0
 clip_text = true
 
 [node name="BackgroundSprite" type="Sprite2D" parent="."]

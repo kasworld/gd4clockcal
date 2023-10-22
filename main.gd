@@ -80,17 +80,24 @@ func _ready():
 	var vp_size = get_viewport_rect().size
 	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
-	$LabelWeather.label_settings = Global.make_label_setting(vp_size.y/16, Color.BLACK, Color.GRAY)
-	$LabelDayInfo.label_settings = Global.make_label_setting(vp_size.y/16, Color.BLACK, Color.GRAY)
+	var fi = Global.weatherinfolabel_color
+	$LabelWeather.label_settings = Global.make_label_setting(vp_size.y/16, fi[0], fi[1])
+	$LabelWeather.position = Vector2(0, vp_size.y*0.47 )
+	$LabelWeather.size = Vector2(vp_size.x/2, vp_size.y*0.55 )
+
+	fi = Global.dayinfolabel_color
+	$LabelDayInfo.label_settings = Global.make_label_setting(vp_size.y/16, fi[0], fi[1])
+	$LabelDayInfo.position = Vector2(0, vp_size.y*0.47 )
+	$LabelDayInfo.size = Vector2(vp_size.x/2, vp_size.y*0.55 )
 
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
 	$Calendar.position = Vector2(vp_size.x/2, vp_size.y*0.35 )
 
-	var fi = Global.datelabelColor
+	fi = Global.datelabel_color
 	$DateLabel.init( 0, 0, vp_size.x/2, vp_size.y/7.5, fi[0], fi[1])
 	$DateLabel.position = Vector2(0, vp_size.y*0.35 )
 
-	fi = Global.timelabelColor
+	fi = Global.timelabel_color
 	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, fi[0], fi[1])
 	$TimeLabel.position = Vector2(0, -vp_size.y*0.05 )
 

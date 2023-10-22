@@ -19,6 +19,7 @@ layout_mode = 2
 [node name="VersionLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+text = "version 0.0.0"
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
