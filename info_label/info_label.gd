@@ -5,13 +5,13 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 	$LabelInfo.size.y = h
 	$LabelInfo.position.x = x
 	$LabelInfo.position.y = y
-	$LabelInfo.label_settings = Global.make_label_setting(h/9, co1, co2)
+	$LabelInfo.label_settings = Global.make_label_setting(h/10, co1, co2)
+	height = h # use to fontsize by line count
+
+var height :float
 
 func invert_font_color()->void:
 	Global.invert_label_color($LabelInfo)
-
-func switch_info_label() :
-	pass
 
 var weather_info :Array[String]
 func weather_success(body):
@@ -37,11 +37,14 @@ func todayinfo_fail():
 
 func update_info_label( ):
 	var dayinfo = day_info.get_daystringlist()
-	var all = []
+	var all = [make_date_string()]
 	all.append_array(dayinfo)
 	all.append_array(today_info)
 	all.append_array(weather_info)
 	$LabelInfo.text = "\n".join(all)
+	var line2calcfont = clampf(all.size(), 4, 20)
+	var fontsize = height*0.7/line2calcfont
+	Global.set_label_font_size($LabelInfo, fontsize )
 
 # remove empty line
 func split2list(text :String)->Array[String]:

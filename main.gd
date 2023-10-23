@@ -19,13 +19,9 @@ func _ready():
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
 	$Calendar.position = Vector2(vp_size.x/2, vp_size.y*0.35 )
 
-	fi = Global.datelabel_color
-	$DateLabel.init( 0, 0, vp_size.x/2, vp_size.y/7.5, fi[0], fi[1])
-	$DateLabel.position = Vector2(0, vp_size.y*0.35 )
-
 	fi = Global.infolabel_color
-	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.55, fi[0], fi[1] )
-	$InfoLabel.position = Vector2(0, vp_size.y*0.47 )
+	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, fi[0], fi[1] )
+	$InfoLabel.position = Vector2(0, vp_size.y*0.35 )
 
 func _process(delta: float) -> void:
 	return
@@ -38,7 +34,6 @@ func _process(delta: float) -> void:
 	$Calendar.position.x = x
 
 	var x2 = (sin(-ms/3)*0.4 +0.25) *vp_size.x
-	$DateLabel.position.x = x2
 	$InfoLabel.position.x = x2
 
 func _notification(what: int) -> void:

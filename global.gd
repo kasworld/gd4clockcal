@@ -14,7 +14,6 @@ var weekdayColorInfo = [
 	[Color.BLUE, Color.BLUE.lightened(0.5)],  # saturday
 ]
 var timelabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
-var datelabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
 var todayColor = Color.GREEN
 
 var infolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
@@ -63,6 +62,12 @@ func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSetting
 	offset = clampf(offset, 3, 10)
 	label_settings.shadow_offset = Vector2(offset,offset)
 	return label_settings
+
+func set_label_font_size(lb :Label, font_size :float)->void:
+	lb.label_settings.font_size = font_size
+	var offset = log( font_size) / log(2)
+	offset = clampf(offset, 3, 10)
+	lb.label_settings.shadow_offset = Vector2(offset,offset)
 
 func new_circle_fill(p :Vector2, r :float, co:Color) -> Polygon2D :
 	var rtn = Polygon2D.new()
