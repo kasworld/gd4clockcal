@@ -28,18 +28,18 @@ func _ready():
 	$InfoLabel.position = Vector2(0, vp_size.y*0.47 )
 
 func _process(delta: float) -> void:
-	pass
+	return
 
-#	var ms = Time.get_unix_time_from_system()
-#	var y = (sin(ms)*0.4 +0.25) *vp_size.y
-#	$TimeLabel.position.y = y
-#
-#	var x = (sin(ms)*0.4 +0.25) *vp_size.x
-#	$Calendar.position.x = x
-#
-#	var x2 = (cos(ms)*0.4 +0.25) *vp_size.x
-#	$DateLabel.position.x = x2
-#	$InfoLabel.position.x = x2
+	var ms = Time.get_unix_time_from_system()
+	var y = (sin(ms)*0.4 +0.25) *vp_size.y
+	$TimeLabel.position.y = y
+
+	var x = (sin(ms/2)*0.4 +0.25) *vp_size.x
+	$Calendar.position.x = x
+
+	var x2 = (sin(-ms/3)*0.4 +0.25) *vp_size.x
+	$DateLabel.position.x = x2
+	$InfoLabel.position.x = x2
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
@@ -48,7 +48,6 @@ func _notification(what: int) -> void:
 
 var old_time_dict = {"day":0} # datetime dict
 func _on_timer_timeout():
-	$InfoLabel.switch_info_label()
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	if old_time_dict["day"] != time_now_dict["day"]:
 		old_time_dict = time_now_dict

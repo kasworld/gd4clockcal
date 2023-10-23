@@ -5,12 +5,6 @@
 [node name="InfoLabel" type="Node2D"]
 script = ExtResource("1_2nrgr")
 
-[node name="LabelWeather" type="Label" parent="."]
-visible = false
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="LabelDay" type="Label" parent="."]
-visible = false
+[node name="LabelInfo" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0

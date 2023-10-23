@@ -17,8 +17,8 @@ def getNaverWeather():
     currentTemperature = ""
     currentSky = ""
     geoLocation = ""
-    dust1 = ""
-    dust2 = ""
+    # dust1 = ""
+    # dust2 = ""
     err = None
     try:
 
@@ -55,7 +55,7 @@ def getNaverWeather():
         # airlist = weather_table.find('dd', {'class': 'level4_1'})
         # dust1, dust2 = airlist[0].text, airlist[1].text
 
-        return currentTemperature, currentSky, geoLocation, dust1, dust2, err
+        return currentTemperature, currentSky, geoLocation, err
     except Exception as e:
         print(e)
         return "fail to get weather", repr(e),  "",   "", "", e
