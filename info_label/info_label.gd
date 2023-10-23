@@ -5,7 +5,7 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 	$LabelInfo.size.y = h
 	$LabelInfo.position.x = x
 	$LabelInfo.position.y = y
-	$LabelInfo.label_settings = Global.make_label_setting(h/10, co1, co2)
+	$LabelInfo.label_settings = Global.make_label_setting(h/8, co1, co2)
 	height = h # use to fontsize by line count
 
 var height :float
@@ -42,8 +42,8 @@ func update_info_label( ):
 	all.append_array(today_info)
 	all.append_array(weather_info)
 	$LabelInfo.text = "\n".join(all)
-	var line2calcfont = clampf(all.size(), 4, 20)
-	var fontsize = height*0.7/line2calcfont
+	var line2calcfont = clampf(all.size(), 7, 20)
+	var fontsize = height*0.9/line2calcfont
 	Global.set_label_font_size($LabelInfo, fontsize )
 
 # remove empty line

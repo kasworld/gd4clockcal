@@ -14,7 +14,7 @@ func _ready():
 
 	fi = Global.timelabel_color
 	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, fi[0], fi[1])
-	$TimeLabel.position = Vector2(0, -vp_size.y*0.05 )
+	$TimeLabel.position = Vector2(0, -vp_size.y*0.04 )
 
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
 	$Calendar.position = Vector2(vp_size.x/2, vp_size.y*0.35 )
@@ -25,16 +25,10 @@ func _ready():
 
 func _process(delta: float) -> void:
 	return
-
 	var ms = Time.get_unix_time_from_system()
-	var y = (sin(ms)*0.4 +0.25) *vp_size.y
-	$TimeLabel.position.y = y
-
-	var x = (sin(ms/2)*0.4 +0.25) *vp_size.x
-	$Calendar.position.x = x
-
-	var x2 = (sin(-ms/3)*0.4 +0.25) *vp_size.x
-	$InfoLabel.position.x = x2
+	$TimeLabel.position.y = (sin(ms)*0.35 +0.27) *vp_size.y
+	$Calendar.position.x = (sin(ms)*0.25 +0.25) *vp_size.x
+	$InfoLabel.position.x = (sin(-ms)*0.25 +0.25) *vp_size.x
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:

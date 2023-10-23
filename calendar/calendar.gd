@@ -8,7 +8,7 @@ func init(x :float,y :float, w :float,h :float):
 	$GridCalendar.position.x = x
 	$GridCalendar.position.y = y
 
-	init_calendar_labels(h/10)
+	init_calendar_labels(h/8)
 	update_calendar()
 
 func invert_font_color()->void:

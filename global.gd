@@ -44,6 +44,8 @@ var HandDict = {
 	}
 }
 
+var font = preload("res://HakgyoansimBareondotumR.ttf")
+
 # common functions
 func invert_label_color(lb :Label)->void:
 	lb.label_settings.font_color = lb.label_settings.font_color.inverted()
@@ -55,6 +57,7 @@ func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
 
 func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSettings:
 	var label_settings = LabelSettings.new()
+	label_settings.font = font
 	label_settings.font_color = co1
 	label_settings.font_size = font_size
 	label_settings.shadow_color = co2
@@ -65,8 +68,8 @@ func make_label_setting(font_size :float , co1 :Color, co2 :Color)->LabelSetting
 
 func set_label_font_size(lb :Label, font_size :float)->void:
 	lb.label_settings.font_size = font_size
-	var offset = log( font_size) / log(2)
-	offset = clampf(offset, 3, 10)
+	var offset = log(font_size)
+	offset = clampf(offset, 1, 6)
 	lb.label_settings.shadow_offset = Vector2(offset,offset)
 
 func new_circle_fill(p :Vector2, r :float, co:Color) -> Polygon2D :

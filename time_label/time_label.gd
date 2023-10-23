@@ -5,7 +5,7 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 	$LabelTime.size.y = h
 	$LabelTime.position.x = x
 	$LabelTime.position.y = y
-	$LabelTime.label_settings = Global.make_label_setting(h, co1, co2)
+	$LabelTime.label_settings = Global.make_label_setting(w/4.5, co1, co2)
 	_on_timer_timeout()
 
 func invert_font_color()->void:
