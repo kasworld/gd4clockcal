@@ -97,11 +97,11 @@ func _on_auto_hide_option_panel_timeout() -> void:
 	$PanelOption.hide()
 
 # esc to exit
-func _input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
-	elif event is InputEventMouseButton and event.is_released():
+	elif event is InputEventMouseButton and event.is_pressed():
 		animove_toggle()
 
 func invert_font_color()->void:
