@@ -1,9 +1,17 @@
 extends Node2D
 
 var vp_size :Vector2
+
+var timepos = []
+var calpos = []
+var infopos = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	vp_size = get_viewport_rect().size
+	timepos = [Vector2(0, -vp_size.y*0.04 ), Vector2(0, vp_size.y -vp_size.y*0.35)]
+	calpos = [Vector2(vp_size.x/2, vp_size.y*0.35 ), Vector2(0, 0)]
+	infopos = [Vector2(0, vp_size.y*0.35 ), Vector2(vp_size.x/2, 0)]
 
 	var fi = Global.paneloption_color
 	$PanelOption.init(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2, fi[0], fi[1])
@@ -14,21 +22,25 @@ func _ready():
 
 	fi = Global.timelabel_color
 	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, fi[0], fi[1])
-	$TimeLabel.position = Vector2(0, -vp_size.y*0.04 )
+	$TimeLabel.position = timepos[0]
 
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
-	$Calendar.position = Vector2(vp_size.x/2, vp_size.y*0.35 )
+	$Calendar.position = calpos[0]
 
 	fi = Global.infolabel_color
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, fi[0], fi[1] )
-	$InfoLabel.position = Vector2(0, vp_size.y*0.35 )
+	$InfoLabel.position = infopos[0]
+
+func sin_inter(v1 :float, v2 :float, t :float)->float:
+	return (sin(t *PI)/2 +0.5) * (v2-v1) + v1
 
 func _process(delta: float) -> void:
 	return
 	var ms = Time.get_unix_time_from_system()
-	$TimeLabel.position.y = (sin(ms)*0.35 +0.27) *vp_size.y
-	$Calendar.position.x = (sin(ms)*0.25 +0.25) *vp_size.x
-	$InfoLabel.position.x = (sin(-ms)*0.25 +0.25) *vp_size.x
+	$TimeLabel.position.y = sin_inter(timepos[0].y ,timepos[1].y , ms)
+#	$TimeLabel.position.y = (sin(ms)*0.35 +0.27) *vp_size.y
+#	$Calendar.position.x = (sin(ms)*0.25 +0.25) *vp_size.x
+#	$InfoLabel.position.x = (sin(-ms)*0.25 +0.25) *vp_size.x
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
