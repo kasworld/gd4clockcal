@@ -26,7 +26,6 @@ func _ready():
 	fi = Global.infolabel_color
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, fi[0], fi[1] )
 	reset_pos()
-	_on_timer_timeout()
 
 func reset_pos():
 	$TimeLabel.position = timepos[0]
@@ -85,13 +84,6 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
 		for k in request_dict:
 			request_dict[k].update()
-
-var old_time_dict = {"day":0} # datetime dict
-func _on_timer_timeout():
-	var time_now_dict = Time.get_datetime_dict_from_system()
-	if old_time_dict["day"] != time_now_dict["day"]:
-		old_time_dict = time_now_dict
-		$InfoLabel.update_info_label()
 
 func _on_button_option_pressed() -> void:
 	$PanelOption.visible = not $PanelOption.visible

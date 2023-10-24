@@ -61,3 +61,10 @@ func make_date_string()->String:
 		time_now_dict["year"] , time_now_dict["month"] ,time_now_dict["day"],
 		Global.weekdaystring[ time_now_dict["weekday"]]
 		]
+
+var old_time_dict = {"day":0} # datetime dict
+func _on_timer_timeout() -> void:
+	var time_now_dict = Time.get_datetime_dict_from_system()
+	if old_time_dict["day"] != time_now_dict["day"]:
+		old_time_dict = time_now_dict
+		update_info_label()
