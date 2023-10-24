@@ -31,16 +31,33 @@ func _ready():
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, fi[0], fi[1] )
 	$InfoLabel.position = infopos[0]
 
-func sin_inter(v1 :float, v2 :float, t :float)->float:
-	return (sin(t *PI)/2 +0.5) * (v2-v1) + v1
+	_on_timer_timeout()
 
+func sin_inter(v1 :float, v2 :float, t :float)->float:
+	return (cos(t *PI)/2 +0.5) * (v2-v1) + v1
+
+var animove_state = 0
+var animove_begin_tick = 0
 func _process(delta: float) -> void:
-	return
-	var ms = Time.get_unix_time_from_system()
-	$TimeLabel.position.y = sin_inter(timepos[0].y ,timepos[1].y , ms)
-#	$TimeLabel.position.y = (sin(ms)*0.35 +0.27) *vp_size.y
-#	$Calendar.position.x = (sin(ms)*0.25 +0.25) *vp_size.x
-#	$InfoLabel.position.x = (sin(-ms)*0.25 +0.25) *vp_size.x
+#	return
+	var ms = Time.get_unix_time_from_system() - animove_begin_tick
+	match animove_state%4:
+		0:
+			$TimeLabel.position.y = sin_inter(timepos[0].y ,timepos[1].y , ms)
+			$Calendar.position.y = sin_inter(calpos[0].y ,calpos[1].y , ms)
+			$InfoLabel.position.y = sin_inter(infopos[0].y ,infopos[1].y , ms)
+		1:
+			$Calendar.position.x = sin_inter(calpos[0].x ,calpos[1].x , ms)
+			$InfoLabel.position.x = sin_inter(infopos[0].x ,infopos[1].x , ms)
+		2:
+			$TimeLabel.position.y = sin_inter(timepos[1].y ,timepos[0].y , ms)
+			$Calendar.position.y = sin_inter(calpos[1].y ,calpos[0].y , ms)
+			$InfoLabel.position.y = sin_inter(infopos[1].y ,infopos[0].y , ms)
+		3:
+			$Calendar.position.x = sin_inter(calpos[1].x ,calpos[0].x , ms)
+			$InfoLabel.position.x = sin_inter(infopos[1].x ,infopos[0].x , ms)
+		_:
+			print_debug("invalid state", animove_state)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
@@ -49,6 +66,8 @@ func _notification(what: int) -> void:
 
 var old_time_dict = {"day":0} # datetime dict
 func _on_timer_timeout():
+	animove_state += 1
+	animove_begin_tick = Time.get_unix_time_from_system()
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	if old_time_dict["day"] != time_now_dict["day"]:
 		old_time_dict = time_now_dict
