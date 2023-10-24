@@ -35,6 +35,9 @@ offset_right = 72.0
 offset_bottom = 72.0
 icon = ExtResource("3_p67cb")
 
+[node name="TimerAniMove" type="Timer" parent="."]
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="AutoHideOptionPanel" to="." method="_on_auto_hide_option_panel_timeout"]
 [connection signal="pressed" from="ButtonOption" to="." method="_on_button_option_pressed"]
+[connection signal="timeout" from="TimerAniMove" to="." method="_on_timer_ani_move_timeout"]
