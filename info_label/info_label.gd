@@ -10,9 +10,6 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 
 var height :float
 
-func invert_font_color()->void:
-	Global.invert_label_color($LabelInfo)
-
 var weather_info :Array[String]
 func weather_success(body):
 	var text = body.get_string_from_utf8()

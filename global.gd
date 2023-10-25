@@ -5,25 +5,25 @@ const weekdaystring = ["일","월","화","수","목","금","토"]
 
 # for calendar
 var weekdayColorInfo = [
-	[Color.RED, Color.RED.darkened(0.5)],  # sunday
-	[Color.WHITE, Color.WHITE.darkened(0.5)],  # monday
-	[Color.WHITE, Color.WHITE.darkened(0.5)],
-	[Color.WHITE, Color.WHITE.darkened(0.5)],
-	[Color.WHITE, Color.WHITE.darkened(0.5)],
-	[Color.WHITE, Color.WHITE.darkened(0.5)],
-	[Color.BLUE, Color.BLUE.darkened(0.5)],  # saturday
+	# on month color, off month color
+	[Color.RED, make_shadow_color(Color.RED)],  # sunday
+	[Color.WHITE, make_shadow_color(Color.WHITE)],  # monday
+	[Color.WHITE, make_shadow_color(Color.WHITE)],
+	[Color.WHITE, make_shadow_color(Color.WHITE)],
+	[Color.WHITE, make_shadow_color(Color.WHITE)],
+	[Color.WHITE, make_shadow_color(Color.WHITE)],
+	[Color.BLUE, make_shadow_color(Color.BLUE)],  # saturday
 ]
 var todayColor = Color.GREEN
-var timelabel_color = [Color.WHITE,Color.WHITE.darkened(0.5)]
-var infolabel_color = [Color.WHITE,Color.WHITE.darkened(0.5)]
-var paneloption_color = [Color.WHITE,Color.WHITE.darkened(0.5)]
+var timelabel_color = Color.WHITE
+var infolabel_color = Color.WHITE
+var paneloption_color = Color.WHITE
 
 var font = preload("res://HakgyoansimBareondotumR.ttf")
 
 # common functions
-func invert_label_color(lb :Label)->void:
-	lb.label_settings.font_color = lb.label_settings.font_color.inverted()
-	lb.label_settings.shadow_color = lb.label_settings.shadow_color.inverted()
+func make_shadow_color(co :Color)->Color:
+	return co.darkened(0.5)
 
 func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
 	lb.label_settings.font_color = co1

@@ -13,18 +13,18 @@ func _ready():
 	calpos = [Vector2(vp_size.x/2, vp_size.y*0.35 ), Vector2(0, 0)]
 	infopos = [Vector2(0, vp_size.y*0.35 ), Vector2(vp_size.x/2, 0)]
 
-	var fi = Global.paneloption_color
-	$PanelOption.init(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2, fi[0], fi[1])
+	var co = Global.paneloption_color
+	$PanelOption.init(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2, co, Global.make_shadow_color(co))
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
 	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
-	fi = Global.timelabel_color
-	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, fi[0], fi[1])
+	co = Global.timelabel_color
+	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, co, Global.make_shadow_color(co))
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
-	fi = Global.infolabel_color
-	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, fi[0], fi[1] )
+	co = Global.infolabel_color
+	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, co, Global.make_shadow_color(co) )
 	reset_pos()
 
 func reset_pos():
@@ -74,7 +74,6 @@ func animove_step():
 		_:
 			print_debug("invalid state", animove_state)
 
-
 func _process(delta: float) -> void:
 	if not animove_enable:
 		return
@@ -103,12 +102,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_tree().quit()
 	elif event is InputEventMouseButton and event.is_pressed():
 		animove_toggle()
-
-func invert_font_color()->void:
-	$Calendar.invert_font_color()
-	$DateLabel.invert_font_color()
-	$TimeLabel.invert_font_color()
-	$InfoLabel.invert_font_color()
 
 var request_dict = {}
 func init_request_dict():
