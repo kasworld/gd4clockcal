@@ -48,7 +48,7 @@ func update_calendar():
 				co = Global.weekdayColorInfo[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
 				co = Global.todayColor
-			Global.set_label_color(curLabel, co, co.lightened(0.5))
+			Global.set_label_color(curLabel, co, co.darkened(0.5))
 			dayIndex += 24*60*60
 
 var old_time_dict = {"day":0} # datetime dict

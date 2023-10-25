@@ -6,8 +6,8 @@ var cfg :Config
 var lineedit_dict = {}
 
 func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
-	size.x = w
-	size.y = h
+#	size.x = w
+#	size.y = h
 	position.x = x
 	position.y = y
 	theme.default_font_size = h / 12

@@ -5,18 +5,18 @@ const weekdaystring = ["일","월","화","수","목","금","토"]
 
 # for calendar
 var weekdayColorInfo = [
-	[Color.RED, Color.RED.lightened(0.5)],  # sunday
-	[Color.BLACK, Color.BLACK.lightened(0.5)],  # monday
-	[Color.BLACK, Color.BLACK.lightened(0.5)],
-	[Color.BLACK, Color.BLACK.lightened(0.5)],
-	[Color.BLACK, Color.BLACK.lightened(0.5)],
-	[Color.BLACK, Color.BLACK.lightened(0.5)],
-	[Color.BLUE, Color.BLUE.lightened(0.5)],  # saturday
+	[Color.RED, Color.RED.darkened(0.5)],  # sunday
+	[Color.WHITE, Color.WHITE.darkened(0.5)],  # monday
+	[Color.WHITE, Color.WHITE.darkened(0.5)],
+	[Color.WHITE, Color.WHITE.darkened(0.5)],
+	[Color.WHITE, Color.WHITE.darkened(0.5)],
+	[Color.WHITE, Color.WHITE.darkened(0.5)],
+	[Color.BLUE, Color.BLUE.darkened(0.5)],  # saturday
 ]
 var todayColor = Color.GREEN
-var timelabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
-var infolabel_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
-var paneloption_color = [Color.BLACK,Color.BLACK.lightened(0.5)]
+var timelabel_color = [Color.WHITE,Color.WHITE.darkened(0.5)]
+var infolabel_color = [Color.WHITE,Color.WHITE.darkened(0.5)]
+var paneloption_color = [Color.WHITE,Color.WHITE.darkened(0.5)]
 
 var font = preload("res://HakgyoansimBareondotumR.ttf")
 
