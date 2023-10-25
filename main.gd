@@ -112,6 +112,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_button_option_pressed()
 		elif event.keycode == KEY_SPACE:
 			animove_toggle()
+		elif event.keycode == KEY_MENU:
+			animove_toggle()
+		elif event.keycode == KEY_UP:
+			animove_toggle()
 		else:
 			update_color(not Global.dark_mode)
 
