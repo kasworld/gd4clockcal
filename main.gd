@@ -50,7 +50,6 @@ var animove_begin_tick = 0
 
 func animove_toggle() :
 	animove_enable = not animove_enable
-	update_color(not Global.dark_mode)
 	if animove_enable:
 		animove_state = 0
 		animove_begin_tick = Time.get_unix_time_from_system()
@@ -109,8 +108,21 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
+		elif event.keycode == KEY_ENTER:
+			_on_button_option_pressed()
+		elif event.keycode == KEY_SPACE:
+			animove_toggle()
+		else:
+			update_color(not Global.dark_mode)
+
 	elif event is InputEventMouseButton and event.is_pressed():
-		animove_toggle()
+		match event.button_index:
+			1:
+				animove_toggle()
+			2:
+				update_color(not Global.dark_mode)
+			_:
+				pass
 
 var request_dict = {}
 func init_request_dict():
