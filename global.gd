@@ -3,27 +3,57 @@ extends Node
 # for calendar ans date_label
 const weekdaystring = ["일","월","화","수","목","금","토"]
 
-# for calendar
-var weekdayColorInfo = [
-	# on month color, off month color
-	[Color.RED, make_shadow_color(Color.RED)],  # sunday
-	[Color.WHITE, make_shadow_color(Color.WHITE)],  # monday
-	[Color.WHITE, make_shadow_color(Color.WHITE)],
-	[Color.WHITE, make_shadow_color(Color.WHITE)],
-	[Color.WHITE, make_shadow_color(Color.WHITE)],
-	[Color.WHITE, make_shadow_color(Color.WHITE)],
-	[Color.BLUE, make_shadow_color(Color.BLUE)],  # saturday
-]
-var todayColor = Color.GREEN
-var timelabel_color = Color.WHITE
-var infolabel_color = Color.WHITE
-var paneloption_color = Color.WHITE
+var colors_dark = {
+	weekday = [
+		[Color.RED, make_shadow_color(Color.RED)],  # sunday
+		[Color.WHITE, make_shadow_color(Color.WHITE)],  # monday
+		[Color.WHITE, make_shadow_color(Color.WHITE)],
+		[Color.WHITE, make_shadow_color(Color.WHITE)],
+		[Color.WHITE, make_shadow_color(Color.WHITE)],
+		[Color.WHITE, make_shadow_color(Color.WHITE)],
+		[Color.BLUE, make_shadow_color(Color.BLUE)],  # saturday
+	],
+	today = Color.GREEN,
+	timelabel = Color.WHITE,
+	infolabel = Color.WHITE,
+	paneloption = Color.WHITE,
+	default_clear = Color.BLACK,
+}
+var colors_light = 	{
+	weekday = [
+		[Color.RED, make_shadow_color(Color.RED)],  # sunday
+		[Color.BLACK, make_shadow_color(Color.BLACK)],  # monday
+		[Color.BLACK, make_shadow_color(Color.BLACK)],
+		[Color.BLACK, make_shadow_color(Color.BLACK)],
+		[Color.BLACK, make_shadow_color(Color.BLACK)],
+		[Color.BLACK, make_shadow_color(Color.BLACK)],
+		[Color.BLUE, make_shadow_color(Color.BLUE)],  # saturday
+	],
+	today = Color.GREEN,
+	timelabel = Color.BLACK,
+	infolabel = Color.BLACK,
+	paneloption = Color.BLACK,
+	default_clear = Color.WHITE,
+}
+var colors = colors_dark
 
 var font = preload("res://HakgyoansimBareondotumR.ttf")
 
 # common functions
+var dark_mode = true
+func set_dark_mode(b :bool):
+	dark_mode = b
+	if dark_mode :
+		colors = colors_dark
+	else :
+		colors = colors_light
+	RenderingServer.set_default_clear_color(colors.default_clear)
+
 func make_shadow_color(co :Color)->Color:
-	return co.darkened(0.5)
+	if dark_mode:
+		return co.darkened(0.5)
+	else :
+		return co.lightened(0.5)
 
 func set_label_color(lb :Label, co1 :Color, co2 :Color)->void:
 	lb.label_settings.font_color = co1

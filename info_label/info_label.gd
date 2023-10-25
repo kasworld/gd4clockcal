@@ -32,6 +32,10 @@ func todayinfo_success(body):
 func todayinfo_fail():
 	pass
 
+func update_color():
+	var co = Global.colors.infolabel
+	Global.set_label_color($LabelInfo, co, Global.make_shadow_color(co))
+
 func update_info_label( ):
 	var dayinfo = day_info.get_daystringlist()
 	var all = [make_date_string()]

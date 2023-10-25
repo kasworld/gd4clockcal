@@ -8,24 +8,32 @@ var infopos = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Global.set_dark_mode(true)
+
 	vp_size = get_viewport_rect().size
 	timepos = [Vector2(0, -vp_size.y*0.04 ), Vector2(0, vp_size.y -vp_size.y*0.35)]
 	calpos = [Vector2(vp_size.x/2, vp_size.y*0.35 ), Vector2(0, 0)]
 	infopos = [Vector2(0, vp_size.y*0.35 ), Vector2(vp_size.x/2, 0)]
 
-	var co = Global.paneloption_color
+	var co = Global.colors.paneloption
 	$PanelOption.init(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2, co, Global.make_shadow_color(co))
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
 	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
-	co = Global.timelabel_color
+	co = Global.colors.timelabel
 	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, co, Global.make_shadow_color(co))
 	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
-	co = Global.infolabel_color
+	co = Global.colors.infolabel
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, co, Global.make_shadow_color(co) )
 	reset_pos()
+
+func update_color(darkmode :bool):
+	Global.set_dark_mode(darkmode)
+	$TimeLabel.update_color()
+	$InfoLabel.update_color()
+	$Calendar.update_color()
 
 func reset_pos():
 	$TimeLabel.position = timepos[0]
@@ -42,6 +50,7 @@ var animove_begin_tick = 0
 
 func animove_toggle() :
 	animove_enable = not animove_enable
+	update_color(not Global.dark_mode)
 	if animove_enable:
 		animove_state = 0
 		animove_begin_tick = Time.get_unix_time_from_system()

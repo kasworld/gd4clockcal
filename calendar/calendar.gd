@@ -11,6 +11,12 @@ func init(x :float,y :float, w :float,h :float):
 	init_calendar_labels(h/8)
 	update_calendar()
 
+func update_color():
+	for i in range(7): # week title + 6 week
+		for j in Global.weekdaystring.size():
+			var co = Global.colors.weekday[j][0]
+			Global.set_label_color(calendar_labels[i][j], co, Global.make_shadow_color(co))
+
 func init_calendar_labels(font_size :float):
 	# prepare calendar
 	for _i in range(7): # week title + 6 week
@@ -21,7 +27,7 @@ func init_calendar_labels(font_size :float):
 			lb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			lb.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
 			lb.vertical_alignment = VerticalAlignment.VERTICAL_ALIGNMENT_CENTER
-			var co = Global.weekdayColorInfo[j][0]
+			var co = Global.colors.weekday[j][0]
 			lb.label_settings = Global.make_label_setting(font_size, co, Global.make_shadow_color(co))
 			$GridCalendar.add_child(lb)
 			ln.append(lb)
@@ -38,11 +44,11 @@ func update_calendar():
 			var dayIndexDict = Time.get_date_dict_from_unix_time(dayIndex)
 			var curLabel = calendar_labels[week+1][wd]
 			curLabel.text = "%d" % dayIndexDict["day"]
-			var co = Global.weekdayColorInfo[wd][0]
+			var co = Global.colors.weekday[wd][0]
 			if dayIndexDict["month"] != todayDict["month"]:
-				co = Global.weekdayColorInfo[wd][1]
+				co = Global.colors.weekday[wd][1]
 			elif dayIndexDict["day"] == todayDict["day"]:
-				co = Global.todayColor
+				co = Global.colors.today
 			Global.set_label_color(curLabel, co, Global.make_shadow_color(co))
 			dayIndex += 24*60*60
 
