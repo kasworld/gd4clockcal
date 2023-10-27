@@ -8,7 +8,10 @@ var infopos = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Global.set_dark_mode(true)
+	if old_time_dict["hour"] < 6 or old_time_dict["hour"] >= 18 :
+		Global.set_dark_mode(true)
+	else :
+		Global.set_dark_mode(false)
 
 	vp_size = get_viewport_rect().size
 	timepos = [Vector2(0, -vp_size.y*0.04 ), Vector2(0, vp_size.y -vp_size.y*0.35)]
