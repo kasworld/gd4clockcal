@@ -34,6 +34,10 @@ icon = ExtResource("3_p67cb")
 
 [node name="TimerAniMove" type="Timer" parent="."]
 
+[node name="TimerDayNight" type="Timer" parent="."]
+autostart = true
+
 [connection signal="timeout" from="AutoHideOptionPanel" to="." method="_on_auto_hide_option_panel_timeout"]
 [connection signal="pressed" from="ButtonOption" to="." method="_on_button_option_pressed"]
 [connection signal="timeout" from="TimerAniMove" to="." method="_on_timer_ani_move_timeout"]
+[connection signal="timeout" from="TimerDayNight" to="." method="_on_timer_day_night_timeout"]

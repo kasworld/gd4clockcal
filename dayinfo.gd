@@ -66,15 +66,15 @@ func get_daystringlist()->Array[String]:
 		for v in data_dict[key]:
 			rtn.append(v)
 
-	var timeNowDict = Time.get_datetime_dict_from_system()
+	var time_now_dict = Time.get_datetime_dict_from_system()
 	# year repeat day info
-	addkey.call("%02d-%02d" % [timeNowDict["month"], timeNowDict["day"]] )
+	addkey.call("%02d-%02d" % [time_now_dict["month"], time_now_dict["day"]] )
 	# month repeat day info
-	addkey.call("%02d" % [timeNowDict["day"]] )
+	addkey.call("%02d" % [time_now_dict["day"]] )
 	# week repeat day info
-	addkey.call("%s" % weekdaystring[timeNowDict["weekday"]] )
+	addkey.call("%s" % weekdaystring[time_now_dict["weekday"]] )
 	# today's info
-	var todaystr = "%04d-%02d-%02d" % [timeNowDict["year"] , timeNowDict["month"] ,timeNowDict["day"]]
+	var todaystr = "%04d-%02d-%02d" % [time_now_dict["year"] , time_now_dict["month"] ,time_now_dict["day"]]
 	addkey.call(todaystr)
 	for v in day_repeat_list:
 		var diffday = calc_day_diff(v[0], todaystr)

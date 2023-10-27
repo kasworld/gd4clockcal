@@ -39,9 +39,9 @@ func force_update():
 func _http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
 	timer.start(repeat_second)
 	if result == HTTPRequest.RESULT_SUCCESS and response_code==200:
-		var thisModified = key_value_from_header(to_find_data,headers)
-		if last_modified != thisModified:
-			last_modified = thisModified
+		var this_modified = key_value_from_header(to_find_data,headers)
+		if last_modified != this_modified:
+			last_modified = this_modified
 			process_body.call(body)
 	else :
 		fail_to_get.call()

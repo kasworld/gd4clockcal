@@ -36,21 +36,21 @@ func init_calendar_labels(font_size :float):
 func update_calendar():
 	var tz = Time.get_time_zone_from_system()
 	var today = int(Time.get_unix_time_from_system()) +tz["bias"]*60
-	var todayDict = Time.get_date_dict_from_unix_time(today)
-	var dayIndex = today - (7 + todayDict["weekday"] )*24*60*60 #datetime.timedelta(days=(-today.weekday() - 7))
+	var today_dict = Time.get_date_dict_from_unix_time(today)
+	var day_index = today - (7 + today_dict["weekday"] )*24*60*60 #datetime.timedelta(days=(-today.weekday() - 7))
 
 	for week in range(6):
 		for wd in range(7):
-			var dayIndexDict = Time.get_date_dict_from_unix_time(dayIndex)
+			var day_index_dict = Time.get_date_dict_from_unix_time(day_index)
 			var curLabel = calendar_labels[week+1][wd]
-			curLabel.text = "%d" % dayIndexDict["day"]
+			curLabel.text = "%d" % day_index_dict["day"]
 			var co = Global.colors.weekday[wd][0]
-			if dayIndexDict["month"] != todayDict["month"]:
+			if day_index_dict["month"] != today_dict["month"]:
 				co = Global.colors.weekday[wd][1]
-			elif dayIndexDict["day"] == todayDict["day"]:
+			elif day_index_dict["day"] == today_dict["day"]:
 				co = Global.colors.today
 			Global.set_label_color(curLabel, co, Global.make_shadow_color(co))
-			dayIndex += 24*60*60
+			day_index += 24*60*60
 
 var old_time_dict = {"day":0} # datetime dict
 func _on_timer_timeout() -> void:

@@ -20,7 +20,7 @@ func _ready():
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
-	bgImage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
+	bgimage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
 	co = Global.colors.timelabel
 	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, co, Global.make_shadow_color(co))
@@ -149,17 +149,29 @@ func init_request_dict():
 	for k in request_dict:
 		add_child(request_dict[k])
 
-var bgImage :Image
+var bgimage :Image
 func bgimage_success(body):
-	var image_error = bgImage.load_png_from_buffer(body)
+	var image_error = bgimage.load_png_from_buffer(body)
 	if image_error != OK:
 		print("An error occurred while trying to display the image.")
 	else:
-		var bgTexture = ImageTexture.create_from_image(bgImage)
+		var bgTexture = ImageTexture.create_from_image(bgimage)
 		bgTexture.set_size_override(get_viewport_rect().size)
 		$BackgroundSprite.texture = bgTexture
 func bgimage_fail():
 	pass
 
-
-
+# change dark mode by time
+var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
+func _on_timer_day_night_timeout() -> void:
+	var time_now_dict = Time.get_datetime_dict_from_system()
+	if old_time_dict["hour"] != time_now_dict["hour"]:
+		old_time_dict = time_now_dict
+		match time_now_dict["hour"]:
+			6:
+				update_color(false)
+			18:
+				update_color(true)
+			_:
+#				update_color(not Global.dark_mode)
+				pass
