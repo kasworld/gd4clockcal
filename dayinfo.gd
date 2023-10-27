@@ -66,6 +66,8 @@ func get_daystringlist()->Array[String]:
 		for v in data_dict[key]:
 			rtn.append(v)
 
+	addkey.call("*")
+
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	# year repeat day info
 	addkey.call("%02d-%02d" % [time_now_dict["month"], time_now_dict["day"]] )
