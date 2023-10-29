@@ -5,13 +5,13 @@ const weekdaystring = ["일","월","화","수","목","금","토"]
 
 var colors_dark = {
 	weekday = [
-		[Color.RED, make_shadow_color(Color.RED)],  # sunday
-		[Color.WHITE, make_shadow_color(Color.WHITE)],  # monday
-		[Color.WHITE, make_shadow_color(Color.WHITE)],
-		[Color.WHITE, make_shadow_color(Color.WHITE)],
-		[Color.WHITE, make_shadow_color(Color.WHITE)],
-		[Color.WHITE, make_shadow_color(Color.WHITE)],
-		[Color.BLUE, make_shadow_color(Color.BLUE)],  # saturday
+		Color.RED,  # sunday
+		Color.WHITE,  # monday
+		Color.WHITE,
+		Color.WHITE,
+		Color.WHITE,
+		Color.WHITE,
+		Color.BLUE,  # saturday
 	],
 	today = Color.GREEN,
 	timelabel = Color.WHITE,
@@ -21,13 +21,13 @@ var colors_dark = {
 }
 var colors_light = 	{
 	weekday = [
-		[Color.RED, make_shadow_color(Color.RED)],  # sunday
-		[Color.BLACK, make_shadow_color(Color.BLACK)],  # monday
-		[Color.BLACK, make_shadow_color(Color.BLACK)],
-		[Color.BLACK, make_shadow_color(Color.BLACK)],
-		[Color.BLACK, make_shadow_color(Color.BLACK)],
-		[Color.BLACK, make_shadow_color(Color.BLACK)],
-		[Color.BLUE, make_shadow_color(Color.BLUE)],  # saturday
+		Color.RED,   # sunday
+		Color.BLACK,   # monday
+		Color.BLACK,
+		Color.BLACK,
+		Color.BLACK,
+		Color.BLACK,
+		Color.BLUE,   # saturday
 	],
 	today = Color.GREEN,
 	timelabel = Color.BLACK,
