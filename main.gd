@@ -28,17 +28,6 @@ func _ready():
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, co, Global.make_shadow_color(co) )
 	reset_pos()
 
-func set_color_mode_by_time():
-	if old_time_dict["hour"] < 6 or old_time_dict["hour"] >= 18 :
-		Global.set_dark_mode(true)
-	else :
-		Global.set_dark_mode(false)
-
-func update_color(darkmode :bool):
-	Global.set_dark_mode(darkmode)
-	$TimeLabel.update_color()
-	$InfoLabel.update_color()
-	$Calendar.update_color()
 
 func reset_pos():
 	$TimeLabel.position = timepos[0]
@@ -166,6 +155,19 @@ func bgimage_success(body):
 		$BackgroundSprite.texture = bgTexture
 func bgimage_fail():
 	pass
+
+func set_color_mode_by_time():
+	var now = Time.get_datetime_dict_from_system()
+	if now["hour"] < 6 or now["hour"] >= 18 :
+		Global.set_dark_mode(true)
+	else :
+		Global.set_dark_mode(false)
+
+func update_color(darkmode :bool):
+	Global.set_dark_mode(darkmode)
+	$TimeLabel.update_color()
+	$InfoLabel.update_color()
+	$Calendar.update_color()
 
 # change dark mode by time
 var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
