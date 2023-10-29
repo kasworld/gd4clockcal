@@ -5,13 +5,13 @@ const weekdaystring = ["일","월","화","수","목","금","토"]
 
 var colors_dark = {
 	weekday = [
-		Color.RED,  # sunday
+		Color.RED.lightened(0.5),  # sunday
 		Color.WHITE,  # monday
 		Color.WHITE,
 		Color.WHITE,
 		Color.WHITE,
 		Color.WHITE,
-		Color.BLUE,  # saturday
+		Color.BLUE.lightened(0.5),  # saturday
 	],
 	today = Color.GREEN,
 	timelabel = Color.WHITE,
@@ -29,7 +29,7 @@ var colors_light = 	{
 		Color.BLACK,
 		Color.BLUE,   # saturday
 	],
-	today = Color.GREEN,
+	today = Color.GREEN.darkened(0.5),
 	timelabel = Color.BLACK,
 	infolabel = Color.BLACK,
 	paneloption = Color.BLACK,
