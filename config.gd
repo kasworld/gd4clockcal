@@ -10,17 +10,17 @@ var editable_keys = [
 	]
 
 var config = {
-	version_key : "gd4clockcal 4.2.0",
+	version_key : "gd4clockcal 4.2.1",
 	"weather_url" : "http://192.168.0.10/weather.txt",
 	"dayinfo_url" : "http://192.168.0.10/dayinfo.txt",
 	"todayinfo_url" : "http://192.168.0.10/todayinfo.txt",
 	"background_url" : "http://192.168.0.10/background.png",
 }
 
-func file_full_path():
+func file_full_path()->String:
 	return OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/" + file_name
 
-func file_exist():
+func file_exist()->bool:
 	return FileAccess.file_exists(file_full_path())
 
 func save_json()-> String:

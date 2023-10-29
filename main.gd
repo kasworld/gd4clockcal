@@ -7,7 +7,7 @@ var calpos = []
 var infopos = []
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready()->void:
 	set_color_mode_by_time()
 	vp_size = get_viewport_rect().size
 	timepos = [Vector2(0, -vp_size.y*0.04 ), Vector2(0, vp_size.y -vp_size.y*0.35)]
@@ -29,7 +29,7 @@ func _ready():
 	reset_pos()
 
 
-func reset_pos():
+func reset_pos()->void:
 	$TimeLabel.position = timepos[0]
 	$Calendar.position = calpos[0]
 	$InfoLabel.position = infopos[0]
@@ -42,7 +42,7 @@ var animove_enable = false
 var animove_state = 0
 var animove_begin_tick = 0
 
-func animove_toggle() :
+func animove_toggle()->void:
 	animove_enable = not animove_enable
 	if animove_enable:
 		animove_state = 0
@@ -124,7 +124,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				pass
 
 var request_dict = {}
-func init_request_dict():
+func init_request_dict()->void:
 	request_dict["weather_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["weather_url"],
 		60,	$InfoLabel.weather_success, $InfoLabel.weather_fail,
@@ -145,7 +145,7 @@ func init_request_dict():
 		add_child(request_dict[k])
 
 var bgimage :Image
-func bgimage_success(body):
+func bgimage_success(body)->void:
 	var image_error = bgimage.load_png_from_buffer(body)
 	if image_error != OK:
 		print("An error occurred while trying to display the image.")
@@ -153,17 +153,17 @@ func bgimage_success(body):
 		var bgTexture = ImageTexture.create_from_image(bgimage)
 		bgTexture.set_size_override(get_viewport_rect().size)
 		$BackgroundSprite.texture = bgTexture
-func bgimage_fail():
+func bgimage_fail()->void:
 	pass
 
-func set_color_mode_by_time():
+func set_color_mode_by_time()->void:
 	var now = Time.get_datetime_dict_from_system()
 	if now["hour"] < 6 or now["hour"] >= 18 :
 		Global.set_dark_mode(true)
 	else :
 		Global.set_dark_mode(false)
 
-func update_color(darkmode :bool):
+func update_color(darkmode :bool)->void:
 	Global.set_dark_mode(darkmode)
 	$TimeLabel.update_color()
 	$InfoLabel.update_color()

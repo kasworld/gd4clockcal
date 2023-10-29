@@ -5,7 +5,7 @@ signal config_changed()
 var cfg :Config
 var lineedit_dict = {}
 
-func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
+func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color)->void:
 #	size.x = w
 #	size.y = h
 	position.x = x
@@ -37,13 +37,13 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 
 	config_to_control()
 
-func config_to_control():
+func config_to_control()->void:
 	$VBoxContainer/ConfigLabel.text = cfg.file_full_path()
 	$VBoxContainer/VersionLabel.text = cfg.config[cfg.version_key]
 	for k in cfg.editable_keys:
 		lineedit_dict[k].text = cfg.config[k]
 
-func reset_config():
+func reset_config()->void:
 	cfg = Config.new()
 	cfg.save_json()
 	config_to_control()

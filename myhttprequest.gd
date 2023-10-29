@@ -32,7 +32,7 @@ func update():
 	http_request.request(url_to_get)
 
 # reload on next request, ignore modify date check
-func force_update():
+func force_update()->void:
 	last_modified = ""
 	update()
 

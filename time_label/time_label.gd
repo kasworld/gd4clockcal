@@ -1,6 +1,6 @@
 extends Node2D
 
-func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
+func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color)->void:
 	$LabelTime.size.x = w
 	$LabelTime.size.y = h
 	$LabelTime.position.x = x
@@ -8,7 +8,7 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 	$LabelTime.label_settings = Global.make_label_setting(w/4.5, co1, co2)
 	_on_timer_timeout()
 
-func update_color():
+func update_color()->void:
 	var co = Global.colors.timelabel
 	Global.set_label_color($LabelTime, co, Global.make_shadow_color(co))
 

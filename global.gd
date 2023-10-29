@@ -41,7 +41,7 @@ var font = preload("res://HakgyoansimBareondotumR.ttf")
 
 # common functions
 var dark_mode = true
-func set_dark_mode(b :bool):
+func set_dark_mode(b :bool)->void:
 	dark_mode = b
 	if dark_mode :
 		colors = colors_dark

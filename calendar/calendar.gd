@@ -2,7 +2,7 @@ extends Node2D
 
 var calendar_labels = []
 
-func init(x :float,y :float, w :float,h :float):
+func init(x :float,y :float, w :float,h :float)->void:
 	$GridCalendar.size.x = w
 	$GridCalendar.size.y = h
 	$GridCalendar.position.x = x
@@ -11,14 +11,14 @@ func init(x :float,y :float, w :float,h :float):
 	init_calendar_labels(h/8)
 	update_calendar()
 
-func update_color():
+func update_color()->void:
 	for i in range(7): # week title + 6 week
 		for j in Global.weekdaystring.size():
 			var co = Global.colors.weekday[j]
 			Global.set_label_color(calendar_labels[i][j], co, Global.make_shadow_color(co))
 	update_calendar()
 
-func init_calendar_labels(font_size :float):
+func init_calendar_labels(font_size :float)->void:
 	# prepare calendar
 	for _i in range(7): # week title + 6 week
 		var ln = []
@@ -34,7 +34,7 @@ func init_calendar_labels(font_size :float):
 			ln.append(lb)
 		calendar_labels.append(ln)
 
-func update_calendar():
+func update_calendar()->void:
 	var tz = Time.get_time_zone_from_system()
 	var today = int(Time.get_unix_time_from_system()) +tz["bias"]*60
 	var today_dict = Time.get_date_dict_from_unix_time(today)

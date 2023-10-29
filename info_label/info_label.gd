@@ -1,6 +1,6 @@
 extends Node2D
 
-func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
+func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color)->void:
 	$LabelInfo.size.x = w
 	$LabelInfo.size.y = h
 	$LabelInfo.position.x = x
@@ -11,32 +11,32 @@ func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color):
 var height :float
 
 var weather_info :Array[String]
-func weather_success(body):
+func weather_success(body)->void:
 	var text = body.get_string_from_utf8()
 	weather_info = split2list( text )
 	update_info_label()
-func weather_fail():
+func weather_fail()->void:
 	pass
 
 var day_info = DayInfo.new()
-func dayinfo_success(body):
+func dayinfo_success(body)->void:
 	day_info.make(body.get_string_from_utf8())
 	update_info_label()
-func dayinfo_fail():
+func dayinfo_fail()->void:
 	pass
 
 var today_info :Array[String]
-func todayinfo_success(body):
+func todayinfo_success(body)->void:
 	today_info = split2list( body.get_string_from_utf8().strip_edges() )
 	update_info_label()
-func todayinfo_fail():
+func todayinfo_fail()->void:
 	pass
 
-func update_color():
+func update_color()->void:
 	var co = Global.colors.infolabel
 	Global.set_label_color($LabelInfo, co, Global.make_shadow_color(co))
 
-func update_info_label( ):
+func update_info_label()->void:
 	var dayinfo = day_info.get_daystringlist()
 	var all = [make_date_string()]
 	all.append_array(dayinfo)
