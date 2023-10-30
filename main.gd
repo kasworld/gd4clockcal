@@ -43,19 +43,19 @@ func animove_step():
 	var ms = $AniMove.get_ms()
 	match $AniMove.state%4:
 		0:
-			$AniMove.move_y_by_ms($TimeLabel, timepos[1], timepos[0], ms)
-			$AniMove.move_y_by_ms($Calendar, calpos[1], calpos[0], ms)
-			$AniMove.move_y_by_ms($InfoLabel, infopos[1], infopos[0], ms)
-		1:
-			$AniMove.move_x_by_ms($Calendar, calpos[1], calpos[0], ms)
-			$AniMove.move_x_by_ms($InfoLabel, infopos[1], infopos[0], ms)
-		2:
 			$AniMove.move_y_by_ms($TimeLabel, timepos[0], timepos[1], ms)
 			$AniMove.move_y_by_ms($Calendar, calpos[0], calpos[1], ms)
 			$AniMove.move_y_by_ms($InfoLabel, infopos[0], infopos[1], ms)
-		3:
+		1:
 			$AniMove.move_x_by_ms($Calendar, calpos[0], calpos[1], ms)
 			$AniMove.move_x_by_ms($InfoLabel, infopos[0], infopos[1], ms)
+		2:
+			$AniMove.move_y_by_ms($TimeLabel, timepos[1], timepos[0], ms)
+			$AniMove.move_y_by_ms($Calendar, calpos[1], calpos[0], ms)
+			$AniMove.move_y_by_ms($InfoLabel, infopos[1], infopos[0], ms)
+		3:
+			$AniMove.move_x_by_ms($Calendar, calpos[1], calpos[0], ms)
+			$AniMove.move_x_by_ms($InfoLabel, infopos[1], infopos[0], ms)
 		_:
 			print_debug("invalid state", $AniMove.state)
 
