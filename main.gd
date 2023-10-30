@@ -8,7 +8,6 @@ var infopos = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready()->void:
-	set_color_mode_by_time()
 	vp_size = get_viewport_rect().size
 	timepos = [Vector2(0, -vp_size.y*0.04 ), Vector2(0, vp_size.y -vp_size.y*0.35)]
 	calpos = [Vector2(vp_size.x/2, vp_size.y*0.35 ), Vector2(0, 0)]
@@ -27,7 +26,7 @@ func _ready()->void:
 	co = Global.colors.infolabel
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, co, Global.make_shadow_color(co) )
 	reset_pos()
-
+	update_color(get_color_by_time())
 
 func reset_pos()->void:
 	$TimeLabel.position = timepos[0]
@@ -83,7 +82,7 @@ func _process(delta: float) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
-		set_color_mode_by_time()
+		update_color(get_color_by_time())
 		for k in request_dict:
 			request_dict[k].update()
 
@@ -156,12 +155,10 @@ func bgimage_success(body)->void:
 func bgimage_fail()->void:
 	pass
 
-func set_color_mode_by_time()->void:
+# return darkmode by time
+func get_color_by_time()->bool:
 	var now = Time.get_datetime_dict_from_system()
-	if now["hour"] < 6 or now["hour"] >= 18 :
-		Global.set_dark_mode(true)
-	else :
-		Global.set_dark_mode(false)
+	return now["hour"] < 6 or now["hour"] >= 18
 
 func update_color(darkmode :bool)->void:
 	Global.set_dark_mode(darkmode)
