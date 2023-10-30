@@ -34,8 +34,6 @@ func reset_pos()->void:
 	$InfoLabel.position = infopos[0]
 	animove_state = 0
 
-func sin_inter(v1 :float, v2 :float, t :float)->float:
-	return (cos(t *PI)/2 +0.5) * (v2-v1) + v1
 
 var animove_enable = false
 var animove_state = 0
@@ -54,6 +52,9 @@ func animove_toggle()->void:
 func _on_timer_ani_move_timeout() -> void:
 	animove_state += 1
 	animove_begin_tick = Time.get_unix_time_from_system()
+
+func sin_inter(v1 :float, v2 :float, t :float)->float:
+	return (cos(t *PI)/2 +0.5) * (v2-v1) + v1
 
 func animove_step():
 	var ms = Time.get_unix_time_from_system() - animove_begin_tick
