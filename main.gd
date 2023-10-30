@@ -40,6 +40,8 @@ func animove_toggle()->void:
 		reset_pos()
 
 func animove_step():
+	if not $AniMove.enabled:
+		return
 	var ms = $AniMove.get_ms()
 	match $AniMove.state%4:
 		0:
@@ -60,8 +62,6 @@ func animove_step():
 			print_debug("invalid state", $AniMove.state)
 
 func _process(delta: float) -> void:
-	if not $AniMove.enabled:
-		return
 	animove_step()
 
 func _notification(what: int) -> void:

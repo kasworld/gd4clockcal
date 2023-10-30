@@ -3,25 +3,27 @@ extends Node2D
 var enabled = false
 var state = 0
 var begin_tick = 0
+var period = 1.0
 
 func toggle()->void:
 	if enabled:
 		stop()
 	else:
-		start()
+		start(period)
 
-func start()->void:
+func start(p :float = 1)->void:
+	period = p
 	enabled = true
 	state = 0
 	begin_tick = Time.get_unix_time_from_system()
-	$Timer.start()
+	$Timer.start(period)
 
 func stop()->void:
 	enabled = false
 	$Timer.stop()
 
 func calc_inter(v1 :float, v2 :float, t :float)->float:
-	return (cos(t *PI)/2 +0.5) * (v1-v2) + v2
+	return (cos(t *PI / period)/2 +0.5) * (v1-v2) + v2
 
 func move_x_by_ms(o :Node2D, p1 :Vector2, p2 :Vector2, ms:float)->void:
 	o.position.x = calc_inter(p1.x ,p2.x , ms)
