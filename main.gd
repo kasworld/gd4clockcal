@@ -32,52 +32,35 @@ func reset_pos()->void:
 	$TimeLabel.position = timepos[0]
 	$Calendar.position = calpos[0]
 	$InfoLabel.position = infopos[0]
-	animove_state = 0
-
-
-var animove_enable = false
-var animove_state = 0
-var animove_begin_tick = 0
+	$AniMove.stop()
 
 func animove_toggle()->void:
-	animove_enable = not animove_enable
-	if animove_enable:
-		animove_state = 0
-		animove_begin_tick = Time.get_unix_time_from_system()
-		$TimerAniMove.start()
-	else:
-		$TimerAniMove.stop()
+	$AniMove.toggle()
+	if not $AniMove.enabled:
 		reset_pos()
 
-func _on_timer_ani_move_timeout() -> void:
-	animove_state += 1
-	animove_begin_tick = Time.get_unix_time_from_system()
-
-func sin_inter(v1 :float, v2 :float, t :float)->float:
-	return (cos(t *PI)/2 +0.5) * (v2-v1) + v1
-
 func animove_step():
-	var ms = Time.get_unix_time_from_system() - animove_begin_tick
-	match animove_state%4:
+	var ms = $AniMove.get_ms()
+	match $AniMove.state%4:
 		0:
-			$TimeLabel.position.y = sin_inter(timepos[1].y ,timepos[0].y , ms)
-			$Calendar.position.y = sin_inter(calpos[1].y ,calpos[0].y , ms)
-			$InfoLabel.position.y = sin_inter(infopos[1].y ,infopos[0].y , ms)
+			$AniMove.move_y_by_ms($TimeLabel, timepos[1], timepos[0], ms)
+			$AniMove.move_y_by_ms($Calendar, calpos[1], calpos[0], ms)
+			$AniMove.move_y_by_ms($InfoLabel, infopos[1], infopos[0], ms)
 		1:
-			$Calendar.position.x = sin_inter(calpos[1].x ,calpos[0].x , ms)
-			$InfoLabel.position.x = sin_inter(infopos[1].x ,infopos[0].x , ms)
+			$AniMove.move_x_by_ms($Calendar, calpos[1], calpos[0], ms)
+			$AniMove.move_x_by_ms($InfoLabel, infopos[1], infopos[0], ms)
 		2:
-			$TimeLabel.position.y = sin_inter(timepos[0].y ,timepos[1].y , ms)
-			$Calendar.position.y = sin_inter(calpos[0].y ,calpos[1].y , ms)
-			$InfoLabel.position.y = sin_inter(infopos[0].y ,infopos[1].y , ms)
+			$AniMove.move_y_by_ms($TimeLabel, timepos[0], timepos[1], ms)
+			$AniMove.move_y_by_ms($Calendar, calpos[0], calpos[1], ms)
+			$AniMove.move_y_by_ms($InfoLabel, infopos[0], infopos[1], ms)
 		3:
-			$Calendar.position.x = sin_inter(calpos[0].x ,calpos[1].x , ms)
-			$InfoLabel.position.x = sin_inter(infopos[0].x ,infopos[1].x , ms)
+			$AniMove.move_x_by_ms($Calendar, calpos[0], calpos[1], ms)
+			$AniMove.move_x_by_ms($InfoLabel, infopos[0], infopos[1], ms)
 		_:
-			print_debug("invalid state", animove_state)
+			print_debug("invalid state", $AniMove.state)
 
 func _process(delta: float) -> void:
-	if not animove_enable:
+	if not $AniMove.enabled:
 		return
 	animove_step()
 

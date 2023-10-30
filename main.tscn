@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://crwqu61bd5osl"]
+[gd_scene load_steps=8 format=3 uid="uid://crwqu61bd5osl"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_wi1q7"]
 [ext_resource type="PackedScene" uid="uid://b0lh1apt682gt" path="res://info_label/info_label.tscn" id="2_d7wlb"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dxe61smpvqaqf" path="res://icon.png" id="3_p67cb"]
 [ext_resource type="PackedScene" uid="uid://b1m11n5rm2gh7" path="res://calendar/calendar.tscn" id="5_1ivmc"]
 [ext_resource type="PackedScene" uid="uid://cwmx6m8hhfxdx" path="res://time_label/time_label.tscn" id="7_bkgb5"]
+[ext_resource type="PackedScene" uid="uid://bf1vkxi8i0lm1" path="res://ani_move/ani_move.tscn" id="7_rvvpm"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_wi1q7")
@@ -32,12 +33,11 @@ offset_right = 72.0
 offset_bottom = 72.0
 icon = ExtResource("3_p67cb")
 
-[node name="TimerAniMove" type="Timer" parent="."]
-
 [node name="TimerDayNight" type="Timer" parent="."]
 autostart = true
 
+[node name="AniMove" parent="." instance=ExtResource("7_rvvpm")]
+
 [connection signal="timeout" from="AutoHideOptionPanel" to="." method="_on_auto_hide_option_panel_timeout"]
 [connection signal="pressed" from="ButtonOption" to="." method="_on_button_option_pressed"]
-[connection signal="timeout" from="TimerAniMove" to="." method="_on_timer_ani_move_timeout"]
 [connection signal="timeout" from="TimerDayNight" to="." method="_on_timer_day_night_timeout"]
