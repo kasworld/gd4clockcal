@@ -28,6 +28,11 @@ var day_repeat_list :Array
 	["2023-08-20", 2 , "2일 반복" ],
 ]
 """
+
+func clear()->void:
+	day_repeat_list.clear()
+	data_dict.clear()
+
 # return true if added
 func add_day_repeat_data(k :String, v :String)->bool:
 	var klist = k.split("/", false,1)
@@ -41,8 +46,7 @@ func add_day_repeat_data(k :String, v :String)->bool:
 	return true
 
 func make(text:String)->void:
-	data_dict = {}
-	day_repeat_list = []
+	clear()
 	var lines = text.strip_edges().split("\n", false,0)
 	for s in lines :
 		var slist = s.strip_edges().split(" ", false,1)

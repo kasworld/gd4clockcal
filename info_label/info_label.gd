@@ -16,21 +16,24 @@ func weather_success(body)->void:
 	weather_info = split2list( text )
 	update_info_label()
 func weather_fail()->void:
-	pass
+	weather_info.clear()
+	update_info_label()
 
 var day_info = DayInfo.new()
 func dayinfo_success(body)->void:
 	day_info.make(body.get_string_from_utf8())
 	update_info_label()
 func dayinfo_fail()->void:
-	pass
+	day_info.clear()
+	update_info_label()
 
 var today_info :Array[String]
 func todayinfo_success(body)->void:
 	today_info = split2list( body.get_string_from_utf8().strip_edges() )
 	update_info_label()
 func todayinfo_fail()->void:
-	pass
+	today_info.clear()
+	update_info_label()
 
 func update_color()->void:
 	var co = Global.colors.infolabel

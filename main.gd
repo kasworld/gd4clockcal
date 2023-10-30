@@ -153,7 +153,7 @@ func bgimage_success(body)->void:
 		bgTexture.set_size_override(get_viewport_rect().size)
 		$BackgroundSprite.texture = bgTexture
 func bgimage_fail()->void:
-	pass
+	$BackgroundSprite.texture = null
 
 # return darkmode by time
 func get_color_by_time()->bool:
