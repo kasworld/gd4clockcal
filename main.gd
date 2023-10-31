@@ -27,6 +27,7 @@ func _ready()->void:
 	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, co, Global.make_shadow_color(co) )
 	reset_pos()
 	update_color(get_color_by_time())
+#	$AniMove.period = 2
 
 func reset_pos()->void:
 	$TimeLabel.position = timepos[0]
