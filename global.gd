@@ -37,6 +37,16 @@ var colors_light = 	{
 }
 var colors = colors_dark
 
+# 0:black -> 12:white -> 24:black
+func make_gray_by_time()->Color:
+	var now = Time.get_datetime_dict_from_system()
+	var sec_in_day = ((now.hour * 60) + now.minute )*60 + now.second
+	const sec_day = 24*60*60.0
+	var v = (sec_in_day/sec_day*2.0)
+	if v >1.0 :
+		v = 2.0-v
+	return Color(v,v,v,1.0)
+
 var font = preload("res://HakgyoansimBareondotumR.ttf")
 
 # common functions

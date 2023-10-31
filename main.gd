@@ -154,6 +154,10 @@ func update_color(darkmode :bool)->void:
 # change dark mode by time
 var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
 func _on_timer_day_night_timeout() -> void:
+#	var bg = Global.make_gray_by_time()
+#	RenderingServer.set_default_clear_color(bg)
+#	print_debug(bg)
+#	return
 	var time_now_dict = Time.get_datetime_dict_from_system()
 	if old_time_dict["hour"] != time_now_dict["hour"]:
 		old_time_dict = time_now_dict
