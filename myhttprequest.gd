@@ -44,6 +44,7 @@ func _http_request_completed(result: int, response_code: int, headers: PackedStr
 			last_modified = this_modified
 			process_body.call(body)
 	else :
+		last_modified = ""
 		fail_to_get.call()
 
 func key_value_from_header(key: String ,headers: PackedStringArray )->String:
