@@ -67,9 +67,12 @@ func _process(delta: float) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
-		update_color(get_color_by_time())
-		for k in request_dict:
-			request_dict[k].update()
+		app_resumed()
+
+func app_resumed()->void:
+	update_color(get_color_by_time())
+	for k in request_dict:
+		request_dict[k].update()
 
 func _on_button_option_pressed() -> void:
 	$PanelOption.visible = not $PanelOption.visible
