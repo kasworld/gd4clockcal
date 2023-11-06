@@ -1,12 +1,10 @@
 extends Node2D
 
-func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color)->void:
-	$LabelInfo.size.x = w
-	$LabelInfo.size.y = h
-	$LabelInfo.position.x = x
-	$LabelInfo.position.y = y
-	$LabelInfo.label_settings = Global.make_label_setting(h/8, co1, co2)
-	height = h # use to fontsize by line count
+func init(rt :Rect2, co1 :Color, co2 :Color)->void:
+	$LabelInfo.size = rt.size
+	$LabelInfo.position = rt.position
+	$LabelInfo.label_settings = Global.make_label_setting(rt.size.y/8, co1, co2)
+	height = rt.size.y # use to fontsize by line count
 
 var height :float
 

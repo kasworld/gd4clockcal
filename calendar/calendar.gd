@@ -2,13 +2,11 @@ extends Node2D
 
 var calendar_labels = []
 
-func init(x :float,y :float, w :float,h :float)->void:
-	$GridCalendar.size.x = w
-	$GridCalendar.size.y = h
-	$GridCalendar.position.x = x
-	$GridCalendar.position.y = y
+func init(rt :Rect2)->void:
+	$GridCalendar.size = rt.size
+	$GridCalendar.position = rt.position
 
-	init_calendar_labels(h/8)
+	init_calendar_labels(rt.size.y/8)
 	update_calendar()
 
 func update_color()->void:

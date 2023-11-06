@@ -5,12 +5,11 @@ signal config_changed()
 var cfg :Config
 var lineedit_dict = {}
 
-func init(x :float, y :float, w :float, h :float, co1 :Color, co2 :Color)->void:
+func init( rt :Rect2, co1 :Color, co2 :Color)->void:
 #	size.x = w
 #	size.y = h
-	position.x = x
-	position.y = y
-	theme.default_font_size = h / 12
+	position = rt.position
+	theme.default_font_size = rt.size.y / 12
 
 	cfg = Config.new()
 	var msg = ""

@@ -14,17 +14,17 @@ func _ready()->void:
 	infopos = [Vector2(0, vp_size.y*0.35 ), Vector2(vp_size.x/2, 0)]
 
 	var co = Global.colors.paneloption
-	$PanelOption.init(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2, co, Global.make_shadow_color(co))
+	$PanelOption.init( Rect2(vp_size.x/10, vp_size.y/3, vp_size.x/2 , vp_size.y/2), co, Global.make_shadow_color(co))
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
 
 	bgimage = Image.create(vp_size.x,vp_size.y,true,Image.FORMAT_RGBA8)
 
 	co = Global.colors.timelabel
-	$TimeLabel.init(0, 0, vp_size.x, vp_size.y*0.42, co, Global.make_shadow_color(co))
-	$Calendar.init(0, 0, vp_size.x/2, vp_size.y*0.65)
+	$TimeLabel.init( Rect2(0, 0, vp_size.x, vp_size.y*0.42), co, Global.make_shadow_color(co))
+	$Calendar.init( Rect2(0, 0, vp_size.x/2, vp_size.y*0.65) )
 	co = Global.colors.infolabel
-	$InfoLabel.init(0, 0, vp_size.x/2, vp_size.y*0.65, co, Global.make_shadow_color(co) )
+	$InfoLabel.init( Rect2(0, 0, vp_size.x/2, vp_size.y*0.65), co, Global.make_shadow_color(co) )
 	reset_pos()
 	update_color(get_color_by_time())
 #	$AniMove.period = 2
