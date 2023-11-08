@@ -4,6 +4,7 @@ var enabled = false
 var state = 0
 var begin_tick = 0
 var period = 1.0
+var remain_step :int
 
 func toggle()->void:
 	if enabled:
@@ -14,9 +15,14 @@ func toggle()->void:
 func start(p :float = 1)->void:
 	period = p
 	enabled = true
-	state = 0
+#	state = 0
 	begin_tick = Time.get_unix_time_from_system()
 	$Timer.start(period)
+
+# auto stop after step state change
+func start_with_step(step :int, p :float = 1, )->void:
+	remain_step = step
+	start(p)
 
 func stop()->void:
 	enabled = false
@@ -41,3 +47,6 @@ func get_ms()->float:
 func _on_timer_timeout() -> void:
 	state += 1
 	begin_tick = Time.get_unix_time_from_system()
+	if remain_step > 0 :
+		remain_step -= 1
+		stop()

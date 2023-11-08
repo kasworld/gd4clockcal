@@ -155,20 +155,19 @@ func update_color(darkmode :bool)->void:
 	$Calendar.update_color()
 
 # change dark mode by time
-var old_time_dict = Time.get_datetime_dict_from_system() # datetime dict
+var old_hour_dict = Time.get_datetime_dict_from_system() # datetime dict
+var old_minute_dict = Time.get_datetime_dict_from_system() # datetime dict
 func _on_timer_day_night_timeout() -> void:
 #	var bg = Global.make_gray_by_time()
 #	RenderingServer.set_default_clear_color(bg)
 #	print_debug(bg)
 #	return
 	var time_now_dict = Time.get_datetime_dict_from_system()
-	if old_time_dict["hour"] != time_now_dict["hour"]:
-		old_time_dict = time_now_dict
-		match time_now_dict["hour"]:
-			6:
-				update_color(false)
-			18:
-				update_color(true)
-			_:
-#				update_color(not Global.dark_mode)
-				pass
+	if old_minute_dict["minute"] != time_now_dict["minute"]:
+		$AniMove.start_with_step(1)
+		old_minute_dict = time_now_dict
+
+	if old_hour_dict["hour"] != time_now_dict["hour"]:
+		update_color(get_color_by_time())
+		old_hour_dict = time_now_dict
+
