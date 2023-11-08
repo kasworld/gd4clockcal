@@ -60,7 +60,7 @@ func split2list(text :String)->Array[String]:
 
 func make_date_string()->String:
 	var time_now_dict = Time.get_datetime_dict_from_system()
-	return "%04d-%02d-%02d %s" % [
+	return "%4d년%2d월%2d일 %s요일" % [
 		time_now_dict["year"] , time_now_dict["month"] ,time_now_dict["day"],
 		Global.weekdaystring[ time_now_dict["weekday"]]
 		]
