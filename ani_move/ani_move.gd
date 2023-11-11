@@ -15,7 +15,6 @@ func toggle()->void:
 func start(p :float = 1)->void:
 	period = p
 	enabled = true
-#	state = 0
 	begin_tick = Time.get_unix_time_from_system()
 	$Timer.start(period)
 
