@@ -8,7 +8,7 @@ var lineedit_dict = {}
 func init( rt :Rect2, co1 :Color, co2 :Color)->void:
 	size = rt.size
 	position = rt.position
-	theme.default_font_size = rt.size.y / 12
+	theme.default_font_size = rt.size.y / 10
 
 	cfg = Config.new()
 	var msg = ""

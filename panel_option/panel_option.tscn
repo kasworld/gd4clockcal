@@ -33,7 +33,6 @@ text = "version 0.0.0"
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 text = "Edit URLs"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
@@ -69,6 +68,12 @@ focus_neighbor_right = NodePath("../ButtonOK")
 focus_next = NodePath("../ButtonOK")
 focus_previous = NodePath("../ButtonOK")
 text = "Cancel"
+
+[node name="LabelCopyright" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Copyright 2023 SeukWon Kang (kasworld@gmail.com)"
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonOK" to="." method="_on_button_ok_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ButtonReset" to="." method="_on_button_reset_pressed"]

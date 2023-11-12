@@ -14,7 +14,7 @@ func _ready()->void:
 	infopos = [Vector2(0, vp_rect.size.y*0.35 ), Vector2(vp_rect.size.x/2, 0)]
 
 	var co = Global.colors.paneloption
-	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4   )
+	var optrect = Rect2( vp_rect.size.x * 0.1 ,vp_rect.size.y * 0.3 , vp_rect.size.x * 0.8 , vp_rect.size.y * 0.4 )
 	$PanelOption.init( optrect, co, Global.make_shadow_color(co))
 	$PanelOption.config_changed.connect(config_changed)
 	init_request_dict()
