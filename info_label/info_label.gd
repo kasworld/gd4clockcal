@@ -8,6 +8,16 @@ func init(rt :Rect2, co1 :Color, co2 :Color)->void:
 
 var height :float
 
+func get_req_callable()->Dictionary:
+	return {
+		weather_success = weather_success,
+		weather_fail = weather_fail,
+		dayinfo_success = dayinfo_success,
+		dayinfo_fail = dayinfo_fail,
+		todayinfo_success = todayinfo_success,
+		todayinfo_fail = todayinfo_fail,
+	}
+
 var weather_info :Array[String]
 func weather_success(body)->void:
 	var text = body.get_string_from_utf8()
@@ -41,9 +51,10 @@ func update_color()->void:
 func update_info_label()->void:
 	var dayinfo = day_info.get_daystringlist()
 	var all = [make_date_string()]
+	if weather_info.size() > 0:
+		all.append(" ".join(weather_info))
 	all.append_array(dayinfo)
 	all.append_array(today_info)
-	all.append_array(weather_info)
 	$LabelInfo.text = "\n".join(all)
 	var line2calcfont = clampf(all.size(), 7, 20)
 	var fontsize = height*0.9/line2calcfont

@@ -113,17 +113,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 var request_dict = {}
 func init_request_dict()->void:
+	var callable_dict = $InfoLabel.get_req_callable()
 	request_dict["weather_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["weather_url"],
-		60,	$InfoLabel.weather_success, $InfoLabel.weather_fail,
+		60,	callable_dict.weather_success, callable_dict.weather_fail,
 	)
 	request_dict["dayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["dayinfo_url"],
-		60, $InfoLabel.dayinfo_success, $InfoLabel.dayinfo_fail,
+		60, callable_dict.dayinfo_success, callable_dict.dayinfo_fail,
 	)
 	request_dict["todayinfo_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["todayinfo_url"],
-		60, $InfoLabel.todayinfo_success, $InfoLabel.todayinfo_fail,
+		60, callable_dict.todayinfo_success, callable_dict.todayinfo_fail,
 	)
 	request_dict["background_url"] = MyHTTPRequest.new(
 		$PanelOption.cfg.config["background_url"],
