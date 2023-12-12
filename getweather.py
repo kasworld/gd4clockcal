@@ -19,7 +19,6 @@ def getNaverWeather():
     geoLocation = ""
     # dust1 = ""
     # dust2 = ""
-    err = None
     try:
 
         # from weather page
@@ -55,31 +54,32 @@ def getNaverWeather():
         # airlist = weather_table.find('dd', {'class': 'level4_1'})
         # dust1, dust2 = airlist[0].text, airlist[1].text
 
-        return currentTemperature, currentSky, geoLocation, err
+        return [currentTemperature, currentSky, geoLocation], []
     except Exception as e:
         print(e)
-        return "fail to get weather", repr(e),  "",   "", "", e
+        return [], ["fail to get weather", repr(e)]
 
 
 def getNaverWeatherRetry():
     tryCount = 10
     sleepDelaySec = 1.0
-    rtn = getNaverWeather()
-    while rtn[-1] != None:
-        time.sleep(sleepDelaySec)
-        rtn = getNaverWeather()
-        tryCount -= 1
-        if tryCount <= 0:
+    while True:
+        rtn,err = getNaverWeather()
+        saveFile('weather.txt', rtn)
+        saveFile('weather.err', err)
+        if len(err) == 0:
+            # rtn.append(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             break
+        else:
+            tryCount -= 1
+            if tryCount <= 0:
+                break
+            time.sleep(sleepDelaySec)
 
-    return rtn[:-1]
+def saveFile(name, strList):
+    with open(name, 'wt', encoding="utf-8") as f:
+        for d in strList:
+            f.write(d)
+            f.write("\n")
 
-
-rtn = getNaverWeatherRetry()
-updateDateTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-with open('weather.txt', 'wt', encoding="utf-8") as f:
-    for d in rtn:
-        f.write(d)
-        f.write("\n")
-    f.write(updateDateTime)
+getNaverWeatherRetry()
