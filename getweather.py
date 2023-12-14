@@ -144,6 +144,8 @@ def getFromDataPotal(apikey, nx, ny):
     response = requests.get(url, params=params)
     if response.status_code != 200:
         print(response.status_code)
+        saveFile('weather.txt', [])
+        saveFile('weather.err', ["{0}".format(response.status_code)] )
         exit()
     info = json.loads(response.content)
     infodict = {}
@@ -152,17 +154,16 @@ def getFromDataPotal(apikey, nx, ny):
         vel = a["obsrValue"]
         infodict[key] = vel
     print(infodict)
-    rtn.append("온도%s℃" % infodict["T1H"])
-    rtn.append("습도%s%%" % infodict["REH"])
-    rtn.append("풍속%sm/s" % infodict["WSD"])
+    rtn.append("온도{0}℃ 습도{1}%".format( infodict["T1H"], infodict["REH"])  )
+    rtn.append("풍속{0}m/s".format(infodict["WSD"]))
     if infodict["PTY"] != "0":
-        rtn.append("%s %smm" % [infodict["PTY"], infodict["RN1"]])
+        rtn.append("{0} {1}mm".format(pty2str[infodict["PTY"]], infodict["RN1"] ))
 
     print(rtn)
     # print(json.dumps(info, sort_keys=True, indent=4))
 
     saveFile('weather.txt', rtn)
-    # saveFile('weather.err', err)
+    saveFile('weather.err', [json.dumps(info, sort_keys=True, indent=4)] )
 
 
 def getWeather():
