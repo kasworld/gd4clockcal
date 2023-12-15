@@ -129,12 +129,14 @@ pty2str = {
     "7": "눈날림",
 }
 
+# 초단기 실황
 
-def getFromDataPotal(apikey, nx, ny):
+
+def getShortState(apikey, nx, ny):
     now = datetime.datetime.now() - datetime.timedelta(minutes=30)
     starDt = now.strftime("%Y%m%d")
-    starHh = "%02d%02d" % (now.hour, now.minute)
-    # print(starDt," ", starHh)
+    starHh = "{0:02}{1:02}".format(now.hour, now.minute)
+    print(starDt, " ", starHh)
 
     rtn = []
 
@@ -145,25 +147,72 @@ def getFromDataPotal(apikey, nx, ny):
     if response.status_code != 200:
         print(response.status_code)
         saveFile('weather.txt', [])
-        saveFile('weather.err', ["{0}".format(response.status_code)] )
+        saveFile('weather.err', ["{0}".format(response.status_code)])
         exit()
     info = json.loads(response.content)
+    saveFile('weather.err', [json.dumps(info, sort_keys=True, indent=4)])
     infodict = {}
     for a in info["response"]["body"]["items"]["item"]:
         key = a["category"]
         vel = a["obsrValue"]
         infodict[key] = vel
-    print(infodict)
-    rtn.append("온도{0}℃ 습도{1}%".format( infodict["T1H"], infodict["REH"])  )
+    # print(infodict)
+    rtn.append("온도{0}℃ 습도{1}%".format(infodict["T1H"], infodict["REH"]))
     rtn.append("풍속{0}m/s".format(infodict["WSD"]))
     if infodict["PTY"] != "0":
-        rtn.append("{0} {1}mm".format(pty2str[infodict["PTY"]], infodict["RN1"] ))
+        rtn.append("{0} {1}mm".format(
+            pty2str[infodict["PTY"]], infodict["RN1"]))
 
-    print(rtn)
+    # print(rtn)
     # print(json.dumps(info, sort_keys=True, indent=4))
 
     saveFile('weather.txt', rtn)
-    saveFile('weather.err', [json.dumps(info, sort_keys=True, indent=4)] )
+
+
+sky2str = {
+    "1": "맑음",
+    "3": "구름많음",
+    "4": "흐림",
+}
+# 초단기 예보
+
+
+def getShortPredict(apikey, nx, ny):
+    now = datetime.datetime.now() - datetime.timedelta(minutes=30)
+    starDt = now.strftime("%Y%m%d")
+    starHh = "{0:02}{1:02}".format(now.hour, now.minute)
+    print(starDt, " ", starHh)
+
+    rtn = []
+
+    url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst'
+    params = {'serviceKey': apikey, 'pageNo': '1', 'numOfRows': '1000',
+              'dataType': 'JSON', 'base_date': starDt, 'base_time': starHh, 'nx': nx, 'ny': ny}
+    response = requests.get(url, params=params)
+    if response.status_code != 200:
+        print(response.status_code)
+        saveFile('weather.txt', [])
+        saveFile('weather.err', ["{0}".format(response.status_code)])
+        exit()
+    info = json.loads(response.content)
+    saveFile('weather.err', [json.dumps(info, sort_keys=True, indent=4)])
+    infodict = {}
+    for a in info["response"]["body"]["items"]["item"]:
+        key = a["category"]
+        vel = a["fcstValue"]
+        infodict[key] = vel
+    # print(infodict)
+    rtn.append("온도{0}℃ 습도{1}%".format(infodict["T1H"], infodict["REH"]))
+    rtn.append("{0}".format(sky2str[infodict["SKY"]]))
+    rtn.append("풍속{0}m/s".format(infodict["WSD"]))
+    if infodict["PTY"] != "0":
+        rtn.append("{0} {1}mm".format(
+            pty2str[infodict["PTY"]], infodict["RN1"]))
+
+    # print(rtn)
+    # print(json.dumps(info, sort_keys=True, indent=4))
+
+    saveFile('weather.txt', rtn)
 
 
 def getWeather():
@@ -175,7 +224,7 @@ def getWeather():
     nx = sys.argv[2]
     ny = sys.argv[3]
 
-    getFromDataPotal(apikey, nx, ny)
+    getShortPredict(apikey, nx, ny)
 
 
 getWeather()
