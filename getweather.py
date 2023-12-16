@@ -200,14 +200,15 @@ def getShortPredict(apikey, nx, ny):
     for a in info["response"]["body"]["items"]["item"]:
         key = a["category"]
         vel = a["fcstValue"]
-        infodict[key] = vel
-    # print(infodict)
-    rtn.append("온도{0}℃ 습도{1}%".format(infodict["T1H"], infodict["REH"]))
-    rtn.append("{0}".format(sky2str[infodict["SKY"]]))
-    rtn.append("풍속{0}m/s".format(infodict["WSD"]))
+        dt = a["fcstDate"] + a["fcstTime"]
+        if key not in infodict or infodict[key][1] > dt:
+            infodict[key] = [ vel, dt]
+    print(infodict)
+    rtn.append("온도{0}℃ 습도{1}%".format(infodict["T1H"][0], infodict["REH"][0]))
+    rtn.append("{0} 풍속{1}m/s".format(sky2str[infodict["SKY"][0]],infodict["WSD"][0]))
     if infodict["PTY"] != "0":
         rtn.append("{0} {1}mm".format(
-            pty2str[infodict["PTY"]], infodict["RN1"]))
+            pty2str[infodict["PTY"][0]], infodict["RN1"][0]))
 
     # print(rtn)
     # print(json.dumps(info, sort_keys=True, indent=4))
