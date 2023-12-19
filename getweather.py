@@ -207,7 +207,7 @@ def getShortPredict(apikey, nx, ny):
     rtn.append("온도{0}℃ 습도{1}%".format(infodict["T1H"][0], infodict["REH"][0]))
     rtn.append("{0} 풍속{1}m/s".format(sky2str[infodict["SKY"][0]],infodict["WSD"][0]))
     if infodict["PTY"][0] != "0":
-        rtn.append("{0} {1}mm".format(
+        rtn.append("{0} {1}".format(
             pty2str[infodict["PTY"][0]], infodict["RN1"][0]))
 
     # print(rtn)
